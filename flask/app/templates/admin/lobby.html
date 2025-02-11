@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Admin Navigation</title>
+  </head>
+  <body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="w-full max-w-md">
+      <div class="flex flex-col items-center space-y-4">
+        <button
+          class="bg-sky-200 text-black font-bold rounded-lg w-20 h-20"
+          id="cashier"
+          type="button"
+        >
+          Cashier
+        </button>
+        <button
+          class="bg-sky-200 text-black font-bold rounded-lg w-20 h-20"
+          id="server"
+          type="button"
+        >
+          Server
+        </button>
+        <button
+          class="bg-sky-200 text-black font-bold rounded-lg w-20 h-20"
+          id="cook"
+          type="button"
+        >
+          Cook
+        </button>
+        <button
+          class="bg-sky-200 text-black font-bold rounded-lg w-20 h-20"
+          id="add"
+          type="button"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        // Redirect on button click
+        $("#cashier").click(function () {
+          window.location.href = "/admin/cashier";
+        });
+
+        $("#server").click(function () {
+          window.location.href = "/admin/serve";
+        });
+
+        $("#cook").click(function () {
+          window.location.href = "/admin/kitchen";
+        });
+
+        $("#add").click(function () {
+          window.location.href = "/add_menu";
+        });
+      });
+    </script>
+  </body>
+</html>

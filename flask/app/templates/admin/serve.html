@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Serve</title>
+  </head>
+  <body class="bg-green-500">
+    {% for i in order %}
+    <h1>{{ i.table_id }}</h1>
+    {% for j in order_list %} {% if j.order_id == i.id %}
+    <h2>{{ menu[j.menu_id-1].nameFood }}</h2>
+    <button
+      class="btn send-order mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+      data-order-id="{{ i.id }}"
+      data-table-id="{{ i.table_id }}"
+    >
+      Send Order
+    </button>
+    {% endif %} {% endfor %} {% endfor %}
+
+    <script>
+      $(document).ready(function () {
+        $(".send-order").click(function () {
+          var orderId = $(this).data("order-id"); // ดึง order_id
+          var status = "done serve"; // กำหนดสถานะ
+          console.log(orderId);
+          $.ajax({
+            url: "/admin/serve",
+            type: "POST",
+            data: JSON.stringify({
+              id: orderId,
+              status: status,
+            }),
+            contentType: "application/json",
+            success: function (response) {
+              console.log("✅ Order sent successfully:", response);
+            },
+            error: function (xhr, status, error) {
+              console.error("❌ Error sending order:", error);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

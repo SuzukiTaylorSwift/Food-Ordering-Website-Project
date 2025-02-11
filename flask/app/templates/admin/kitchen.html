@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Kitchen</title>
+  </head>
+  <body class="bg-green-300">
+    <h1 class="text-center text-bold font-50">Kitchen</h1>
+
+    {% for table_id, data in grouped_orders.items() %}
+    <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
+      <p class="text-lg font-bold text-center">Table {{ table_id }}</p>
+      <p class="text-sm text-gray-500 text-center">
+        Order Time: {{ data.order_time }}
+      </p>
+
+      {% for order in data.orders %}
+      <div class="mt-4 text-center">
+        <h2 class="text-xl font-semibold text-gray-800">
+          {{ menu[order.menu_id - 1].nameFood }}
+        </h2>
+        <p class="text-lg text-gray-500 mt-2">Quantity: {{ order.quantity }}</p>
+
+        <!-- ✅ ปุ่มส่ง order_id และ status -->
+        <button
+          class="btn send-order mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+          data-order-id="{{ order.menu_id }}"
+          data-table-id="{{ table_id }}"
+
+        >
+          Send Order
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <script>
+      $(document).ready(function () {
+        $(".send-order").click(function () {
+          var orderId = $(this).data("order-id"); // ดึง order_id
+          var tableId = $(this).data("table-id"); // ดึง table_id
+          var status = "done cooked"; // กำหนดสถานะ
+
+          // ✅ ส่งข้อมูลไปที่ /admin/serve
+          $.post({
+            url: "/admin/serve",
+            data: JSON.stringify({
+              id: orderId,
+              table_id: tableId,
+              status: status,
+            }),
+            contentType: "application/json",
+            success: function (response) {
+              console.log("✅ Order sent successfully:", response);
+            },
+            error: function (xhr, status, error) {
+              console.error("❌ Error sending order:", error);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

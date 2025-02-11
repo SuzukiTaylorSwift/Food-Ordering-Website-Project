@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Upload Image</title>
+  </head>
+  <body>
+    <h1>Upload an Image</h1>
+    <form
+      action="{{ url_for('upload_image') }}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {{ form.hidden_tag() }}
+      <!-- สำหรับ CSRF token -->
+
+      <div>
+        <label for="name_food">Food Name:</label>
+        {{ form.nameFood() }}
+        <!-- ใช้ฟอร์มจาก MenuForm -->
+      </div>
+
+      <div>
+        <label for="price">Price:</label>
+        {{ form.price() }}
+        <!-- ใช้ฟอร์มจาก MenuForm -->
+      </div>
+
+      <div>
+        <label for="image">Image:</label>
+        {{ form.image() }}
+        <!-- ใช้ฟอร์มจาก MenuForm -->
+      </div>
+
+      <div>
+        <label for="type">Food Type:</label>
+        {{ form.type() }}
+        <!-- ใช้ฟอร์มจาก MenuForm -->
+      </div>
+
+      <div>
+        <button type="submit">Upload</button>
+      </div>
+    </form>
+  </body>
+</html>

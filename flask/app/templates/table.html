@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body class="bg-green-300">
+    <h1 class="text-center my-5 text-xl font-bold">
+      Welcome na ja table {{table_number}}
+    </h1>
+    <div class="hidden" id="tableNum">{{table_number}}</div>
+    <div id="confirm"></div>
+    <div class="grid grid-cols-2 gap-4">
+      {% for i in menus %}
+      <div class="w-full mt-10" id="id{{i.id}}">
+        <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
+          <div class="flex justify-center">
+            <img
+              src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
+              alt="Picture"
+              class="w-32 h-32 object-cover rounded-md"
+            />
+          </div>
+
+          <div class="mt-4 text-center">
+            <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
+            <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
+            <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- เรียงแนวนอนเริ่มกลาง-->
+    <div class="flex justify-center">
+      <div class="bg-red-400 w-20 h-20"></div>
+      <div class="bg-blue-400 w-20 h-20"></div>
+      <div class="bg-green-400 w-20 h-20"></div>
+    </div>
+    <!-- เรียงแนวนอนเริ่มซ้าย-->
+    <div class="flex">
+      <div class="bg-red-400 w-20 h-20"></div>
+      <div class="bg-blue-400 w-20 h-20"></div>
+      <div class="bg-green-400 w-20 h-20"></div>
+    </div>
+    <!-- ตั้ง -->
+    <div class="flex flex-col m-4">
+      <div class="bg-red-400 w-20 h-20"></div>
+      <div class="bg-blue-400 w-20 h-20"></div>
+      <div class="bg-green-400 w-20 h-20"></div>
+    </div>
+
+    <div class="flex items-center h-40 bg-gray-200">
+      <div class="bg-red-400 w-20 h-20"></div>
+      <div class="bg-blue-400 w-20 h-20"></div>
+    </div>
+
+    <script>
+      // Example: Set table_id dynamically
+      var addCart = [];
+      var nameFood = "";
+      var count = 0;
+      var price = 0;
+      var table_number = 0;
+      function getData(data) {
+        addCart = data[0];
+        //console.log(addCart);
+      }
+      $(document).ready(function () {
+        $.getJSON("table/data", getData);
+
+        //console.log($("#tableNum").text());
+        table_number = $("#tableNum").text();
+        //console.log(table_number);
+        $("#id1").click(function () {
+          shop();
+
+          //cart.push([])
+        });
+      });
+      $(document).ready(function () {
+        $.getJSON("table/data", getData);
+      });
+      function shop() {
+        nameFood = addCart.nameFood;
+        price = addCart.price;
+        type = addCart.type;
+        html = `<div class="bg-white shadow-lg rounded-lg p-6 w-72 text-center">
+          <h2 class="text-xl font-semibold text-gray-800">${addCart.nameFood}</h2>
+          <p class="text-lg text-gray-500 mt-2">price: ${addCart.price} บาท</p>
+          <p class="text-sm text-gray-400 mt-1">type: ${addCart.type}</p>
+          <button id="hereEYE"class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+              เพิ่มลงตะกร้า
+          </button>
+      </div>`;
+        $("#confirm").after(html);
+      }
+
+      $(document).on("click", "#hereEYE", function () {
+        var dict = {};
+        var l = [];
+        l.push(nameFood);
+        l.push(price);
+        l.push(2);
+        l.push(table_number);
+        l.push(1);
+
+        var list = [];
+        list.push(l);
+        l = [];
+        l.push("esus Eye");
+        l.push(20);
+        l.push(1);
+        l.push(table_number);
+        l.push(2); //menu id
+        list.push(l);
+        console.log(list);
+        $.post({
+          url: "/table" + table_number,
+          data: JSON.stringify(list),
+          contentType: "application/json",
+          success: function (response) {
+            console.log("Response:", response);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
