@@ -72,7 +72,7 @@ def upload_image():
             type_food = form.type.data  # สามารถใช้ข้อมูลประเภทได้ตามต้องการ
             price = form.price.data
             # สร้างวัตถุใหม่ในฐานข้อมูล
-            new_image = menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food)  # บันทึกข้อมูลในฐานข้อมูล
+            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food)  # บันทึกข้อมูลในฐานข้อมูล
             db.session.add(new_image)
             db.session.commit()
 
@@ -96,7 +96,7 @@ def order_for_table(table_number):
         if request.method == "POST":
             data = request.get_json()  # รับ JSON request
             print(data,'aaaaaaaaaaaaaaaa')
-            newOrder = order(table_id=data[0][3],totalPrice=data[0][1],status="Cooking")
+            newOrder = Order(table_id=data[0][3],totalPrice=data[0][1],status="Cooking")
             db.session.add(newOrder)
             db.session.commit()
             validated_dict = {}
@@ -109,7 +109,7 @@ def order_for_table(table_number):
             # print(tables    )
             for item in data:
                 print(item)
-                db.session.add(order_table(menu_id=item[4],order_id=newOrder.id,quantity=item[2],totalPrice=200))
+                db.session.add(Order_table(menu_id=item[4],order_id=newOrder.id,quantity=item[2],totalPrice=200))
                 # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
                 db.session.commit()
             

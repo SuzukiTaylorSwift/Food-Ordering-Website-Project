@@ -25,7 +25,7 @@
       $(document).ready(function () {
         $(".send-order").click(function () {
           var orderId = $(this).data("order-id"); // ดึง order_id
-          var status = "done serve"; // กำหนดสถานะ
+          var status = "Succese"; // กำหนดสถานะ
           console.log(orderId);
           $.ajax({
             url: "/admin/serve",

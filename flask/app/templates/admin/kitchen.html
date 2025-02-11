@@ -29,7 +29,6 @@
           class="btn send-order mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
           data-order-id="{{ order.menu_id }}"
           data-table-id="{{ table_id }}"
-
         >
           Send Order
         </button>
@@ -43,7 +42,7 @@
         $(".send-order").click(function () {
           var orderId = $(this).data("order-id"); // ดึง order_id
           var tableId = $(this).data("table-id"); // ดึง table_id
-          var status = "done cooked"; // กำหนดสถานะ
+          var status = "Serving"; // กำหนดสถานะ
 
           // ✅ ส่งข้อมูลไปที่ /admin/serve
           $.post({
