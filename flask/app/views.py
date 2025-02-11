@@ -244,14 +244,14 @@ def Kitchen():
 
 
 
-
-@app.route('/lab11')
-def lab11_index():
+#login page
+@app.route('/admin')
+def admin_index():
     print('aaa')
-    return render_template('lab11/index.html')
+    return render_template('admin/index.html')
 
-@app.route('/lab11/login', methods=('GET', 'POST'))
-def lab11_login():
+@app.route('/admin/login', methods=('GET', 'POST'))
+def admin_login():
     if request.method == 'POST':
         # login code goes here
         email = request.form.get('email')
@@ -266,7 +266,7 @@ def lab11_login():
         if not user or not check_password_hash(user.password, password):
             flash('Please check your login details and try again.')
             # if the user doesn't exist or password is wrong, reload the page
-            return redirect(url_for('lab11_login'))
+            return redirect(url_for('admin_login'))
 
         # if the above check passes, then we know the user has the right
         # credentials
@@ -274,24 +274,24 @@ def lab11_login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             #login done -> profile lobby page
-            next_page = url_for('lab11_profile')
+            next_page = url_for('admin_profile')
         return redirect(next_page)
 
-    return render_template('lab11/login.html')
+    return render_template('admin/login.html')
 
-@app.route('/lab11/profile')
-def lab11_profile():
-   return render_template('lab11/profile.html')
+@app.route('/admin/profile')
+def admin_profile():
+   return render_template('admin/profile.html')
 
 
-@app.route('/lab11/signup', methods=('GET', 'POST'))
+@app.route('/admin/signup', methods=('GET', 'POST'))
 @login_required
-def lab11_signup():
+def admin_signup():
     role = AuthUser.query.all()
     # print(current_user.role == "admin")
     if current_user.role != "admin":
         # flash("You do not have permission to signup.", 'error') ทำไม่ได้
-        return redirect(url_for('lab11_profile'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
+        return redirect(url_for('admin_profile'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
     
     print(role)
     if request.method == 'POST':
@@ -331,7 +331,7 @@ def lab11_signup():
                 # if a user is found, we want to redirect back to signup
                 # page so user can try again
                 flash('Email address already exists')
-                return redirect(url_for('lab11_signup'))
+                return redirect(url_for('admin_signup'))
 
             # create a new user with the form data. Hash the password so
             # the plaintext version isn't saved.
@@ -345,8 +345,8 @@ def lab11_signup():
             db.session.add(new_user)
             db.session.commit()
 
-        return redirect(url_for('lab11_login'))
-    return render_template('lab11/signup.html')
+        return redirect(url_for('admin_login'))
+    return render_template('admin/signup.html')
 
 def gen_avatar_url(email, name):
     bgcolor = generate_password_hash(email, method='sha256')[-6:]
@@ -364,10 +364,10 @@ def gen_avatar_url(email, name):
         bgcolor + "&color=" + color
     return avatar_url
 
-@app.route('/lab11/logout')
+@app.route('/admin/logout')
 @login_required
-def lab11_logout():
+def admin_logout():
     logout_user()
-    return redirect(url_for('lab11_index'))
+    return redirect(url_for('admin_index'))
 
 #end login

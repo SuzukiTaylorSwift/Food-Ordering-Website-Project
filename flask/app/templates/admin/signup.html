@@ -1,11 +1,11 @@
-{% extends "lab11/base.html" %} {% block content %}
+{% extends "admin/base.html" %} {% block content %}
 <div class="column is-4 is-offset-4">
   <h3 class="title">Sign Up</h3>
   <div class="box">
     {% with messages = get_flashed_messages() %} {% if messages %}
     <div class="notification is-danger">
       {{ messages[0] }}. Go to
-      <a href="{{ url_for('lab11_login') }}">login page</a>.
+      <a href="{{ url_for('admin_login') }}">login page</a>.
     </div>
     {% endif %} {% endwith %}
     <form method="POST">
