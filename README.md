@@ -34,7 +34,6 @@
 
 - **Student ID:** 660510656
 - **GitHub ID:** [suzukitaylorswift](https://github.com/suzukitaylorswift)
-- **Role:** Blackend
 - **Role:** Backend
 
 ---
