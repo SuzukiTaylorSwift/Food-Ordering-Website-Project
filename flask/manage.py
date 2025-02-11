@@ -2,11 +2,11 @@ from flask.cli import FlaskGroup
 from flask import url_for
 from werkzeug.security import generate_password_hash
 from app import app, db
-from app.models.menu import menu
+from app.models.menu import Menu
 from app.models.authuser import AuthUser
-from app.models.order import order
-from app.models.order_table import order_table
-from app.models.table import table
+from app.models.order import Order
+from app.models.order_table import Order_table
+from app.models.table import Table
 import os
 
 cli = FlaskGroup(app)
@@ -26,14 +26,14 @@ def seed_db():
 Aheye&background=83ee03&color=fff',role="admin"))
     # print(img,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     # image_path = url_for('static', filename='img/aheye.png')
-    new_menu = menu(nameFood="Haerin",price=1000,type="drink",image_path="static/img/download.jpg")
+    new_menu = Menu(nameFood="Haerin",price=1000,type="drink",image_path="static/img/download.jpg")
     db.session.add(new_menu)
-    new_menu = menu(nameFood="E here Eye",price=5,type="naHee",image_path="static/img/aheye.png")
+    new_menu = Menu(nameFood="E here Eye",price=5,type="naHee",image_path="static/img/aheye.png")
     db.session.add(new_menu)
     #ถ้ามีโต๊ะเพิ่มจะทำยังไงวะน้อง
     for i in range(9):
         print(i)
-        db.session.add(table(status="Available"))
+        db.session.add(Table(status="Available"))
     # db.session.add(table_list(totalPrice=100))
     # db.session.add(table_list(totalPrice=1000))
     # db.session.commit()

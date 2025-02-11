@@ -1,9 +1,9 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
-from .table import table
+from .table import Table
 from datetime import datetime
 
-class order(db.Model,SerializerMixin):
+class Order(db.Model,SerializerMixin):
     __tablename__ = "orders"
     id = db.Column(db.Integer,primary_key=True)
     table_id = db.Column(db.Integer,db.ForeignKey('tables.id'))

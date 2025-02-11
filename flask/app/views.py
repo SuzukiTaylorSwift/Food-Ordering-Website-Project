@@ -10,9 +10,10 @@ from app import db
 from app import login_manager
 #db
 from app.models.authuser import AuthUser
-from app.models.menu import menu
-from app.models.order_table import order_table
-from app.models.order import order
+from app.models.menu import Menu
+from app.models.order_table import Order_table
+from app.models.order import Order
+from app.models.table import Table
 #end db
 from app.forms import MenuForm
 import os
@@ -81,7 +82,7 @@ def upload_image():
 
 @app.route('/images')
 def display_images():
-    images = menu.query.all()
+    images = Menu.query.all()
     for item in images:
         print(item.image_path)
     print(images)
@@ -95,9 +96,17 @@ def order_for_table(table_number):
         if request.method == "POST":
             data = request.get_json()  # รับ JSON request
             print(data,'aaaaaaaaaaaaaaaa')
-            newOrder = order(table_id=data[0][3],totalPrice=data[0][1],status="young")
+            newOrder = order(table_id=data[0][3],totalPrice=data[0][1],status="Cooking")
             db.session.add(newOrder)
             db.session.commit()
+            validated_dict = {}
+            validated_dict["status"] = "Taken"
+            hi = Table.query.get(data[0][3])
+            if hi:
+                hi.update(**validated_dict)
+                db.session.commit()
+                        
+            # print(tables    )
             for item in data:
                 print(item)
                 db.session.add(order_table(menu_id=item[4],order_id=newOrder.id,quantity=item[2],totalPrice=200))
@@ -105,7 +114,7 @@ def order_for_table(table_number):
                 db.session.commit()
             
             return "a"
-        menus = menu.query.all()
+        menus = Menu.query.all()
         return render_template("table.html",table_number = table_number,menus = menus)
     else:
         return "Table number not available", 404
@@ -115,7 +124,7 @@ def order_for_table(table_number):
 @app.route('/table/data')
 def all_menu():
     data = []
-    db_contacts = menu.query.all() 
+    db_contacts = Menu.query.all() 
     data = list(map(lambda x: x.to_dict(), db_contacts))
     app.logger.debug(f"DB Contacts: {data}")
     return jsonify(data)
@@ -172,21 +181,21 @@ def Server():
         print(validated_dict, "11111111111111111111111")
         print(id_)
         # **สามารถเพิ่มโค้ดอัปเดต database ได้ที่นี่**
-        hi = order.query.get(id_)
+        hi = Order.query.get(id_)
         if hi:
             hi.update(**validated_dict)
             db.session.commit()
         # return render_template("admin/serve.html")
         return jsonify({"success": True, "data": validated_dict})
     else:
-        db_order_list = order_table.query.all() 
-        db_order = order.query.all()
-        db_menu = menu.query.all()
+        db_order_list = Order_table.query.all() 
+        db_order = Order.query.all()
+        db_menu = Menu.query.all()
         filter_order = []
 
         for i in db_order:
-            # หาคำสั่งที่มีสถานะ "done cooked"
-            order_info = next((o for o in db_order if o.status == "done cooked" and o == i), None)
+            # หาคำสั่งที่มีสถานะ "Serving"
+            order_info = next((o for o in db_order if o.status == "Serving" and o == i), None)
             
             if order_info:  # ถ้ามี order_info ที่ตรงกับเงื่อนไข
                 print(i, order_info, "eiieieieie")
@@ -206,9 +215,9 @@ def Server():
 @app.route("/admin/kitchen", methods=['GET', 'POST'])
 def Kitchen():
         
-    db_order_list = order_table.query.all() 
-    db_order = order.query.all()
-    db_menu = menu.query.all()
+    db_order_list = Order_table.query.all() 
+    db_order = Order.query.all()
+    db_menu = Menu.query.all()
     # return render_template("admin/kitchen.html" , order_list=db_order_list,menu=db_menu,order=db_order)
     # จัดกลุ่ม order_list ตาม table_id
     grouped_orders = {}

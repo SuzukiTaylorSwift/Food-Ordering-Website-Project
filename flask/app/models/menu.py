@@ -1,7 +1,7 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
 
-class menu(db.Model,SerializerMixin):
+class Menu(db.Model,SerializerMixin):
     __tablename__ = 'menus'
 
     id = db.Column(db.Integer, primary_key=True)

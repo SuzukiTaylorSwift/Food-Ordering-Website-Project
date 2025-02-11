@@ -1,9 +1,9 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
-from .menu import menu
-from .order import order
+from .menu import Menu
+from .order import Order
 #middle table
-class order_table(db.Model,SerializerMixin):
+class Order_table(db.Model,SerializerMixin):
     __tablename__ = "order_tables"
     id = db.Column(db.Integer, primary_key=True)  # หมายเลขโต๊ะ
     menu_id = db.Column(db.Integer,db.ForeignKey('menus.id'))
