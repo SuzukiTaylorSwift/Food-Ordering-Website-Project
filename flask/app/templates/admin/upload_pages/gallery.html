@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <title>Image Gallery</title>
+  </head>
+  <body>
+    <h1 class="m-4 font-blod">Uploaded Images</h1>
+    {% for i in images %}
+    <h4 class="m-4">{{i.nameFood}}</h4>
+    <div class="flex">
+      <h3 class="m-2">{{i.price}}</h3>
+      <h3 class="m-2">{{i.type}}</h3>
+      <h3 class="m-2">{{i.option}}</h3>
+    </div>
+    <img
+      src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
+      alt="Uploaded Image"
+      width="200"
+    />
+    {% endfor %}
+  </body>
+</html>

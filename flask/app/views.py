@@ -44,7 +44,7 @@ def db_connection():
         return '<h1>db is broken.</h1>' + str(e)
 
 
-#db
+#db (upload)
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_image():
     form = MenuForm()  # สร้างฟอร์มจาก MenuForm
@@ -71,14 +71,17 @@ def upload_image():
             name_food = form.nameFood.data
             type_food = form.type.data  # สามารถใช้ข้อมูลประเภทได้ตามต้องการ
             price = form.price.data
+            option = form.option_size.data
+            option+= " "+form.Spice_Levels.data
+            # print(option)
             # สร้างวัตถุใหม่ในฐานข้อมูล
-            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food)  # บันทึกข้อมูลในฐานข้อมูล
+            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food,option=option)  # บันทึกข้อมูลในฐานข้อมูล
             db.session.add(new_image)
             db.session.commit()
 
             return redirect(url_for('display_images'))  # เปลี่ยนไปที่หน้าที่แสดงภาพ
 
-    return render_template('upload.html', form=form)  # ส่งฟอร์มไปที่ template
+    return render_template('admin/upload_pages/upload.html', form=form)  # ส่งฟอร์มไปที่ template
 
 @app.route('/images')
 def display_images():
@@ -86,8 +89,9 @@ def display_images():
     for item in images:
         print(item.image_path)
     print(images)
-    return render_template('gallery.html', images=images)
+    return render_template('admin/upload_pages/gallery.html', images=images)
 
+#end upload
 #client
 
 @app.route('/table<int:table_number>', methods=['GET', 'POST'])
@@ -95,27 +99,30 @@ def order_for_table(table_number):
     if(table_number <= 9 and table_number > 0):
         if request.method == "POST":
             data = request.get_json()  # รับ JSON request
-            print(data,'aaaaaaaaaaaaaaaa')
-            newOrder = Order(table_id=data[0][3],totalPrice=data[0][1],status="Cooking")
+            print(data)
+            print(data['table_id'],'aaaaaaaaaaaaaaaa')
+            newOrder = Order(table_id=data['table_id'],totalPrice=sum(data["total_price"]),status="Cooking")
             db.session.add(newOrder)
             db.session.commit()
             validated_dict = {}
             validated_dict["status"] = "Taken"
-            hi = Table.query.get(data[0][3])
+            hi = Table.query.get(data['table_id'])
             if hi:
                 hi.update(**validated_dict)
                 db.session.commit()
                         
             # print(tables    )
-            for item in data:
-                print(item)
-                db.session.add(Order_table(menu_id=item[4],order_id=newOrder.id,quantity=item[2],totalPrice=200))
+            
+            #12/2 3am
+            for i in range(len(data["menu_id"])):
+                print(i)
+                db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i]))
                 # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
                 db.session.commit()
             
             return "a"
         menus = Menu.query.all()
-        return render_template("table.html",table_number = table_number,menus = menus)
+        return render_template("client_page/table.html",table_number = table_number,menus = menus)
     else:
         return "Table number not available", 404
     
@@ -222,7 +229,7 @@ def Kitchen():
     # จัดกลุ่ม order_list ตาม table_id
     grouped_orders = {}
     for i in db_order_list:
-        order_info = next((o for o in db_order if o.id == i.order_id), None)
+        order_info = next((o for o in db_order if o.id == i.order_id and o.status == "Cooking"), None)
         if order_info:
             table_id = order_info.table_id
             if table_id not in grouped_orders:
@@ -248,7 +255,7 @@ def Kitchen():
 @app.route('/admin')
 def admin_index():
     print('aaa')
-    return render_template('admin/index.html')
+    return render_template('admin/login_pages/index.html')
 
 @app.route('/admin/login', methods=('GET', 'POST'))
 def admin_login():
@@ -277,11 +284,11 @@ def admin_login():
             next_page = url_for('admin_profile')
         return redirect(next_page)
 
-    return render_template('admin/login.html')
+    return render_template('admin/login_pages/login.html')
 
 @app.route('/admin/profile')
 def admin_profile():
-   return render_template('admin/profile.html')
+   return render_template('admin/login_pages/profile.html')
 
 
 @app.route('/admin/signup', methods=('GET', 'POST'))
@@ -346,7 +353,7 @@ def admin_signup():
             db.session.commit()
 
         return redirect(url_for('admin_login'))
-    return render_template('admin/signup.html')
+    return render_template('admin/login_pages/signup.html')
 
 def gen_avatar_url(email, name):
     bgcolor = generate_password_hash(email, method='sha256')[-6:]
