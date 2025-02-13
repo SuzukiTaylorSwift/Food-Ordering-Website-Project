@@ -5,9 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <title>???</title>
+    <title>Clickable Box</title>
   </head>
-  <body class="bg-green-300">
-    <h1 class="text-center">HIIIIII</h1>
+  <body class="bg-green-300 flex justify-center items-center h-screen">
+    <div id="bill"></div>
+    <div class="text-center">
+      {% for i in table%}
+      <h1 class="text-2xl font-bold mb-4">Table{{i.id}}</h1>
+      {%if i.status == "Available"%}
+      <div
+        id="id{{i.id}}"
+        class="w-40 h-40 bg-green-500 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
+      ></div>
+      {%elif i.status == "Taken"%}
+      <div
+        id="id{{i.id}}"
+        class="w-40 h-40 bg-red-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
+      ></div>
+      {%endif%}
+    </div>
+    {%endfor%}
+    <script>
+      $(document).ready(function () {
+        for (let i = 1; i < 10; i++) {
+          $("#id" + i).on("click", function () {
+            list = [];
+            $.getJSON("/admin/all_data/" + i, function (data) {
+              bill(data);
+            });
+          });
+        }
+      });
+
+      function bill(data) {
+        let check_bill = "<div>";
+
+        // ลูปข้อมูลจาก order_list
+        let sumPrice = 0;
+        data["order_list"].forEach((item) => {
+          // ค้นหาข้อมูลเมนูที่ตรงกับ menu_id
+          let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
+          console.log(menu_item);
+          // ถ้าหาเมนูเจอ
+          if (menu_item) {
+            sumPrice += item.totalPrice;
+            check_bill += `<p>Menu: ${menu_item.nameFood}, Quantity: ${item.quantity}, Total Price: ${item.totalPrice}</p>`;
+          }
+        });
+        check_bill += `<p> total price${sumPrice} </p>`;
+
+        check_bill += "</div>";
+
+        // แสดงผล HTML ที่สร้างขึ้นใน #bill
+        $("#bill").html(check_bill);
+      }
+    </script>
   </body>
 </html>

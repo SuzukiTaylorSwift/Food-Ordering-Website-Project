@@ -100,17 +100,22 @@ def order_for_table(table_number):
         if request.method == "POST":
             data = request.get_json()  # รับ JSON request
             print(data)
-            print(data['table_id'],'aaaaaaaaaaaaaaaa')
-            newOrder = Order(table_id=data['table_id'],totalPrice=sum(data["total_price"]),status="Cooking")
+            print(data['table_id'], 'aaaaaaaaaaaaaaaa')
+
+            # ตรวจสอบว่ามี "total_price" เป็น list หรือไม่
+            total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
+
+            # สร้างออเดอร์ใหม่
+            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking")
             db.session.add(newOrder)
             db.session.commit()
-            validated_dict = {}
-            validated_dict["status"] = "Taken"
+
+            # อัปเดตสถานะของโต๊ะเป็น "Taken"
             hi = Table.query.get(data['table_id'])
             if hi:
-                hi.update(**validated_dict)
+                hi.status = "Taken"  # เปลี่ยนค่าตรง ๆ แทน update()
                 db.session.commit()
-                        
+            
             # print(tables    )
             
             #12/2 3am
@@ -120,7 +125,6 @@ def order_for_table(table_number):
                 # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
                 db.session.commit()
             
-            return "a"
         menus = Menu.query.all()
         return render_template("client_page/table.html",table_number = table_number,menus = menus)
     else:
@@ -135,6 +139,8 @@ def all_menu():
     data = list(map(lambda x: x.to_dict(), db_contacts))
     app.logger.debug(f"DB Contacts: {data}")
     return jsonify(data)
+
+
 
 # @app.route('/order_list',methods=["POST"])
 # def orderList():
@@ -151,9 +157,32 @@ def all_menu():
 def admin():
     return render_template('admin/lobby.html')
 
+
+#all data
+@app.route("/admin/all_data/<int:table_id>")
+def all_data(table_id):
+    # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
+    order = Order.query.filter_by(table_id=table_id).all()
+    
+    # ฟิลเตอร์ข้อมูลจาก Order_table โดยเลือกเฉพาะที่มี order_id ตรงกับ id ของ order ที่เลือก
+    order_list = Order_table.query.filter(Order_table.order_id.in_([o.id for o in order])).all()
+    
+    # ดึงแค่เมนูที่โต๊ะนั้นสั่ง
+    menu_ids = [o.menu_id for o in order_list]
+    menu = Menu.query.filter(Menu.id.in_(menu_ids)).all()
+    
+    # ส่งข้อมูลที่กรองมาไปยัง JSON format
+    return jsonify({
+        "order": [o.to_dict() for o in order],  
+        "order_list": [o.to_dict() for o in order_list],  
+        "menu": [m.to_dict() for m in menu]  
+    })
+
 @app.route("/admin/cashier")
 def Cashier():
-    return render_template("admin/cashier.html")
+    table = Table.query.order_by(Table.id).all()  # ดึงข้อมูลเรียงตาม id
+    print(table)
+    return render_template("admin/cashier.html",table=table)
 
 @app.route("/admin/serve", methods=['GET', 'POST'])
 def Server():
