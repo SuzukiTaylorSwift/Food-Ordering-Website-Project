@@ -26,10 +26,11 @@
     </div>
     {%endfor%}
     <script>
+      let table_id = 0;
       $(document).ready(function () {
         for (let i = 1; i < 10; i++) {
           $("#id" + i).on("click", function () {
-            list = [];
+            table_id = i;
             $.getJSON("/admin/all_data/" + i, function (data) {
               bill(data);
             });
@@ -38,10 +39,9 @@
       });
 
       function bill(data) {
-        let check_bill = "<div>";
-
-        // ลูปข้อมูลจาก order_list
         let sumPrice = 0;
+        let check_bill = `<div class="bg-white shadow-lg rounded-lg p-6 w-72 text-center">`;
+        // ลูปข้อมูลจาก order_list
         data["order_list"].forEach((item) => {
           // ค้นหาข้อมูลเมนูที่ตรงกับ menu_id
           let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
@@ -54,11 +54,28 @@
         });
         check_bill += `<p> total price${sumPrice} </p>`;
 
-        check_bill += "</div>";
+        check_bill += `<button id="hereEYE"class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            จ่ายแล้ว</button></div>`;
 
         // แสดงผล HTML ที่สร้างขึ้นใน #bill
         $("#bill").html(check_bill);
       }
+
+      $(document).on("click", "#hereEYE", function () {
+        $.ajax({
+          url: "/admin/cashier",
+          method: "POST",
+          data: JSON.stringify({ table_id: table_id }),
+          contentType: "application/json", // บอกว่าเป็น JSON
+          success: function (response) {
+            console.log("Response:", response);
+            alert("ชำระเงินแล้ว");
+          },
+          error: function (xhr, status, error) {
+            console.log("Error:", error);
+          },
+        });
+      });
     </script>
   </body>
 </html>

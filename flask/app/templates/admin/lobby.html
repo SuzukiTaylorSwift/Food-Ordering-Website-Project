@@ -38,6 +38,13 @@
         >
           Add
         </button>
+        <button
+          class="bg-sky-200 text-black font-bold rounded-lg w-20 h-20"
+          id="end"
+          type="button"
+        >
+          Close
+        </button>
       </div>
     </div>
 
@@ -57,7 +64,11 @@
         });
 
         $("#add").click(function () {
-          window.location.href = "/add_menu";
+          window.location.href = "/upload";
+        });
+
+        $("#end").click(function () {
+          alert(end);
         });
       });
     </script>

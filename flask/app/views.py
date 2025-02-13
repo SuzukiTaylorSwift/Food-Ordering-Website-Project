@@ -17,7 +17,8 @@ from app.models.table import Table
 #end db
 from app.forms import MenuForm
 import os
-#HW
+#excle
+# from openpyxl import Workbook
 # from app.models.contact import Contact
 
 @login_manager.user_loader
@@ -162,7 +163,7 @@ def admin():
 @app.route("/admin/all_data/<int:table_id>")
 def all_data(table_id):
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
-    order = Order.query.filter_by(table_id=table_id).all()
+    order = Order.query.filter(Order.table_id == table_id, Order.status != "Paided").all()
     
     # ฟิลเตอร์ข้อมูลจาก Order_table โดยเลือกเฉพาะที่มี order_id ตรงกับ id ของ order ที่เลือก
     order_list = Order_table.query.filter(Order_table.order_id.in_([o.id for o in order])).all()
@@ -178,8 +179,24 @@ def all_data(table_id):
         "menu": [m.to_dict() for m in menu]  
     })
 
-@app.route("/admin/cashier")
+@app.route("/admin/cashier", methods=['GET', 'POST'])
 def Cashier():
+    if request.method == "POST":
+        data = request.get_json()  
+        print(data)
+        table_id = data.get('table_id') 
+        order = Order.query.filter(Order.table_id == table_id, Order.status != "Paided").all()
+        print(order,"orderrrrr",table_id) 
+        for i in order:
+            i.status = "Paided"
+            db.session.commit()
+        hi = Table.query.get(table_id)
+        if hi:
+            hi.status = "Available"  # เปลี่ยนค่าตรง ๆ แทน update()
+            db.session.commit()
+        
+            
+                
     table = Table.query.order_by(Table.id).all()  # ดึงข้อมูลเรียงตาม id
     print(table)
     return render_template("admin/cashier.html",table=table)
@@ -246,11 +263,32 @@ def Server():
             order_list = db_order_list
         )
 
-        
+# def close_shop():
+#     print('a')
+#     wb = Workbook()
+
+#     # เลือก Sheet ที่ต้องการ
+#     sheet = wb.active
+#     sheet.title = "Data"
+
+#     # เขียนข้อมูลลงในเซลล์
+#     data = [
+#         ["ชื่อ", "อายุ", "ที่อยู่"],
+#         ["สมชาย", "30", "กรุงเทพ"],
+#         ["สมนึก", "28", "เชียงใหม่"],
+#         ["สมศักดิ์", "35", "เชียงราย"]
+#     ]
+    
+#     for row in data:
+#         sheet.append(row)
+
+#     # บันทึกไฟล์ Excel
+#     wb.save("output.xlsx")
+#     print("บันทึกข้อมูลสำเร็จในไฟล์ output.xlsx")
+    
 
 @app.route("/admin/kitchen", methods=['GET', 'POST'])
 def Kitchen():
-        
     db_order_list = Order_table.query.all() 
     db_order = Order.query.all()
     db_menu = Menu.query.all()
@@ -276,7 +314,6 @@ def Kitchen():
         grouped_orders=grouped_orders,
         menu=db_menu
     )
-
 
 
 
