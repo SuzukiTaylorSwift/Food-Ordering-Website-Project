@@ -1,0 +1,121 @@
+body {
+    background-color: #FEFFFF;
+    font-family: 'Heebo', sans-serif;
+} 
+
+h1 {
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+h2 {
+    margin-left: 2%;
+    margin-top: 2%;
+} 
+
+
+/* แถบเลื่อนซ้ายขวา */
+.flex-nowrap {
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.flex-nowrap::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* .flex-nowrap::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+} */
+
+/* สไตล์ปุ่มเมนู */
+.tab-link {
+  position: relative;
+  /* padding: 10px 20px; */
+  color: #ccc;
+  text-align: center;
+  min-width: 100px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* สีไฮไลต์เมื่อ active */
+.tab-link.active {
+  color: orange;
+  font-weight: bold;
+}
+
+/* แถบไฮไลต์ด้านล่าง */
+.tab-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  width: 70%;
+  height: 4px;
+  background: orange;
+  border-radius: 2px;
+}
+
+
+
+
+
+
+.menu-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #ddd; /* เส้นคั่นบางๆ */
+}
+
+.menu-image {
+    width: 100px; /* รูปสี่เหลี่ยมจัตุรัส */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-left: 16px;
+}
+
+.menu-info {
+    margin-left: 10px;
+    flex: 1;
+    text-align: left;
+    padding-right: 16px;
+}
+
+.menu-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.menu-description {
+    font-size: 14px;
+    color: #777;
+    margin: 4px 0;
+}
+
+.menu-price {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.popular-badge {
+    font-size: 12px;
+    color: white;
+    background-color: #ff4d4f;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+
