@@ -94,6 +94,39 @@ def display_images():
 
 #end upload
 #client
+@app.route('/takeAway', methods=['GET', 'POST'])
+def takeAway():
+    if request.method == "POST":
+        data = request.get_json()  # รับ JSON request
+        print(data)
+        print(data['table_id'], '------------------takeAway')
+
+        # ตรวจสอบว่ามี "total_price" เป็น list หรือไม่
+        total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
+
+        # สร้างออเดอร์ใหม่
+        newOrder = Order(table_id=data['table_id'], totalPrice=total_price,takeaway=True, status="Cooking",paid_status="Unpaid")
+        db.session.add(newOrder)
+        db.session.commit()
+
+        # อัปเดตสถานะของโต๊ะเป็น "Taken"
+        hi = Table.query.get(data['table_id'])
+        if hi:
+            hi.status = "Taken"  # เปลี่ยนค่าตรง ๆ แทน update()
+            db.session.commit()
+        
+        # print(tables    )
+        
+        #12/2 3am
+        for i in range(len(data["menu_id"])):
+            print(i)
+            db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i]))
+            # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
+            db.session.commit()
+        
+    menus = Menu.query.all()
+    return render_template("client_page/takeAway.html",menus = menus)
+    
 
 @app.route('/table<int:table_number>', methods=['GET', 'POST'])
 def order_for_table(table_number):
@@ -107,7 +140,7 @@ def order_for_table(table_number):
             total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
 
             # สร้างออเดอร์ใหม่
-            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking",paid_status="Unpaid")
+            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking",paid_status="Unpaid",takeaway=False)
             db.session.add(newOrder)
             db.session.commit()
 
@@ -183,8 +216,11 @@ def all_data(table_id):
 def Cashier():
     if request.method == "POST":
         data = request.get_json()  
-        print(data)
-        table_id = data.get('table_id') 
+        print(data,"---------------- > data cashier")
+        if data["table_id"] == None:
+            table_id = None
+        else:
+            table_id = data.get('table_id') 
         order = Order.query.filter(Order.table_id == table_id, Order.paid_status != "Paided").all()
         print(order,"orderrrrr",table_id) 
         for i in order:

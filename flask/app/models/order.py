@@ -6,14 +6,16 @@ from datetime import datetime
 class Order(db.Model,SerializerMixin):
     __tablename__ = "orders"
     id = db.Column(db.Integer,primary_key=True)
-    table_id = db.Column(db.Integer,db.ForeignKey('tables.id'))
+    table_id = db.Column(db.Integer, db.ForeignKey('tables.id'), nullable=True)  # รองรับ Takeaway (NULL)
+    takeaway = db.Column(db.Boolean, default=False)  # เพิ่มตัวบอกว่าเป็น Takeaway ไหม
     food_status = db.Column(db.String(20))
     paid_status = db.Column(db.String(20))
     totalPrice = db.Column(db.Integer)
     order_time = db.Column(db.DateTime,default=datetime.utcnow)
     
-    def __init__(self,table_id,status,totalPrice,paid_status):
+    def __init__(self,table_id,takeaway,status,totalPrice,paid_status):
         self.table_id = table_id
+        self.takeaway = takeaway
         self.food_status = status
         self.paid_status = paid_status
         self.totalPrice = totalPrice

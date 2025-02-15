@@ -25,6 +25,18 @@
       {%endif%}
     </div>
     {%endfor%}
+    <div
+      id="takeAway"
+      class="w-40 h-40 bg-blue-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
+    >
+      <h1>take home</h1>
+    </div>
+    <div
+      id="check"
+      class="w-40 h-40 bg-yellow-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
+    >
+      <h1>check bill</h1>
+    </div>
     <script>
       let table_id = 0;
       $(document).ready(function () {
@@ -66,6 +78,25 @@
           url: "/admin/cashier",
           method: "POST",
           data: JSON.stringify({ table_id: table_id }),
+          contentType: "application/json", // บอกว่าเป็น JSON
+          success: function (response) {
+            console.log("Response:", response);
+            alert("ชำระเงินแล้ว");
+          },
+          error: function (xhr, status, error) {
+            console.log("Error:", error);
+          },
+        });
+      });
+
+      $("#takeAway").click(function () {
+        window.location.href = "/takeAway";
+      });
+      $("#check").click(function () {
+        $.ajax({
+          url: "/admin/cashier",
+          method: "POST",
+          data: JSON.stringify({ table_id: null }),
           contentType: "application/json", // บอกว่าเป็น JSON
           success: function (response) {
             console.log("Response:", response);

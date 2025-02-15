@@ -12,7 +12,11 @@
 
     {% for table_id, data in grouped_orders.items() %}
     <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
+      {%if table_id != None%}
       <p class="text-lg font-bold text-center">Table {{ table_id }}</p>
+      {%else%}
+      <p class="text-lg font-bold text-center">Takeaway</p>
+      {%endif%}
       <p class="text-sm text-gray-500 text-center">
         Order Time: {{ data.order_time }}
       </p>

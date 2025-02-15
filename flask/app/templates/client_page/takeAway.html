@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body class="bg-green-300">
+    <h1 class="text-center my-5 text-xl font-bold">Welcome na ja takeAway</h1>
+    <div id="confirm"></div>
+    <div class="grid grid-cols-2 gap-4">
+      {% for i in menus %}
+      <div class="w-full mt-10" id="id{{i.id}}">
+        <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
+          <div class="flex justify-center">
+            <img
+              src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
+              alt="Picture"
+              class="w-32 h-32 object-cover rounded-md"
+            />
+          </div>
+
+          <div class="mt-4 text-center">
+            <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
+            <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
+            <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <div
+        id="takeAway"
+        class="w-40 h-40 bg-blue-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
+      >
+        <h1>take home</h1>
+      </div>
+    </div>
+
+    <script>
+      // Example: Set table_id dynamically
+      var addCart = [];
+      var nameFood = "";
+      var count = 0;
+      var price = 0;
+      var table_number = null;
+      function getData(data) {
+        addCart = data[0];
+        //console.log(addCart);
+      }
+      $(document).ready(function () {
+        $.getJSON("table/data", getData);
+
+        //console.log($("#tableNum").text());
+
+        //console.log(table_number);
+        $("#id1").click(function () {
+          shop();
+
+          //cart.push([])
+        });
+      });
+
+      function shop() {
+        nameFood = addCart.nameFood;
+        price = addCart.price;
+        type = addCart.type;
+        html = `<div class="bg-white shadow-lg rounded-lg p-6 w-72 text-center">
+          <h2 class="text-xl font-semibold text-gray-800">${addCart.nameFood}</h2>
+          <p class="text-lg text-gray-500 mt-2">price: ${addCart.price} บาท</p>
+          <p class="text-sm text-gray-400 mt-1">type: ${addCart.type}</p>
+          <button id="hereEYE"class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+              เพิ่มลงตะกร้า
+          </button>
+      </div>`;
+        $("#confirm").after(html);
+      }
+
+      $(document).on("click", "#hereEYE", function () {
+        let menu_ids = 0; // เทส
+        let orderData = {
+          table_id: null,
+          menu_id: [],
+          quantity: [],
+          total_price: [],
+          option: [],
+        };
+        menu_ids++; // ตั้งเล่นๆเทสระบบ
+        orderData.menu_id.push(menu_ids);
+        orderData.quantity.push(menu_ids);
+        orderData.total_price.push(2000);
+        orderData.option.push("อายข้าวผัดแหนม พิเศษ");
+        orderData.menu_id.push(2);
+        orderData.quantity.push(5);
+        orderData.total_price.push(5000);
+        orderData.option.push("พิเศษ");
+        console.log(orderData);
+        $.post({
+          url: "/takeAway",
+          data: JSON.stringify(orderData),
+          contentType: "application/json",
+          success: function (response) {
+            console.log("Response:", response);
+          },
+        });
+      });
+      $("#takeAway").click(function () {
+        window.location.href = "/admin/cashier";
+      });
+    </script>
+  </body>
+</html>
