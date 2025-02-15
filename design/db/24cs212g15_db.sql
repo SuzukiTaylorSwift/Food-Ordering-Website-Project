@@ -23,7 +23,9 @@ CREATE TABLE "menu" (
 CREATE TABLE "orders" (
   "id" int PRIMARY KEY,
   "table_id" int,
-  "status" varchar,
+  "takeaway" boolean,
+  "food_status" varchar,
+  "paid_status" varchar,
   "order_time" datetime,
   "total_price" int
 );
