@@ -41,16 +41,12 @@
       $(document).ready(function () {
         $(".send-order").click(function () {
           var orderId = $(this).data("order-id"); // ดึง order_id
-          var tableId = $(this).data("table-id"); // ดึง table_id
-          var status = "Serving"; // กำหนดสถานะ
 
           // ✅ ส่งข้อมูลไปที่ /admin/serve
           $.post({
-            url: "/admin/serve",
+            url: "/admin/kitchen",
             data: JSON.stringify({
               id: orderId,
-              table_id: tableId,
-              status: status,
             }),
             contentType: "application/json",
             success: function (response) {

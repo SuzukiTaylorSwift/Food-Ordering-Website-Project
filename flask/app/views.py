@@ -107,7 +107,7 @@ def order_for_table(table_number):
             total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
 
             # สร้างออเดอร์ใหม่
-            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking")
+            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking",paid_status="Unpaid")
             db.session.add(newOrder)
             db.session.commit()
 
@@ -163,7 +163,7 @@ def admin():
 @app.route("/admin/all_data/<int:table_id>")
 def all_data(table_id):
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
-    order = Order.query.filter(Order.table_id == table_id, Order.status != "Paided").all()
+    order = Order.query.filter(Order.table_id == table_id, Order.paid_status != "Paided").all()
     
     # ฟิลเตอร์ข้อมูลจาก Order_table โดยเลือกเฉพาะที่มี order_id ตรงกับ id ของ order ที่เลือก
     order_list = Order_table.query.filter(Order_table.order_id.in_([o.id for o in order])).all()
@@ -185,16 +185,16 @@ def Cashier():
         data = request.get_json()  
         print(data)
         table_id = data.get('table_id') 
-        order = Order.query.filter(Order.table_id == table_id, Order.status != "Paided").all()
+        order = Order.query.filter(Order.table_id == table_id, Order.paid_status != "Paided").all()
         print(order,"orderrrrr",table_id) 
         for i in order:
-            i.status = "Paided"
+            i.paid_status = "Paided"
             db.session.commit()
         hi = Table.query.get(table_id)
         if hi:
             hi.status = "Available"  # เปลี่ยนค่าตรง ๆ แทน update()
             db.session.commit()
-        
+        return "done"
             
                 
     table = Table.query.order_by(Table.id).all()  # ดึงข้อมูลเรียงตาม id
@@ -204,42 +204,15 @@ def Cashier():
 @app.route("/admin/serve", methods=['GET', 'POST'])
 def Server():
     if request.method == "POST":
-        print("post request for serving")
-        result = request.get_json()
-        print(result)
-        app.logger.debug(str(result))
-
-        id_ = result.get('id', '')
-        if not id_:
-            return jsonify({"error": "Missing ID"}), 400  # เช็คว่า id_ มีค่าจริงหรือไม่
-
-        validated = True
-        validated_dict = dict()
-        valid_keys = ['status']
-
-        # Validate input
-        for key in result:
-            app.logger.debug(f"{key}: {result[key]}")
-            if key not in valid_keys:
-                continue
-            value = result[key].strip()
-            if not value or value == 'undefined':
-                validated = False
-                break
-            validated_dict[key] = value
-
-        if not validated_dict:  
-            return jsonify({"error": "No valid data received"}), 400  # ป้องกัน validated_dict ว่าง
-
-        print(validated_dict, "11111111111111111111111")
-        print(id_)
-        # **สามารถเพิ่มโค้ดอัปเดต database ได้ที่นี่**
-        hi = Order.query.get(id_)
-        if hi:
-            hi.update(**validated_dict)
-            db.session.commit()
-        # return render_template("admin/serve.html")
-        return jsonify({"success": True, "data": validated_dict})
+        if request.method == "POST":
+            result = request.get_json()
+            print(result,'---------result by serve route')
+            up = Order.query.get(result["id"])
+            print(up)
+            if up:
+                up.food_status = "Complete"  # เปลี่ยนค่าตรง ๆ แทน update()
+                db.session.commit()
+            return "change already"
     else:
         db_order_list = Order_table.query.all() 
         db_order = Order.query.all()
@@ -248,7 +221,7 @@ def Server():
 
         for i in db_order:
             # หาคำสั่งที่มีสถานะ "Serving"
-            order_info = next((o for o in db_order if o.status == "Serving" and o == i), None)
+            order_info = next((o for o in db_order if o.food_status == "Serving" and o == i), None)
             
             if order_info:  # ถ้ามี order_info ที่ตรงกับเงื่อนไข
                 print(i, order_info, "eiieieieie")
@@ -263,57 +236,46 @@ def Server():
             order_list = db_order_list
         )
 
-# def close_shop():
-#     print('a')
-#     wb = Workbook()
 
-#     # เลือก Sheet ที่ต้องการ
-#     sheet = wb.active
-#     sheet.title = "Data"
-
-#     # เขียนข้อมูลลงในเซลล์
-#     data = [
-#         ["ชื่อ", "อายุ", "ที่อยู่"],
-#         ["สมชาย", "30", "กรุงเทพ"],
-#         ["สมนึก", "28", "เชียงใหม่"],
-#         ["สมศักดิ์", "35", "เชียงราย"]
-#     ]
-    
-#     for row in data:
-#         sheet.append(row)
-
-#     # บันทึกไฟล์ Excel
-#     wb.save("output.xlsx")
-#     print("บันทึกข้อมูลสำเร็จในไฟล์ output.xlsx")
     
 
 @app.route("/admin/kitchen", methods=['GET', 'POST'])
 def Kitchen():
-    db_order_list = Order_table.query.all() 
-    db_order = Order.query.all()
-    db_menu = Menu.query.all()
-    # return render_template("admin/kitchen.html" , order_list=db_order_list,menu=db_menu,order=db_order)
-    # จัดกลุ่ม order_list ตาม table_id
-    grouped_orders = {}
-    for i in db_order_list:
-        order_info = next((o for o in db_order if o.id == i.order_id and o.status == "Cooking"), None)
-        if order_info:
-            table_id = order_info.table_id
-            if table_id not in grouped_orders:
-                grouped_orders[table_id] = {
-                    "orders": [],
-                    "order_time": order_info.order_time,
-                }
-            grouped_orders[table_id]["orders"].append({
-                "menu_id": i.menu_id,
-                "quantity": i.quantity,
-            })
-    print(grouped_orders,'tttttttttttttttttt')
-    return render_template(
-        "admin/kitchen.html",
-        grouped_orders=grouped_orders,
-        menu=db_menu
-    )
+    if request.method == "POST":
+        result = request.get_json()
+        print(result,'---------result')
+        up = Order.query.get(result["id"])
+        print(up)
+        if up:
+            up.food_status = "Serving"  # เปลี่ยนค่าตรง ๆ แทน update()
+            db.session.commit()
+        return "change already"
+    else:
+        db_order_list = Order_table.query.all() 
+        db_order = Order.query.all()
+        db_menu = Menu.query.all()
+        # return render_template("admin/kitchen.html" , order_list=db_order_list,menu=db_menu,order=db_order)
+        # จัดกลุ่ม order_list ตาม table_id
+        grouped_orders = {}
+        for i in db_order_list:
+            order_info = next((o for o in db_order if o.id == i.order_id and o.food_status == "Cooking"), None)
+            if order_info:
+                table_id = order_info.table_id
+                if table_id not in grouped_orders:
+                    grouped_orders[table_id] = {
+                        "orders": [],
+                        "order_time": order_info.order_time,
+                    }
+                grouped_orders[table_id]["orders"].append({
+                    "menu_id": i.menu_id,
+                    "quantity": i.quantity,
+                })
+        print(grouped_orders,'tttttttttttttttttt')
+        return render_template(
+            "admin/kitchen.html",
+            grouped_orders=grouped_orders,
+            menu=db_menu
+        )
 
 
 

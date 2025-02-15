@@ -81,7 +81,7 @@
           //cart.push([])
         });
       });
-     
+
       function shop() {
         nameFood = addCart.nameFood;
         price = addCart.price;
@@ -112,6 +112,10 @@
         orderData.quantity.push(menu_ids);
         orderData.total_price.push(2000);
         orderData.option.push("อายข้าวผัดแหนม พิเศษ");
+        orderData.menu_id.push(2);
+        orderData.quantity.push(5);
+        orderData.total_price.push(5000);
+        orderData.option.push("พิเศษ");
         console.log(orderData);
         $.post({
           url: "/table" + table_number,
