@@ -1,0 +1,23 @@
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+
+  <label for="nameFood">Menu Name:</label>
+  {{ form.nameFood() }}
+
+  <label for="type">Type:</label>
+  {{ form.type() }}
+
+  <label for="price">Price:</label>
+  {{ form.price() }}
+
+  <label for="option_size">Options:</label>
+  {{ form.option_size() }}
+
+  <label for="Spice_Levels">Spice Level:</label>
+  {{ form.Spice_Levels() }}
+
+  <label for="image">Upload New Image (Optional):</label>
+  {{ form.image() }}
+
+  <button type="submit">Save Changes</button>
+</form>

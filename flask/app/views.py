@@ -56,7 +56,7 @@ def upload_image():
         
         file = form.image.data  # เข้าถึงไฟล์จากฟอร์ม
         if file.filename == '':
-            return "No selected file"
+            return "ได้โปรดเลือกรูปภาพ"
 
         if file:
             filename = secure_filename(file.filename)  # ปลอดภัยในการตั้งชื่อไฟล์
@@ -91,6 +91,55 @@ def display_images():
         print(item.image_path)
     print(images)
     return render_template('admin/upload_pages/gallery.html', images=images)
+
+@app.route('/delete_menu/<int:menu_id>', methods=['POST'])
+def delete_menu(menu_id):
+    menu_item = Menu.query.get_or_404(menu_id)
+
+    # ลบไฟล์รูปภาพออกจากระบบ (ถ้ามี)
+    if os.path.exists(menu_item.image_path):
+        os.remove(menu_item.image_path)
+
+    db.session.delete(menu_item)
+    db.session.commit()
+
+    return redirect(url_for('display_images'))
+
+@app.route('/edit_menu/<int:menu_id>', methods=['GET', 'POST'])
+def edit_menu(menu_id):
+    menu_item = Menu.query.get_or_404(menu_id)  # ดึงข้อมูลเมนูจาก ID
+    form = MenuForm(obj=menu_item)  # กำหนดค่าเริ่มต้นให้ฟอร์ม
+
+    if form.validate_on_submit():
+        # อัปเดตค่าต่าง ๆ
+        menu_item.nameFood = form.nameFood.data
+        menu_item.type = form.type.data
+        menu_item.price = form.price.data
+        menu_item.option = form.option_size.data + " " + form.Spice_Levels.data
+
+        # ตรวจสอบว่ามีการอัปโหลดไฟล์ใหม่หรือไม่
+        if form.image.data:
+            file = form.image.data
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+            # สร้างโฟลเดอร์ถ้ายังไม่มี
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            # ลบรูปเดิมก่อน (ถ้ามี)
+            if menu_item.image_path and os.path.exists(menu_item.image_path):
+                os.remove(menu_item.image_path)
+
+            file.save(file_path)
+            menu_item.image_path = f"static/img/{filename}"  # อัปเดตพาธรูปภาพในฐานข้อมูล
+        else:
+            # ถ้าไม่มีการอัปโหลดใหม่ → ใช้รูปเดิม
+            pass  
+
+        db.session.commit()
+        return redirect(url_for('display_images'))
+
+    return render_template('admin/upload_pages/edit_menu.html', form=form, menu_item=menu_item)
 
 #end upload
 #client

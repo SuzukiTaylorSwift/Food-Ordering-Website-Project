@@ -11,7 +11,8 @@ class MenuForm(FlaskForm):
     #                    validators=[DataRequired()])
     #(value,label)
     type = SelectField('Type', choices=[('drink', 'Drink'), ('food', 'Food'),("appetizer",'Appetizer')], validators=[DataRequired()])
-    image = FileField('เลือกรูปภาพ', validators=[DataRequired()])
+    
+    image = FileField('เลือกรูปภาพ')
     option_size = SelectField('Size', choices=[('Regular', 'Regular'), ('Large', 'Large')], validators=[DataRequired()])
     Spice_Levels = SelectField('Spice', choices=[('Not Spicy', 'Not Spicy'), ('Mild', 'Mild'),('Medium','Medium'),('Spicy','Spicy')], validators=[DataRequired()])
     submit = SubmitField('บันทึก')

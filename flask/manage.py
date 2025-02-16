@@ -26,7 +26,7 @@ def seed_db():
 Aheye&background=83ee03&color=fff',role="admin"))
     # print(img,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     # image_path = url_for('static', filename='img/aheye.png')
-    new_menu = Menu(nameFood="Haerin",price=10000000,type="drink",image_path="static/img/download.jpg",option='cute')
+    new_menu = Menu(nameFood="kang_haerin_1",price=10000000,type="drink",image_path="static/img/kang_haerin_1.jpg",option='cute')
     db.session.add(new_menu)
     new_menu = Menu(nameFood="Nong Eye",price=5,type="naRuk",image_path="static/img/aheye.png",option="eye dek ven")
     db.session.add(new_menu)
