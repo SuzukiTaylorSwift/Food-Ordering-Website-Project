@@ -2,8 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khow Ban Chan : Table {{ table_number }}</title>
+
+    <!-- <meta name="screen-orientation" content="portrait">
+    <meta name="orientation" content="portrait">
+     -->
+    <title>KHOW-BAN-CHAN:Table-{{ table_number }}</title>
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -11,7 +16,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -35,111 +42,151 @@
 
   <body>
 
-    <h1 class="text-left text-xl">
-      khow ban chan : table {{table_number}}
-    </h1>
+    <header class="header1">
+      <div class="container-fluid bg-white py-2 fixed top-0 w-full z-50">
+        <h1 class="text-xl font-bold">KHOW BAN CHAN : TABLE {{ table_number }}</h1>
+      </div>
+    </header>
+    
+    <!-- <header class="header1">
+      <div class="container-fluid bg-blue-600 text-white py-3 fixed top-0 w-full z-50">
+        <h1 class="text-xl font-bold ml-4">Khow Ban Chan : Table {{ table_number }}</h1>
+      </div>
+    </header>-->
+     
+
+    <header>
+      <div class="container-fluid bg-white fixed top-12 w-full z-40" style="padding: 0px 15px;">
+        <div class="container-xxl position-relative p-0 w-100">
+          <nav class="navbar navbar-expand-lg d-flex justify-content-between w-100" style="padding: 0px 0px;">
+            <div class="d-flex flex-nowrap overflow-auto w-100" >
+              <button id="searchToggle" class="btn">
+                <i class="fa fa-search"></i>
+              </button>
+              <a href="#special" class="nav-link tab-link active">Special</a>
+              <a href="#main" class="nav-link tab-link">Main</a>
+              <a href="#drinks" class="nav-link tab-link">Drinks</a>
+              <a href="#appetizer" class="nav-link tab-link">Appetizer</a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
     <div class="hidden" id="tableNum">{{table_number}}</div>
     <div id="confirm"></div>
 
-    <div class="container-xxl position-relative p-0">
-      <nav class="navbar navbar-expand-lg px-4 px-lg-5 py-3 py-lg-0">
-        <!-- ปุ่มค้นหา -->
-        <button id="searchToggle" class="btn btn-outline-primary mr-3">
-          <i class="fa fa-search"></i> ค้นหา
-        </button>
-    
-        <!-- แถบเมนูเลื่อนซ้ายขวา 1 แถว -->
-        <div class="d-flex flex-nowrap overflow-auto py-2 px-3 nav-tabs">
-          <a href="#" class="nav-link tab-link active">Main</a>
-          <a href="#" class="nav-link tab-link">Drinks</a>
-          <a href="#" class="nav-link tab-link">Appetizer</a>
-          <a href="#" class="nav-link tab-link">Vegetarian</a>
-          <a href="#" class="nav-link tab-link">Healthy</a>
+    <!-- <div class="grid grid-cols-2 gap-4">
+      {% for i in menus %}
+      <div class="w-full mt-10" id="id{{i.id}}">
+        <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
+          <div class="flex justify-center">
+            <img
+              src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
+              alt="Picture"
+              class="w-32 h-32 object-cover rounded-md"
+            />
+          </div>
+
+          <div class="mt-4 text-center">
+            <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
+            <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
+            <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
+          </div>
         </div>
-      </nav>
-    </div>
+      </div>
+      {% endfor %}
+    </div> -->
     
-    <!-- แท็บค้นหา -->
-    <div id="searchTab" class="hidden p-4 bg-white shadow-lg rounded-lg">
-      <input type="text" id="menuSearch" class="form-control mb-3" placeholder="ค้นหาชื่อเมนู...">
-      <div id="menuResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-    </div>
-
-    <!-- แทบเลือกหมวดหมู่อาหาร -->
-    <!-- <nav class="bg-gray-100 p-4 rounded-lg shadow-md">
-      <ul class="flex space-x-4 justify-center">
-          <li class="cursor-pointer px-4 py-2 bg-white rounded-md shadow-sm hover:bg-gray-200">ทั้งหมด</li>
-          <li class="cursor-pointer px-4 py-2 bg-white rounded-md shadow-sm hover:bg-gray-200">อาหารคาว</li>
-          <li class="cursor-pointer px-4 py-2 bg-white rounded-md shadow-sm hover:bg-gray-200">อาหารหวาน</li>
-          <li class="cursor-pointer px-4 py-2 bg-white rounded-md shadow-sm hover:bg-gray-200">เครื่องดื่ม</li>
-      </ul>
-    </nav> -->
-
-    <div class="food">
-      <h2 class="text-left text-xl">
-        Main
-      </h2>
-
-      <div class="menu-container">
-        {% for item in menus %}
-          {% if item.type == 'food' %}
-          <div class="menu-item">
-            <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
-            <div class="menu-info">
-              <p class="menu-title">{{ item.nameFood }}</p>
-              <p class="menu-description">{{ item.description }}</p>
-              <p class="menu-price">฿{{ item.price }}</p>
-            </div>
-          </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-
-    <div class="drink">
-      <h2 class="text-left text-xl">
-        Drinks
-      </h2>
-
-      <div class="menu-container">
-        {% for item in menus %}
-          {% if item.type == 'drink' %}
-          <div class="menu-item">
-            <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
-            <div class="menu-info">
-              <p class="menu-title">{{ item.nameFood }}</p>
-              <p class="menu-description">{{ item.description }}</p>
-              <p class="menu-price">฿{{ item.price }}</p>
-            </div>
-          </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-
-    <div class="appetizer">
-      <h2 class="text-left text-xl">
-        Appetizer
-      </h2>
-
-      <div class="menu-container">
-        {% for item in menus %}
-          {% if item.type == 'appetizer' %}
-          <div class="menu-item">
-            <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
-            <div class="menu-info">
-              <p class="menu-title">{{ item.nameFood }}</p>
-              <p class="menu-description">{{ item.description }}</p>
-              <p class="menu-price">฿{{ item.price }}</p>
-            </div>
-          </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-   
-
     
+    <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+
+      <div class="special" id="special">
+        <!-- <h2 class="text-left text-xl mb-4">Special Menu</h2> -->
+        <div class="menu-container flex flex-col gap-2">
+          <div class="menu-item-spc">
+            <img src="/static/img/scpfood_1.png" class="spcfood" alt="Special Food 1">
+          </div>
+          <div class="menu-item-spc">
+            <img src="/static/img/scpfood_2.png" class="spcfood" alt="Special Food 2">
+          </div>
+          <div class="menu-item-spc">
+            <img src="/static/img/scpfood_3.png" class="spcfood" alt="Special Food 3">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="food" id="main">
+        <h2 class="text-left text-xl mm">
+          Main
+        </h2>
+
+        <div class="menu-container">
+          {% for item in menus %}
+            {% if item.type == 'food' %}
+            <div class="menu-item" id="id{{item.id}}">
+              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+              <div class="menu-info">
+                <p class="menu-title">{{ item.nameFood }}</p>
+                <p class="menu-description">{{ item.description }}</p>
+                <p class="menu-price">฿{{ item.price }}</p>
+                <!-- <button class="add-to-cart-btn" data-id="{{ item.id }}" data-name="{{ item.nameFood }}" data-price="{{ item.price }}" data-type="{{ item.type }}">เพิ่มลงตะกร้า</button> -->
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    
+
+      <div class="drink" id="drinks">
+        <h2 class="text-left text-xl mm">
+          Drinks
+        </h2>
+
+        <div class="menu-container">
+          {% for item in menus %}
+            {% if item.type == 'drink' %}
+            <div class="menu-item" id="id{{item.id}}">
+              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+              <div class="menu-info">
+                <p class="menu-title">{{ item.nameFood }}</p>
+                <p class="menu-description">{{ item.description }}</p>
+                <p class="menu-price">฿{{ item.price }}</p>
+                <!-- <button class="add-to-cart-btn" data-id="{{ item.id }}" data-name="{{ item.nameFood }}" data-price="{{ item.price }}" data-type="{{ item.type }}">เพิ่มลงตะกร้า</button> -->
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="appetizer" id="appetizer">
+        <h2 class="text-left text-xl mm">
+          Appetizer
+        </h2>
+
+        <div class="menu-container">
+          {% for item in menus %}
+            {% if item.type == 'appetizer' %}
+            <div class="menu-item" id="id{{item.id}}">
+              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+              <div class="menu-info">
+                <p class="menu-title">{{ item.nameFood }}</p>
+                <p class="menu-description">{{ item.description }}</p>
+                <p class="menu-price">฿{{ item.price }}</p>
+                <!-- <button class="add-to-cart-btn" data-id="{{ item.id }}" data-name="{{ item.nameFood }}" data-price="{{ item.price }}" data-type="{{ item.type }}">เพิ่มลงตะกร้า</button> -->
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+
+
     <!-- Bootstrap 5 -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -147,52 +194,140 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
     <script>
+
+      
       // Example: Set table_id dynamically
-      var addCart = [];
-      var nameFood = "";
-      var count = 0;
-      var price = 0;
-      var table_number = 0;
+      // var addCart = [];
+      // var nameFood = "";
+      // var count = 0;
+      // var price = 0;
+      // var table_number = 0;
 
-      function getData(data) {
-        addCart = data[0];
-        //console.log(addCart);
-      }
+      // function getData(data) {
+      //   addCart = data[0];
+      //   //console.log(addCart);
+      // }
+
+      // $(document).ready(function () {
+      //   $.getJSON("table/data", getData);
+
+      //   //console.log($("#tableNum").text());
+      //   table_number = $("#tableNum").text();
+      //   //console.log(table_number);
+      //   $(document).on("click", "#id1", function () {
+      //     shop();
+      //   });
+      // });
+
+      // $(document).ready(function () {
+      //   $.getJSON("table/data", getData);
+      // });
+
 
       $(document).ready(function () {
         $.getJSON("table/data", getData);
-
-        //console.log($("#tableNum").text());
-        table_number = $("#tableNum").text();
-        //console.log(table_number);
-        $("#id1").click(function () {
-          shop();
-
-          //cart.push([])
-        });
       });
 
+      // $(document).on("click", "#hereEYE", function () {
+      //   let menu_ids = 0; // เทส
+      //   let orderData = {
+      //     table_id: 0,
+      //     menu_id: [],
+      //     quantity: [],
+      //     total_price: [],
+      //     option: [],
+      //   };
+      //   menu_ids++; // ตั้งเล่นๆเทสระบบ
+      //   orderData.table_id = table_number;
+      //   orderData.menu_id.push(menu_ids);
+      //   orderData.quantity.push(menu_ids);
+      //   orderData.total_price.push(2000);
+      //   orderData.option.push("อายข้าวผัดแหนม พิเศษ");
+      //   console.log(orderData);
+      //   $.post({
+      //     url: "/table" + table_number,
+      //     data: JSON.stringify(orderData),
+      //     contentType: "application/json",
+      //     success: function (response) {
+      //       console.log("Response:", response);
+      //     },
+      //   });
+      // });
 
-      $(document).ready(function () {
-        $.getJSON("table/data", getData);
-      });
+      // function showOrderPopup(item) {
+      //   const name = item.querySelector('.menu-title').textContent;
+      //   const price = item.querySelector('.menu-price').textContent;
+      //   const description = item.querySelector('.menu-description').textContent;
 
-      function shop() {
-        nameFood = addCart.nameFood;
-        price = addCart.price;
-        type = addCart.type;
-        html = `<div class="bg-white shadow-lg rounded-lg p-6 w-72 text-center">
-          <h2 class="text-xl font-semibold text-gray-800">${addCart.nameFood}</h2>
-          <p class="text-lg text-gray-500 mt-2">price: ${addCart.price} บาท</p>
-          <p class="text-sm text-gray-400 mt-1">type: ${addCart.type}</p>
-          <button id="hereEYE"class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-              เพิ่มลงตะกร้า
-          </button>
-      </div>`;
-        $("#confirm").after(html);
-      }
+      //   const popupHtml = `
+      //     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="orderPopup">
+      //       <div class="bg-white p-6 rounded-lg shadow-xl w-80">
+      //         <h2 class="text-xl font-bold mb-4">สั่งอาหาร</h2>
+      //         <p class="text-lg font-semibold">${name}</p>
+      //         <p class="text-sm text-gray-500">${description}</p>
+      //         <p class="text-md font-medium mt-2">ราคา: ${price}</p>
+      //         <label class="block mt-4">จำนวน:</label>
+      //         <input type="number" id="quantityInput" class="w-full border p-2 rounded" min="1" value="1">
+      //         <div class="flex justify-between mt-4">
+      //           <button onclick="confirmOrder('${name}', ${price.replace('฿', '')})" class="bg-blue-500 text-white px-4 py-2 rounded">ยืนยัน</button>
+      //           <button onclick="closeOrderPopup()" class="bg-gray-300 px-4 py-2 rounded">ยกเลิก</button>
+      //         </div>
+      //       </div>
+      //     </div>`;
+
+      //   document.body.insertAdjacentHTML('beforeend', popupHtml);
+
+      //   // $("#confirm").after(html);
+      // }
+
+      // // ฟังก์ชันยืนยันการสั่ง
+      // function confirmOrder(name, price) {
+      //   const quantity = parseInt(document.getElementById('quantityInput').value);
+      //   if (quantity <= 0 || isNaN(quantity)) {
+      //     alert('กรุณาระบุจำนวนที่ถูกต้อง');
+      //     return;
+      //   }
+      //   const total = price * quantity;
+      //   alert(`คุณสั่ง ${name} จำนวน ${quantity} ราคา ฿${total}`);
+      //   closeOrderPopup();
+
+      //   let menu_ids = 0; // เทส
+      //   let orderData = {
+      //     table_id: 0,
+      //     menu_id: [],
+      //     quantity: [],
+      //     total_price: [],
+      //     option: [],
+      //   };
+      //   menu_ids++; // ตั้งเล่นๆเทสระบบ
+      //   orderData.table_id = table_number;
+      //   orderData.menu_id.push(menu_ids);
+      //   orderData.quantity.push(menu_ids);
+      //   orderData.total_price.push(2000);
+      //   orderData.option.push("อายข้าวผัดแหนม พิเศษ");
+      //   console.log(orderData);
+      //   $.post({
+      //     url: "/table" + table_number,
+      //     data: JSON.stringify(orderData),
+      //     contentType: "application/json",
+      //     success: function (response) {
+      //       console.log("Response:", response);
+      //     },
+      //   });
+
+      // }
+
+      // // ฟังก์ชันปิด popup
+      // function closeOrderPopup() {
+      //   const popup = document.getElementById('orderPopup');
+      //   if (popup) popup.remove();
+      // }
+
+      // // เพิ่ม event listener ให้ menu-item
+      // document.querySelectorAll('.menu-item').forEach(item => {
+      //   item.addEventListener('click', () => showOrderPopup(item));
+      // });
 
       $(document).on("click", "#hereEYE", function () {
         let menu_ids = 0; // เทส
@@ -235,22 +370,19 @@
         link.addEventListener('click', function (event) {
           event.preventDefault();
           // ลบ active จากทุกลิงก์
+
+          const targetId = this.getAttribute('href').substring(1); // ดึง id ของส่วนที่ต้องการไป
+          const targetElement = document.getElementById(targetId); // หาตำแหน่งของส่วนนี้ในหน้า
+          targetElement.scrollIntoView({
+            behavior: 'smooth', // เลื่อนอย่างนุ่มนวล
+            block: 'start' // ให้เลื่อนไปที่ตำแหน่งด้านบนสุดของ element
+          });
+
           document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
           // เพิ่ม active ให้ลิงก์ที่ถูกคลิก
           this.classList.add('active');
-        });
-      });
 
-
-      document.getElementById('menuSearch').addEventListener('input', function () {
-        const searchText = this.value.toLowerCase();
-        document.querySelectorAll('.menu-item').forEach(item => {
-          const title = item.querySelector('.menu-title').textContent.toLowerCase();
-          if (title.includes(searchText)) {
-            item.style.display = '';
-          } else {
-            item.style.display = 'none';
-          }
+          
         });
       });
 

@@ -1,17 +1,70 @@
 body {
-    background-color: #FEFFFF;
-    font-family: 'Heebo', sans-serif;
+  background-color: #FEFFFF;
+  font-family: 'Lilita One', cursive;
+  padding-top: 90px; /* เพิ่ม padding เพื่อไม่ให้ header ทับ */
+  /* max-width: 480px; กำหนดความกว้างสูงสุดเป็นขนาดมือถือ */
+  /* margin: 0 auto;  */
+}
+
+.header1 {
+  /* height: 53px; */
+  color: #E88810;
 } 
 
+.mm {
+  /* height: 53px; */
+  color: #E88810;
+} 
+
+/* .header2 {
+  height: 54px;
+} */
+
+/* .food, .drink, .appetizer {
+  padding-top: 80px;
+} */
+
+/* header {
+  min-height: 90px;
+  background: #ff4d4f;
+  padding: 15px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 998;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+} */
+
+/* header .container-fluid {
+  width: 100%;
+  float: left;
+  padding: 20px 0 0;
+} */
+
+/* #sildbarCollapse {
+  background: transparent;
+}
+.slider_section {
+  background: #E88810;
+  min-height: 100vh;
+  padding-top: 93px;
+} */
+
 h1 {
-    margin-left: 2%;
-    margin-top: 2%;
+  margin-left: 2%;
+  margin-top: 2%;
 }
 
 h2 {
-    margin-left: 2%;
-    margin-top: 2%;
+  margin-left: 2%;
+  margin-top: 2%;
 } 
+
+.btn {
+  color: #E88810;
+}
+
 
 
 /* แถบเลื่อนซ้ายขวา */
@@ -33,7 +86,7 @@ h2 {
 .tab-link {
   position: relative;
   /* padding: 10px 20px; */
-  color: #ccc;
+  /* color: #ccc; */
   text-align: center;
   min-width: 100px;
   text-decoration: none;
@@ -60,62 +113,62 @@ h2 {
 
 
 
-
-
+.menu-item-spc {
+  display: flex;
+  align-items: center;
+}
 
 .menu-container {
-    width: 100%;
-    max-width: 600px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .menu-item {
-    display: flex;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid #ddd; /* เส้นคั่นบางๆ */
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd; /* เส้นคั่นบางๆ */
 }
 
 .menu-image {
-    width: 100px; /* รูปสี่เหลี่ยมจัตุรัส */
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-left: 16px;
+  width: 100px; /* รูปสี่เหลี่ยมจัตุรัส */
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  /* margin-left: 16px; */
 }
 
 .menu-info {
-    margin-left: 10px;
-    flex: 1;
-    text-align: left;
-    padding-right: 16px;
+  margin-left: 10px;
+  flex: 1;
+  text-align: left;
+  padding-right: 16px;
 }
 
 .menu-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
 
 .menu-description {
-    font-size: 14px;
-    color: #777;
-    margin: 4px 0;
+  font-size: 14px;
+  color: #777;
+  margin: 4px 0;
 }
 
 .menu-price {
-    font-size: 16px;
-    color: #333;
-    font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
 }
 
 .popular-badge {
-    font-size: 12px;
-    color: white;
-    background-color: #ff4d4f;
-    padding: 4px 8px;
-    border-radius: 12px;
-    margin-left: 8px;
-    font-weight: bold;
+  font-size: 12px;
+  color: white;
+  background-color: #ff4d4f;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: bold;
 }
-
-
