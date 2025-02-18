@@ -1,0 +1,148 @@
+/* ตั้งค่าหน้าพื้นหลัง */
+body {
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: #532015;
+}
+
+.container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+}
+.menu-profile img {
+    width: auto;
+    height: 100vh;
+    padding-left: 50px;
+}
+
+
+
+
+
+.form-box {
+    position: absolute;
+    display: flex;
+    margin: 10%;
+    right: 0;
+    width: 30%;
+    height: 80%;
+    align-items: center;
+    text-align: center;
+    background: #f9faf9; 
+    border-radius: 50px;
+    
+
+}
+
+.form-b {
+    width: 100%;
+    border-radius: 50%;
+}
+.input-box {
+    border-radius: 30%;
+}
+
+.head{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #E67E22;
+    /* margin: 1%; */
+}
+
+
+/* ส่วนที่เป็น text */
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+/* กล่องใส่ข้อมูล */
+input {
+    width: 60%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+}
+
+/* ปุ่ม Login */
+.btn {
+    width: 60%;
+    padding: 2%;
+    background: #E88810; 
+    color: white;
+    border: 30%;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 50px;
+}
+.btn:hover {
+    background-color:  #fb8c03;
+    box-shadow: 0px 0px 10px rgba(217, 83, 79, 0.8);
+    transform: scale(1.05);
+  }
+
+.btn:active {
+    background-color: #fb8c03;
+    transform: scale(0.95);
+  }
+
+/* ลิงก์ Sign up */
+p {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+p a {
+    color: #E67E22;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-profile {
+    width: 50%;
+    padding: 5%;
+    background: #E88810; 
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+    border-radius: 50px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+}
+
+.input-box select {
+    width: 60%; 
+    padding: 2%;
+    margin: 10px auto; 
+    border-radius: 25px; 
+    border: 1px solid #ccc;
+    outline: none;
+    text-align: center; 
+    display: block; 
+}
+
+
+.input-box label {
+    display: inline-flex;
+    align-items: center; 
+    gap: 5px; 
+    font-size: 14px;
+    white-space: nowrap; 
+}

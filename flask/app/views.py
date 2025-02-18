@@ -394,7 +394,7 @@ def admin_login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             #login done -> profile lobby page
-            next_page = url_for('admin_profile')
+            next_page = url_for('admin')
         return redirect(next_page)
 
     return render_template('admin/login_pages/login.html')

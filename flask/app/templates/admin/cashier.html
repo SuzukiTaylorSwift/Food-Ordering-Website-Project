@@ -5,38 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cashier.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Clickable Box</title>
+
   </head>
-  <body class="bg-green-300 flex justify-center items-center h-screen">
-    <div id="bill"></div>
-    <div class="text-center">
-      {% for i in table%}
-      <h1 class="text-2xl font-bold mb-4">Table{{i.id}}</h1>
-      {%if i.status == "Available"%}
-      <div
-        id="id{{i.id}}"
-        class="w-40 h-40 bg-green-500 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
-      ></div>
-      {%elif i.status == "Taken"%}
-      <div
-        id="id{{i.id}}"
-        class="w-40 h-40 bg-red-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
-      ></div>
-      {%endif%}
+  
+  <body>
+    <div class="table-title">
+      <a href="/admin/lobby"><i class='bx bx-chevrons-left bx-md'></i> </a> 
+      <h2>TABLE</h2>
+      <a href="/admin/login" class="logout-button">Logout</a>
     </div>
-    {%endfor%}
-    <div
-      id="takeAway"
-      class="w-40 h-40 bg-blue-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
-    >
-      <h1>take home</h1>
+    
+    <div class="side-panel">
+      <div id="takeAway" class="table-home"><h3>take home</h3></div>
+      <div id="check" class="table-bill"><h3>check bill</h3></div>
     </div>
-    <div
-      id="check"
-      class="w-40 h-40 bg-yellow-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
-    >
-      <h1>check bill</h1>
+
+    <div class="flex flex-row items-center justify-start ml-13">
+      <div class="layout">
+        {% for i in table %}
+        {%if i.status == "Available"%}
+        <div id="id{{ i.id }}" class="container"><h1>T{{ i.id }}</h1></div>
+        {%elif i.status == "Taken"%}
+        <div id="id{{ i.id }}" class="container-or"><h1>T{{ i.id }}</h1></div>
+        {%endif%}
+        {% endfor %}
+      </div>
+      <div id="bill"></div>
     </div>
+
+
+    <div class="container-counter">
+      
+    </div>
+    
+ 
     <script>
       let table_id = 0;
       $(document).ready(function () {
@@ -52,22 +57,60 @@
 
       function bill(data) {
         let sumPrice = 0;
-        let check_bill = `<div class="bg-white shadow-lg rounded-lg p-6 w-72 text-center">`;
-        // ลูปข้อมูลจาก order_list
-        data["order_list"].forEach((item) => {
-          // ค้นหาข้อมูลเมนูที่ตรงกับ menu_id
-          let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
-          console.log(menu_item);
-          // ถ้าหาเมนูเจอ
-          if (menu_item) {
-            sumPrice += item.totalPrice;
-            check_bill += `<p>Menu: ${menu_item.nameFood}, Quantity: ${item.quantity}, Total Price: ${item.totalPrice}</p>`;
-          }
-        });
-        check_bill += `<p> total price${sumPrice} </p>`;
+        let orderSummary = {};
 
-        check_bill += `<button id="hereEYE"class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            จ่ายแล้ว</button></div>`;
+        // ลูปข้อมูลจาก order_list และรวมรายการที่ซ้ำกัน
+        data["order_list"].forEach((item) => {
+            let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
+            
+            if (menu_item) {
+                if (!orderSummary[menu_item.nameFood]) {
+                    orderSummary[menu_item.nameFood] = {
+                        name: menu_item.nameFood,
+                        quantity: 0,
+                        price: menu_item.price,
+                        totalPrice: 0
+                    };
+                }
+                orderSummary[menu_item.nameFood].quantity += item.quantity;
+                orderSummary[menu_item.nameFood].totalPrice += item.totalPrice;
+                sumPrice += item.totalPrice;
+            }
+        });
+        let check_bill = `<div class="bill-container">`;
+          check_bill += `<h5>KHOW BAN CHAN</h5>`
+          check_bill += `<hr>`
+          check_bill += `<div class="flex-colo"><div class="table-time">TABLE :</div><div class="bill-header">T${table_id}</div></div>`
+          check_bill += `<div class="flex-colo"><div class="table-time">TIME :</div><div class="bill-header">${new Date().toLocaleString()}</div></div>`
+          check_bill += `<hr>`
+          check_bill += `<div class="flex-colo">
+          <div class="item-name"><h6>รายการ</h6></div>
+          <div class="item-quantity"><h6>จำนวน</h6></div>
+          <div class="item-price"><h6>ราคา</h6></div>
+          <div class="item-total"><h6>ราคารวม</h6></div>
+          </div>`;
+
+        // ลูปข้อมูลจาก order_list
+        Object.values(orderSummary).forEach((item) => {
+        check_bill += `<div class="flex-colo">
+            <div class="item-name"><h6>${item.name}</h6></div>
+            <div class="item-quantity"><h6>${item.quantity}</h6></div>
+            <div class="item-price"><h6>${item.price}</h6></div>
+            <div class="item-total"><h6>${item.totalPrice}</h6></div>
+        </div>`;
+        });
+
+        check_bill += `<div class="bill-summary">
+        <div class="item-sum"><h6 class="total-text">รวม</h6></div>
+        <div class="item-sumP"><h6 class="total-price">${sumPrice} บาท</h6></div>
+        </div>`;
+
+        check_bill += `<div class="bill-line"></div>`;
+        check_bill += `<h6 class="bill-total">ทั้งหมด</h6>`;
+
+        check_bill += `</div>`
+
+        check_bill += `<button id="hereEYE" class="pay-button">จ่ายแล้ว</button>`;
 
         // แสดงผล HTML ที่สร้างขึ้นใน #bill
         $("#bill").html(check_bill);
@@ -82,6 +125,7 @@
           success: function (response) {
             console.log("Response:", response);
             alert("ชำระเงินแล้ว");
+            location.reload();
           },
           error: function (xhr, status, error) {
             console.log("Error:", error);

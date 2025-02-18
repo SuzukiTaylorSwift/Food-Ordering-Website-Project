@@ -1,4 +1,4 @@
-name: "flask-app1"
+name: "new-project"
 services:
   flask:
     build: flask
