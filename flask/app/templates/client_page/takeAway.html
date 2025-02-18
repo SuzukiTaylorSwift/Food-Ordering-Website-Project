@@ -85,16 +85,19 @@
           quantity: [],
           total_price: [],
           option: [],
+          note: [],
         };
         menu_ids++; // ตั้งเล่นๆเทสระบบ
         orderData.menu_id.push(menu_ids);
         orderData.quantity.push(menu_ids);
         orderData.total_price.push(2000);
         orderData.option.push("อายข้าวผัดแหนม พิเศษ");
+        orderData.note.push("ขอแหนมแบบเบิ้มๆ");
         orderData.menu_id.push(2);
         orderData.quantity.push(5);
         orderData.total_price.push(5000);
         orderData.option.push("พิเศษ");
+        orderData.note.push("ไม่เอาผัก");
         console.log(orderData);
         $.post({
           url: "/takeAway",

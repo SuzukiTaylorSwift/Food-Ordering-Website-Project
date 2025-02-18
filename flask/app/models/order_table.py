@@ -10,11 +10,13 @@ class Order_table(db.Model,SerializerMixin):
     order_id  = db.Column(db.Integer,db.ForeignKey('orders.id'))
     totalPrice = db.Column(db.Integer)
     quantity = db.Column(db.Integer)
-    option = db.Column(db.String)
+    option = db.Column(db.String(50))
+    note = db.Column(db.String(75))
     
-    def __init__(self, menu_id, order_id, totalPrice,quantity,option):
+    def __init__(self, menu_id, order_id, totalPrice,quantity,option,note):
         self.menu_id = menu_id
         self.order_id = order_id
         self.totalPrice = totalPrice
         self.quantity = quantity
         self.option = option
+        self.note = note

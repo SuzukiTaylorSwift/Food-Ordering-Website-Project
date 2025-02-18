@@ -13,8 +13,8 @@ class MenuForm(FlaskForm):
     type = SelectField('Type', choices=[('drink', 'Drink'), ('food', 'Food'),("appetizer",'Appetizer')], validators=[DataRequired()])
     
     image = FileField('เลือกรูปภาพ')
-    option_size = SelectField('Size', choices=[('Regular', 'Regular'), ('Large', 'Large')], validators=[DataRequired()])
-    Spice_Levels = SelectField('Spice', choices=[('Not Spicy', 'Not Spicy'), ('Mild', 'Mild'),('Medium','Medium'),('Spicy','Spicy')], validators=[DataRequired()])
+    # option_size = SelectField('Size', choices=[('Regular', 'Regular'), ('Large', 'Large')], validators=[DataRequired()])
+    # Spice_Levels = SelectField('Spice', choices=[('Not Spicy', 'Not Spicy'), ('Mild', 'Mild'),('Medium','Medium'),('Spicy','Spicy')], validators=[DataRequired()])
     submit = SubmitField('บันทึก')
 # Not Spicy – ไม่เผ็ด
 # Mild – เผ็ดน้อย

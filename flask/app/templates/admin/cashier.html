@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cashier.css') }}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/cashier.css') }}"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <title>Clickable Box</title>
-
   </head>
-  
+
   <body>
     <div class="table-title">
-      <a href="/admin/lobby"><i class='bx bx-chevrons-left bx-md'></i> </a> 
+      <a href="/admin/lobby"><i class="bx bx-chevrons-left bx-md"></i> </a>
       <h2>TABLE</h2>
       <a href="/admin/login" class="logout-button">Logout</a>
     </div>
-    
+
     <div class="side-panel">
       <div id="takeAway" class="table-home"><h3>take home</h3></div>
       <div id="check" class="table-bill"><h3>check bill</h3></div>
@@ -25,23 +30,17 @@
 
     <div class="flex flex-row items-center justify-start ml-13">
       <div class="layout">
-        {% for i in table %}
-        {%if i.status == "Available"%}
+        {% for i in table %} {%if i.status == "Available"%}
         <div id="id{{ i.id }}" class="container"><h1>T{{ i.id }}</h1></div>
         {%elif i.status == "Taken"%}
         <div id="id{{ i.id }}" class="container-or"><h1>T{{ i.id }}</h1></div>
-        {%endif%}
-        {% endfor %}
+        {%endif%} {% endfor %}
       </div>
       <div id="bill"></div>
     </div>
 
+    <div class="container-counter"></div>
 
-    <div class="container-counter">
-      
-    </div>
-    
- 
     <script>
       let table_id = 0;
       $(document).ready(function () {
@@ -61,29 +60,29 @@
 
         // ลูปข้อมูลจาก order_list และรวมรายการที่ซ้ำกัน
         data["order_list"].forEach((item) => {
-            let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
-            
-            if (menu_item) {
-                if (!orderSummary[menu_item.nameFood]) {
-                    orderSummary[menu_item.nameFood] = {
-                        name: menu_item.nameFood,
-                        quantity: 0,
-                        price: menu_item.price,
-                        totalPrice: 0
-                    };
-                }
-                orderSummary[menu_item.nameFood].quantity += item.quantity;
-                orderSummary[menu_item.nameFood].totalPrice += item.totalPrice;
-                sumPrice += item.totalPrice;
+          let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
+
+          if (menu_item) {
+            if (!orderSummary[menu_item.nameFood]) {
+              orderSummary[menu_item.nameFood] = {
+                name: menu_item.nameFood,
+                quantity: 0,
+                price: menu_item.price,
+                totalPrice: 0,
+              };
             }
+            orderSummary[menu_item.nameFood].quantity += item.quantity;
+            orderSummary[menu_item.nameFood].totalPrice += item.totalPrice;
+            sumPrice += item.totalPrice;
+          }
         });
         let check_bill = `<div class="bill-container">`;
-          check_bill += `<h5>KHOW BAN CHAN</h5>`
-          check_bill += `<hr>`
-          check_bill += `<div class="flex-colo"><div class="table-time">TABLE :</div><div class="bill-header">T${table_id}</div></div>`
-          check_bill += `<div class="flex-colo"><div class="table-time">TIME :</div><div class="bill-header">${new Date().toLocaleString()}</div></div>`
-          check_bill += `<hr>`
-          check_bill += `<div class="flex-colo">
+        check_bill += `<h5>KHOW BAN CHAN</h5>`;
+        check_bill += `<hr>`;
+        check_bill += `<div class="flex-colo"><div class="table-time">TABLE :</div><div class="bill-header">T${table_id}</div></div>`;
+        check_bill += `<div class="flex-colo"><div class="table-time">TIME :</div><div class="bill-header">${new Date().toLocaleString()}</div></div>`;
+        check_bill += `<hr>`;
+        check_bill += `<div class="flex-colo">
           <div class="item-name"><h6>รายการ</h6></div>
           <div class="item-quantity"><h6>จำนวน</h6></div>
           <div class="item-price"><h6>ราคา</h6></div>
@@ -92,7 +91,7 @@
 
         // ลูปข้อมูลจาก order_list
         Object.values(orderSummary).forEach((item) => {
-        check_bill += `<div class="flex-colo">
+          check_bill += `<div class="flex-colo">
             <div class="item-name"><h6>${item.name}</h6></div>
             <div class="item-quantity"><h6>${item.quantity}</h6></div>
             <div class="item-price"><h6>${item.price}</h6></div>
@@ -108,7 +107,7 @@
         check_bill += `<div class="bill-line"></div>`;
         check_bill += `<h6 class="bill-total">ทั้งหมด</h6>`;
 
-        check_bill += `</div>`
+        check_bill += `</div>`;
 
         check_bill += `<button id="hereEYE" class="pay-button">จ่ายแล้ว</button>`;
 

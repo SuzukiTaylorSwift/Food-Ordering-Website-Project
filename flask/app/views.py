@@ -72,11 +72,9 @@ def upload_image():
             name_food = form.nameFood.data
             type_food = form.type.data  # สามารถใช้ข้อมูลประเภทได้ตามต้องการ
             price = form.price.data
-            option = form.option_size.data
-            option+= " "+form.Spice_Levels.data
             # print(option)
             # สร้างวัตถุใหม่ในฐานข้อมูล
-            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food,option=option)  # บันทึกข้อมูลในฐานข้อมูล
+            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food)  # บันทึกข้อมูลในฐานข้อมูล
             db.session.add(new_image)
             db.session.commit()
 
@@ -115,7 +113,6 @@ def edit_menu(menu_id):
         menu_item.nameFood = form.nameFood.data
         menu_item.type = form.type.data
         menu_item.price = form.price.data
-        menu_item.option = form.option_size.data + " " + form.Spice_Levels.data
 
         # ตรวจสอบว่ามีการอัปโหลดไฟล์ใหม่หรือไม่
         if form.image.data:
@@ -169,7 +166,7 @@ def takeAway():
         #12/2 3am
         for i in range(len(data["menu_id"])):
             print(i)
-            db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i]))
+            db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i],note=data["note"][i]))
             # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
             db.session.commit()
         
@@ -204,7 +201,7 @@ def order_for_table(table_number):
             #12/2 3am
             for i in range(len(data["menu_id"])):
                 print(i)
-                db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i]))
+                db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i],note=data["note"][i] ))
                 # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
                 db.session.commit()
             
