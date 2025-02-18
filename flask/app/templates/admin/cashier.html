@@ -39,7 +39,6 @@
       <div id="bill"></div>
     </div>
 
-    <div class="container-counter"></div>
 
     <script>
       let table_id = 0;
@@ -58,24 +57,25 @@
         let sumPrice = 0;
         let orderSummary = {};
 
-        // ลูปข้อมูลจาก order_list และรวมรายการที่ซ้ำกัน
         data["order_list"].forEach((item) => {
           let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
-
           if (menu_item) {
+
             if (!orderSummary[menu_item.nameFood]) {
               orderSummary[menu_item.nameFood] = {
                 name: menu_item.nameFood,
                 quantity: 0,
                 price: menu_item.price,
-                totalPrice: 0,
+                totalPrice: 0
               };
             }
+
             orderSummary[menu_item.nameFood].quantity += item.quantity;
-            orderSummary[menu_item.nameFood].totalPrice += item.totalPrice;
-            sumPrice += item.totalPrice;
+            orderSummary[menu_item.nameFood].totalPrice += item.quantity * menu_item.price; 
+            sumPrice += item.quantity * menu_item.price;
           }
         });
+
         let check_bill = `<div class="bill-container">`;
         check_bill += `<h5>KHOW BAN CHAN</h5>`;
         check_bill += `<hr>`;
@@ -83,37 +83,36 @@
         check_bill += `<div class="flex-colo"><div class="table-time">TIME :</div><div class="bill-header">${new Date().toLocaleString()}</div></div>`;
         check_bill += `<hr>`;
         check_bill += `<div class="flex-colo">
-          <div class="item-name"><h6>รายการ</h6></div>
-          <div class="item-quantity"><h6>จำนวน</h6></div>
-          <div class="item-price"><h6>ราคา</h6></div>
-          <div class="item-total"><h6>ราคารวม</h6></div>
-          </div>`;
+                          <div class="item-name"><h6>รายการ</h6></div>
+                          <div class="item-quantity"><h6>จำนวน</h6></div>
+                          <div class="item-price"><h6>ราคา</h6></div>
+                          <div class="item-total"><h6>ราคารวม</h6></div>
+                        </div>`;
 
-        // ลูปข้อมูลจาก order_list
         Object.values(orderSummary).forEach((item) => {
           check_bill += `<div class="flex-colo">
-            <div class="item-name"><h6>${item.name}</h6></div>
-            <div class="item-quantity"><h6>${item.quantity}</h6></div>
-            <div class="item-price"><h6>${item.price}</h6></div>
-            <div class="item-total"><h6>${item.totalPrice}</h6></div>
-        </div>`;
+                          <div class="item-name"><h6>${item.name}</h6></div>
+                          <div class="item-quantity"><h6>${item.quantity}</h6></div>
+                          <div class="item-price"><h6>${item.price}</h6></div>
+                          <div class="item-total"><h6>${item.totalPrice}</h6></div>
+                        </div>`;
         });
 
         check_bill += `<div class="bill-summary">
-        <div class="item-sum"><h6 class="total-text">รวม</h6></div>
-        <div class="item-sumP"><h6 class="total-price">${sumPrice} บาท</h6></div>
-        </div>`;
+                        <div class="item-sum"><h6 class="total-text">รวม</h6></div>
+                        <div class="item-sumP"><h6 class="total-price">${sumPrice} บาท</h6></div>
+                      </div>`;
 
         check_bill += `<div class="bill-line"></div>`;
-        check_bill += `<h6 class="bill-total">ทั้งหมด</h6>`;
+        check_bill += `<div class="bill-total">THANK YOU</div>`;
 
         check_bill += `</div>`;
 
         check_bill += `<button id="hereEYE" class="pay-button">จ่ายแล้ว</button>`;
 
-        // แสดงผล HTML ที่สร้างขึ้นใน #bill
         $("#bill").html(check_bill);
       }
+
 
       $(document).on("click", "#hereEYE", function () {
         $.ajax({

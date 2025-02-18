@@ -11,14 +11,12 @@ body {
   border-radius: 20px;
   text-align: center;
   width: 150px; 
-  /* margin: 20px; */
   justify-content: center;
 
 
 }
 .container-or:hover {
   background-color: #fe8d04;
-  /* box-shadow: 0px 0px 10px rgba(217, 83, 79, 0.8); */
   transform: scale(1.05);
 }
 
@@ -116,6 +114,15 @@ h1 {
   background-color:#63a5eb;
 
 }
+.table-home:hover {
+  background-color: #1e87f7;
+  transform: scale(1.05);
+}
+
+.table-home:active {
+  background-color: #1e87f7;
+  transform: scale(0.95);
+}
 
 .table-bill {
   display: flex;
@@ -129,6 +136,15 @@ h1 {
   background-color:#eaf605;
   
 
+}
+.table-bill:hover {
+  background-color: #eaf605;
+  transform: scale(1.05);
+}
+
+.table-bill:active {
+  background-color: #eaf605;
+  transform: scale(0.95);
 }
 h3 {
   font-size: 24px;
@@ -234,10 +250,11 @@ h6{
 }
 
 .bill-total {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
-  text-align: left;
-  margin-top: 10px;
+  text-align: center;
+  margin-top: -2px;
+  color: #393838;
 }
 
 .pay-button {
@@ -256,9 +273,6 @@ h6{
 }
 
 .bill-header {
-  /* display: flex;
-  flex-direction: column;
-  align-items: flex-end;  */
   margin-right: 10px;
   font-weight: bold;
   text-align: left;
@@ -293,11 +307,6 @@ h6{
 }
 
 
-.bill-total {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-}
 
 .bill-line {
   border: 1px solid #000; 
