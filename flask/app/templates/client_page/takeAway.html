@@ -80,6 +80,7 @@
       $(document).on("click", "#hereEYE", function () {
         let menu_ids = 0; // เทส
         let orderData = {
+          time:"",
           table_id: null,
           menu_id: [],
           quantity: [],
@@ -88,6 +89,7 @@
           note: [],
         };
         menu_ids++; // ตั้งเล่นๆเทสระบบ
+        orderData.time = new Date().toLocaleString();
         orderData.menu_id.push(menu_ids);
         orderData.quantity.push(menu_ids);
         orderData.total_price.push(2000);

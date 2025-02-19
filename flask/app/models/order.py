@@ -13,12 +13,13 @@ class Order(db.Model,SerializerMixin):
     totalPrice = db.Column(db.Integer)
     order_time = db.Column(db.DateTime,default=datetime.utcnow)
     
-    def __init__(self,table_id,takeaway,status,totalPrice,paid_status):
+    def __init__(self,table_id,takeaway,status,totalPrice,paid_status,order_time):
         self.table_id = table_id
         self.takeaway = takeaway
         self.food_status = status
         self.paid_status = paid_status
         self.totalPrice = totalPrice
+        self.order_time = order_time
 
     def update(self,status):
         self.status = status

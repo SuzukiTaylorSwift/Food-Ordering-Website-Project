@@ -151,7 +151,7 @@ def takeAway():
         total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
 
         # สร้างออเดอร์ใหม่
-        newOrder = Order(table_id=data['table_id'], totalPrice=total_price,takeaway=True, status="Cooking",paid_status="Unpaid")
+        newOrder = Order(table_id=data['table_id'], totalPrice=total_price,takeaway=True, status="Cooking",paid_status="Unpaid",order_time=data["time"])
         db.session.add(newOrder)
         db.session.commit()
 
@@ -186,7 +186,7 @@ def order_for_table(table_number):
             total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
 
             # สร้างออเดอร์ใหม่
-            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking",paid_status="Unpaid",takeaway=False)
+            newOrder = Order(table_id=data['table_id'], totalPrice=total_price, status="Cooking",paid_status="Unpaid",takeaway=False,order_time=data["time"])
             db.session.add(newOrder)
             db.session.commit()
 
@@ -250,7 +250,29 @@ def all_data(table_id):
     # ดึงแค่เมนูที่โต๊ะนั้นสั่ง
     menu_ids = [o.menu_id for o in order_list]
     menu = Menu.query.filter(Menu.id.in_(menu_ids)).all()
+    print(order)
+    # ส่งข้อมูลที่กรองมาไปยัง JSON format
+    return jsonify({
+        "order": [o.to_dict() for o in order],  
+        "order_list": [o.to_dict() for o in order_list],  
+        "menu": [m.to_dict() for m in menu]  
+    })
+
+#take home
+@app.route("/admin/all_data")
+def all_data_takehome():
+    # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
+    order = Order.query.filter(Order.table_id == None,Order.paid_status != "Paided").all()
     
+    # ฟิลเตอร์ข้อมูลจาก Order_table โดยเลือกเฉพาะที่มี order_id ตรงกับ id ของ order ที่เลือก
+    order_list = Order_table.query.filter(Order_table.order_id.in_([o.id for o in order])).all()
+    
+    # ดึงแค่เมนูที่โต๊ะนั้นสั่ง
+    menu_ids = [o.menu_id for o in order_list]
+    menu = Menu.query.filter(Menu.id.in_(menu_ids)).all()
+    print(order)
+    print(order_list)
+    print(menu)
     # ส่งข้อมูลที่กรองมาไปยัง JSON format
     return jsonify({
         "order": [o.to_dict() for o in order],  

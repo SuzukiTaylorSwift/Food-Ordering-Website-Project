@@ -39,7 +39,6 @@
       <div id="bill"></div>
     </div>
 
-
     <script>
       let table_id = 0;
       $(document).ready(function () {
@@ -60,18 +59,18 @@
         data["order_list"].forEach((item) => {
           let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
           if (menu_item) {
-
             if (!orderSummary[menu_item.nameFood]) {
               orderSummary[menu_item.nameFood] = {
                 name: menu_item.nameFood,
                 quantity: 0,
                 price: menu_item.price,
-                totalPrice: 0
+                totalPrice: 0,
               };
             }
 
             orderSummary[menu_item.nameFood].quantity += item.quantity;
-            orderSummary[menu_item.nameFood].totalPrice += item.quantity * menu_item.price; 
+            orderSummary[menu_item.nameFood].totalPrice +=
+              item.quantity * menu_item.price;
             sumPrice += item.quantity * menu_item.price;
           }
         });
@@ -113,8 +112,10 @@
         $("#bill").html(check_bill);
       }
 
-
       $(document).on("click", "#hereEYE", function () {
+        if (table_id == 0) {
+          table_id = null;
+        }
         $.ajax({
           url: "/admin/cashier",
           method: "POST",
@@ -135,18 +136,8 @@
         window.location.href = "/takeAway";
       });
       $("#check").click(function () {
-        $.ajax({
-          url: "/admin/cashier",
-          method: "POST",
-          data: JSON.stringify({ table_id: null }),
-          contentType: "application/json", // บอกว่าเป็น JSON
-          success: function (response) {
-            console.log("Response:", response);
-            alert("ชำระเงินแล้ว");
-          },
-          error: function (xhr, status, error) {
-            console.log("Error:", error);
-          },
+        $.getJSON("/admin/all_data", function (data) {
+          bill(data);
         });
       });
     </script>
