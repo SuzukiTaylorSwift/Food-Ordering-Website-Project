@@ -155,17 +155,8 @@ def takeAway():
         db.session.add(newOrder)
         db.session.commit()
 
-        # อัปเดตสถานะของโต๊ะเป็น "Taken"
-        hi = Table.query.get(data['table_id'])
-        if hi:
-            hi.status = "Taken"  # เปลี่ยนค่าตรง ๆ แทน update()
-            db.session.commit()
-        
-        # print(tables    )
-        
-        #12/2 3am
+      
         for i in range(len(data["menu_id"])):
-            print(i)
             db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i],note=data["note"][i]))
             # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
             db.session.commit()
@@ -200,7 +191,6 @@ def order_for_table(table_number):
             
             #12/2 3am
             for i in range(len(data["menu_id"])):
-                print(i)
                 db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i],note=data["note"][i] ))
                 # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
                 db.session.commit()
@@ -364,23 +354,16 @@ def Kitchen():
         db_order_list = Order_table.query.all() 
         db_order = Order.query.all()
         db_menu = Menu.query.all()
-        # return render_template("admin/kitchen.html" , order_list=db_order_list,menu=db_menu,order=db_order)
         # จัดกลุ่ม order_list ตาม table_id
         grouped_orders = {}
         for i in db_order_list:
-            order_info = next((o for o in db_order if o.id == i.order_id and o.food_status == "Cooking"), None)
-            if order_info:
-                table_id = order_info.table_id
-                if table_id not in grouped_orders:
-                    grouped_orders[table_id] = {
-                        "orders": [],
-                        "order_time": order_info.order_time,
-                    }
-                grouped_orders[table_id]["orders"].append({
-                    "menu_id": i.menu_id,
-                    "quantity": i.quantity,
-                })
-        print(grouped_orders,'tttttttttttttttttt')
+            for j in db_order:
+                if i.order_id == j.id and j.food_status == "Cooking":
+                    if j.id not in grouped_orders:
+                        grouped_orders[j.id] = {"orders":[],"table_id":j.table_id,"order_time":j.order_time}
+                    grouped_orders[j.id]["orders"].append(i)
+        print(grouped_orders,"----------")
+        print(db_menu)
         return render_template(
             "admin/kitchen.html",
             grouped_orders=grouped_orders,
