@@ -305,6 +305,12 @@ def Cashier():
     print(table)
     return render_template("admin/cashier.html",table=table)
 
+@app.route("/admin/table_status")
+def table_status():
+    tables = Table.query.all()
+    table_data = {table.id: table.status for table in tables}
+    return jsonify(table_data)
+
 @app.route("/admin/serve", methods=['GET', 'POST'])
 def Server():
     if request.method == "POST":
