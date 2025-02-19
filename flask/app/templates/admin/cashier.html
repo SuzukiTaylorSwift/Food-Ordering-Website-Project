@@ -140,43 +140,43 @@
           bill(data);
         });
       });
+
       function updateTableStatus() {
-    $.getJSON("/admin/table_status", function (data) {
-      for (let tableId in data) {
-        let tableElement = $("#id" + tableId);
-        if (data[tableId] === "Taken") {
-          tableElement.removeClass("container").addClass("container-or");
-        } else {
-          tableElement.removeClass("container-or").addClass("container");
-        }
-      }
-    });
-  }
-
-  $(document).ready(function () {
-    setInterval(updateTableStatus, 3000);
-
-
-    $(".layout").on("click", "[id^=id]", function () {
-      let tableElement = $(this);
-      let table_id = tableElement.attr("id").replace("id", "");
-
-      if (tableElement.hasClass("container")) {
-        alert("โต๊ะว่าง ไม่สามารถดูบิลได้");
-        $("#bill").hide(); 
-        return; 
+        $.getJSON("/admin/table_status", function (data) {
+          for (let tableId in data) {
+            let tableElement = $("#id" + tableId);
+            if (data[tableId] === "Taken") {
+              tableElement.removeClass("container").addClass("container-or");
+            } else {
+              tableElement.removeClass("container-or").addClass("container");
+            }
+          }
+        });
       }
 
-      $.getJSON("/admin/all_data/" + table_id, function (data) {
-        if (data.order_list.length > 0) { 
-          $("#bill").show(); 
-          bill(data);
-        } else {
-          $("#bill").hide(); 
-        }
+      $(document).ready(function () {
+        setInterval(updateTableStatus, 3000);
+
+        $(".layout").on("click", "[id^=id]", function () {
+          let tableElement = $(this);
+          let table_id = tableElement.attr("id").replace("id", "");
+
+          if (tableElement.hasClass("container")) {
+            alert("โต๊ะว่าง ไม่สามารถดูบิลได้");
+            $("#bill").hide();
+            return;
+          }
+
+          $.getJSON("/admin/all_data/" + table_id, function (data) {
+            if (data.order_list.length > 0) {
+              $("#bill").show();
+              bill(data);
+            } else {
+              $("#bill").hide();
+            }
+          });
+        });
       });
-    });
-  });
     </script>
   </body>
 </html>

@@ -317,23 +317,20 @@ def Server():
         db_order_list = Order_table.query.all() 
         db_order = Order.query.all()
         db_menu = Menu.query.all()
-        filter_order = []
-
-        for i in db_order:
-            # หาคำสั่งที่มีสถานะ "Serving"
-            order_info = next((o for o in db_order if o.food_status == "Serving" and o == i), None)
-            
-            if order_info:  # ถ้ามี order_info ที่ตรงกับเงื่อนไข
-                print(i, order_info, "eiieieieie")
-                filter_order.append(order_info)
-
-        print(filter_order)
-
+        # จัดกลุ่ม order_list ตาม table_id
+        grouped_orders = {}
+        for i in db_order_list:
+            for j in db_order:
+                if i.order_id == j.id and j.food_status == "Serving":
+                    if j.id not in grouped_orders:
+                        grouped_orders[j.id] = {"orders":[],"table_id":j.table_id,"order_time":j.order_time}
+                    grouped_orders[j.id]["orders"].append(i)
+        print(grouped_orders,"----------")
+        print(db_menu)
         return render_template(
             "admin/serve.html",
-            menu=db_menu,
-            order=filter_order,
-            order_list = db_order_list
+            grouped_orders=grouped_orders,
+            menu=db_menu
         )
 
 
