@@ -18,8 +18,11 @@ from app.models.table import Table
 from app.forms import MenuForm
 import os
 #excle
+# import openpyxl
 # from openpyxl import Workbook
-# from app.models.contact import Contact
+# from datetime import datetime, timedelta
+# from sqlalchemy.orm import sessionmaker
+# from sqlalchemy import create_engine
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -314,8 +317,8 @@ def Server():
                 db.session.commit()
             return "change already"
     else:
-        db_order_list = Order_table.query.all() 
-        db_order = Order.query.all()
+        db_order_list = Order_table.active() 
+        db_order = Order.active()
         db_menu = Menu.query.all()
         # จัดกลุ่ม order_list ตาม table_id
         grouped_orders = {}
@@ -348,8 +351,8 @@ def Kitchen():
             db.session.commit()
         return "change already"
     else:
-        db_order_list = Order_table.query.all() 
-        db_order = Order.query.all()
+        db_order_list = Order_table.active()
+        db_order = Order.active()
         db_menu = Menu.query.all()
         # จัดกลุ่ม order_list ตาม table_id
         grouped_orders = {}
@@ -366,8 +369,105 @@ def Kitchen():
             grouped_orders=grouped_orders,
             menu=db_menu
         )
+        
+#soft delete
+# @app.route("/restore-order/<int:order_id>", methods=["POST"])
+@app.route("/restore-order/<int:order_id>", methods=["POST"])
+def restore_order(order_id):
+    order = Order.query.get(order_id)
+    if order:
+        order.restore()
+        return {"message": f"Order {order_id} has been restored."}, 200
+    return {"error": "Order not found."}, 404
+
+@app.route("/delete-order/<int:order_id>", methods=["POST"])
+def soft_delete_order(order_id):
+    order = Order.query.get(order_id)
+    if order:
+        order.delete()
+        return {"message": f"Order {order_id} has been marked as deleted."}, 200
+    return {"error": "Order not found."}, 404
+
+@app.route("/restore-order-list/<int:order_id>", methods=["POST"])
+def restore_order_list(order_id):
+    order_list = Order_table.query.get(order_id)
+    if order_list:
+        order_list.restore()
+        return {"message": f"Order {order_id} has been restored."}, 200
+    return {"error": "Order not found."}, 404
+
+@app.route("/delete-order-list/<int:order_id>", methods=["POST"])
+def soft_delete_order_list(order_id):
+    order_list = Order_table.query.get(order_id)
+    if order_list:
+        order_list.delete()
+        return {"message": f"Order {order_id} has been marked as deleted."}, 200
+    return {"error": "Order not found."}, 404
 
 
+@app.route("/record", methods=["GET","POST"])
+def save_data():
+    # import gspread
+    # from oauth2client.service_account import ServiceAccountCredentials
+    # import pandas as pd
+    
+
+    # # ตั้งค่า Google Sheets API
+    # scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    # creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    # client = gspread.authorize(creds)
+
+    # # เปิด Google Sheet (ใช้ชื่อที่คุณตั้งใน Google Sheets)
+    # spreadsheet = client.open("Your Google Sheet Name")
+    # worksheet = spreadsheet.get_worksheet(0)  # เลือก Sheet แรก
+
+    # ดึงข้อมูลจากฐานข้อมูล
+    if request.method == "POST":
+        order = Order.active()
+        order_list = Order_table.active()
+        menu = Menu.query.all()
+        for i in order_list:
+            soft_delete_order_list(i.id)
+            # print(i)
+        for i in order:
+            # print(i)    
+            soft_delete_order(i.id)
+        print('---------------done soft delete')
+        return "done"    
+        # print(data_list
+    else:
+        data_list = []
+        order_list = Order_table.nonActive() 
+        order = Order.nonActive()
+        menu = Menu.query.all()
+        for i in order_list:
+            if order[i.order_id-1].takeaway == True:
+                buy = "take home"
+            else:
+                buy = "eat in"
+            data = {"ID": i.id, "menu": menu[i.menu_id-1].nameFood, "options": i.option,"note":i.note,"quantity":i.quantity,
+                    "price":i.totalPrice,"buy":buy}
+            
+            data_list.append(data)
+    # แปลงข้อมูลเป็น Pandas DataFrame
+    # df = pd.DataFrame(data_list)
+
+    # # ส่งข้อมูลไปยัง Google Sheets
+    # worksheet.clear()
+    # worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+
+    # print("Data has been successfully exported to Google Sheets!")
+        return render_template("record.html",data_list=data_list)
+
+@app.route("/restore",methods=["POST"])
+def restore():
+    order = Order.nonActive()
+    order_list = Order_table.nonActive()
+    for i in order:
+        restore_order(i.id)
+    for i in order_list:
+        restore_order_list(i.id)
+    return "done restore data"
 
 #login page
 @app.route('/admin')
@@ -496,3 +596,4 @@ def admin_logout():
     return redirect(url_for('admin_index'))
 
 #end login
+

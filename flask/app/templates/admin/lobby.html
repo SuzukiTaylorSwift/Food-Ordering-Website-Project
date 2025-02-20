@@ -43,6 +43,20 @@
       >
         MENU
       </button>
+      <button
+        class="w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
+        id="save"
+        type="button"
+      >
+        SAVE
+      </button>
+      <button
+        class="w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
+        id="restore"
+        type="button"
+      >
+        RESTORE
+      </button>
     </div>
 
     <script>
@@ -66,7 +80,47 @@
         $("#end").click(function () {
           alert(end);
         });
+        $("#save").click(function () {
+          if (confirm("คุณต้องการบันทึกข้อมูลหรือไม่?")) {
+            save_data();
+            alert("บันทึกข้อมูลเรียบร้อย!");
+          } else {
+            alert("ยกเลิกการบันทึก!");
+          }
+        });
+        $("#restore").click(function () {
+          if (confirm("จะกู้คืนจริงบ่?")) {
+            restore_data();
+            alert("แต้!");
+          } else {
+            alert("บ่!");
+          }
+        });
       });
+      function save_data() {
+        $.ajax({
+          url: "/record", // เปลี่ยน URL ตามเซิร์ฟเวอร์ของคุณ
+          type: "POST",
+          success: function (response) {
+            alert("Data saved successfully!");
+          },
+          error: function (error) {
+            alert("Error saving data!");
+          },
+        });
+      }
+      function restore_data() {
+        $.ajax({
+          url: "/restore", // เปลี่ยน URL ตามเซิร์ฟเวอร์ของคุณ
+          type: "POST",
+          success: function (response) {
+            alert("Data saved successfully!");
+          },
+          error: function (error) {
+            alert("Error saving data!");
+          },
+        });
+      }
     </script>
   </body>
 </html>

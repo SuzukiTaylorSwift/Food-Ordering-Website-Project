@@ -4,6 +4,8 @@ from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
+
+
 app = Flask(__name__, static_folder='static')
 app.url_map.strict_slashes = False
 
