@@ -34,7 +34,7 @@ if app.debug:
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
-login_manager.login_view = 'lab11_login'
+login_manager.login_view = 'admin_login'
 login_manager.init_app(app)
 
 @app.before_request

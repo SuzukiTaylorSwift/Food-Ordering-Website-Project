@@ -50,7 +50,11 @@ def db_connection():
 
 #db (upload)
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload_image():
+    if current_user.role != "admin":
+        flash("You do not have permission.", 'error')
+        return redirect(url_for('admin'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
     form = MenuForm()  # สร้างฟอร์มจาก MenuForm
     if form.validate_on_submit():  # ตรวจสอบว่าฟอร์มถูกส่งและผ่านการตรวจสอบ
         # ตรวจสอบว่าไฟล์ถูกส่งมาหรือไม่
@@ -86,7 +90,11 @@ def upload_image():
     return render_template('admin/upload_pages/upload.html', form=form)  # ส่งฟอร์มไปที่ template
 
 @app.route('/images')
+@login_required
 def display_images():
+    if current_user.role != "admin":
+        flash("You do not have permission.", 'error')
+        return redirect(url_for('admin'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
     images = Menu.query.all()
     for item in images:
         print(item.image_path)
@@ -94,7 +102,12 @@ def display_images():
     return render_template('admin/upload_pages/gallery.html', images=images)
 
 @app.route('/delete_menu/<int:menu_id>', methods=['POST'])
+@login_required
 def delete_menu(menu_id):
+    if current_user.role != "admin":
+            flash("You do not have permission.", 'error')
+            return redirect(url_for('admin'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
+    
     menu_item = Menu.query.get_or_404(menu_id)
 
     # ลบไฟล์รูปภาพออกจากระบบ (ถ้ามี)
@@ -107,7 +120,12 @@ def delete_menu(menu_id):
     return redirect(url_for('display_images'))
 
 @app.route('/edit_menu/<int:menu_id>', methods=['GET', 'POST'])
+@login_required
 def edit_menu(menu_id):
+    if current_user.role != "admin":
+        print("eiei")
+        flash("You do not have permission.", 'error')
+        return redirect(url_for('admin'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
     menu_item = Menu.query.get_or_404(menu_id)  # ดึงข้อมูลเมนูจาก ID
     form = MenuForm(obj=menu_item)  # กำหนดค่าเริ่มต้นให้ฟอร์ม
 
@@ -144,6 +162,7 @@ def edit_menu(menu_id):
 #end upload
 #client
 @app.route('/takeAway', methods=['GET', 'POST'])
+@login_required
 def takeAway():
     if request.method == "POST":
         data = request.get_json()  # รับ JSON request
@@ -206,6 +225,7 @@ def order_for_table(table_number):
     
 #all menu
 @app.route('/table/data')
+@login_required
 def all_menu():
     data = []
     db_contacts = Menu.query.all() 
@@ -227,12 +247,14 @@ def all_menu():
 #end client
 #admin 
 @app.route('/admin/lobby')
+@login_required
 def admin():
     return render_template('admin/lobby.html')
 
 
 #all data
 @app.route("/admin/all_data/<int:table_id>")
+@login_required
 def all_data(table_id):
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
     order = Order.query.filter(Order.table_id == table_id, Order.paid_status != "Paided").all()
@@ -253,6 +275,7 @@ def all_data(table_id):
 
 #take home
 @app.route("/admin/all_data")
+@login_required
 def all_data_takehome():
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
     order = Order.query.filter(Order.table_id == None,Order.paid_status != "Paided").all()
@@ -275,6 +298,7 @@ def all_data_takehome():
     
 
 @app.route("/admin/cashier", methods=['GET', 'POST'])
+@login_required
 def Cashier():
     if request.method == "POST":
         data = request.get_json()  
@@ -300,12 +324,14 @@ def Cashier():
     return render_template("admin/cashier.html",table=table)
 
 @app.route("/admin/table_status")
+@login_required
 def table_status():
     tables = Table.query.all()
     table_data = {table.id: table.status for table in tables}
     return jsonify(table_data)
 
 @app.route("/admin/serve", methods=['GET', 'POST'])
+@login_required
 def Server():
     if request.method == "POST":
         if request.method == "POST":
@@ -341,6 +367,7 @@ def Server():
     
 
 @app.route("/admin/kitchen", methods=['GET', 'POST'])
+@login_required
 def Kitchen():
     if request.method == "POST":
         result = request.get_json()
@@ -374,6 +401,7 @@ def Kitchen():
 #soft delete
 # @app.route("/restore-order/<int:order_id>", methods=["POST"])
 @app.route("/restore-order/<int:order_id>", methods=["POST"])
+@login_required
 def restore_order(order_id):
     order = Order.query.get(order_id)
     if order:
@@ -382,6 +410,7 @@ def restore_order(order_id):
     return {"error": "Order not found."}, 404
 
 @app.route("/delete-order/<int:order_id>", methods=["POST"])
+@login_required
 def soft_delete_order(order_id):
     order = Order.query.get(order_id)
     if order:
@@ -390,6 +419,7 @@ def soft_delete_order(order_id):
     return {"error": "Order not found."}, 404
 
 @app.route("/restore-order-list/<int:order_id>", methods=["POST"])
+@login_required
 def restore_order_list(order_id):
     order_list = Order_table.query.get(order_id)
     if order_list:
@@ -398,6 +428,7 @@ def restore_order_list(order_id):
     return {"error": "Order not found."}, 404
 
 @app.route("/delete-order-list/<int:order_id>", methods=["POST"])
+@login_required
 def soft_delete_order_list(order_id):
     order_list = Order_table.query.get(order_id)
     if order_list:
@@ -407,6 +438,7 @@ def soft_delete_order_list(order_id):
 
 
 @app.route("/record", methods=["GET","POST"])
+@login_required
 def save_data():
     # import gspread
     # from oauth2client.service_account import ServiceAccountCredentials
@@ -461,6 +493,7 @@ def save_data():
         return render_template("record.html",data_list=data_list)
 
 @app.route("/restore",methods=["POST"])
+@login_required
 def restore():
     order = Order.nonActive()
     order_list = Order_table.nonActive()
@@ -496,7 +529,7 @@ def admin_login():
         login_user(user, remember=remember)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            #login done -> profile lobby page
+            #login done ->  lobby page
             next_page = url_for('admin')
         return redirect(next_page)
 
@@ -507,13 +540,9 @@ def admin_login():
 @app.route('/admin/signup', methods=('GET', 'POST'))
 @login_required
 def admin_signup():
-    role = AuthUser.query.all()
-    # print(current_user.role == "admin")
     if current_user.role != "admin":
-        # flash("You do not have permission to signup.", 'error') ทำไม่ได้
-        return redirect(url_for('admin_profile'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
-    
-    print(role)
+        flash("You do not have permission.", 'error')
+        return redirect(url_for('admin'))  # เปลี่ยนเส้นทางไปที่หน้าโปรไฟล์
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(str(result))
