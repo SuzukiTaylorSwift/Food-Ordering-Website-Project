@@ -471,10 +471,7 @@ def restore():
     return "done restore data"
 
 #login page
-@app.route('/admin')
-def admin_index():
-    print('aaa')
-    return render_template('admin/login_pages/index.html')
+
 
 @app.route('/admin/login', methods=('GET', 'POST'))
 def admin_login():
@@ -505,9 +502,6 @@ def admin_login():
 
     return render_template('admin/login_pages/login.html')
 
-@app.route('/admin/profile')
-def admin_profile():
-   return render_template('admin/login_pages/profile.html')
 
 
 @app.route('/admin/signup', methods=('GET', 'POST'))
@@ -594,7 +588,7 @@ def gen_avatar_url(email, name):
 @login_required
 def admin_logout():
     logout_user()
-    return redirect(url_for('admin_index'))
+    return redirect(url_for('admin_login'))
 
 #end login
 
