@@ -3,6 +3,9 @@ from flask import (jsonify, render_template,
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
+from datetime import datetime, timezone, timedelta
+
+
 from sqlalchemy.sql import text
 from flask_login import login_user, login_required, logout_user,current_user
 from app import app
@@ -17,12 +20,21 @@ from app.models.table import Table
 #end db
 from app.forms import MenuForm
 import os
+from app import scheduler
 #excle
 # import openpyxl
 # from openpyxl import Workbook
 # from datetime import datetime, timedelta
 # from sqlalchemy.orm import sessionmaker
 # from sqlalchemy import create_engine
+
+#set time
+# def job_function():
+    # print("Job executed!")
+
+# การตั้งเวลา job ทุก 1 นาที
+# scheduler.add_job(id='my_job', func=job_function, trigger='interval', minutes=0.5)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -249,6 +261,7 @@ def all_menu():
 @app.route('/admin/lobby')
 @login_required
 def admin():
+    
     return render_template('admin/lobby.html')
 
 
@@ -257,7 +270,11 @@ def admin():
 @login_required
 def all_data(table_id):
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
-    order = Order.query.filter(Order.table_id == table_id, Order.paid_status != "Paided").all()
+    order = Order.query.filter(
+            Order_table.is_deleted == False,
+            Order.table_id == table_id,
+            Order.paid_status != "Paided"
+        ).all()
     
     # ฟิลเตอร์ข้อมูลจาก Order_table โดยเลือกเฉพาะที่มี order_id ตรงกับ id ของ order ที่เลือก
     order_list = Order_table.query.filter(Order_table.order_id.in_([o.id for o in order])).all()
@@ -278,7 +295,11 @@ def all_data(table_id):
 @login_required
 def all_data_takehome():
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
-    order = Order.query.filter(Order.table_id == None,Order.paid_status != "Paided").all()
+    order = Order.query.filter(
+            Order_table.is_deleted == False,
+            Order.table_id == None,
+            Order.paid_status != "Paided"
+        ).all()
     
     # ฟิลเตอร์ข้อมูลจาก Order_table โดยเลือกเฉพาะที่มี order_id ตรงกับ id ของ order ที่เลือก
     order_list = Order_table.query.filter(Order_table.order_id.in_([o.id for o in order])).all()
@@ -307,7 +328,11 @@ def Cashier():
             table_id = None
         else:
             table_id = data.get('table_id') 
-        order = Order.query.filter(Order.table_id == table_id, Order.paid_status != "Paided").all()
+        order = Order.query.filter(
+            Order_table.is_deleted == False,
+            Order.table_id == table_id,
+            Order.paid_status != "Paided"
+        ).all()
         print(order,"orderrrrr",table_id) 
         for i in order:
             i.paid_status = "Paided"
@@ -397,7 +422,39 @@ def Kitchen():
             grouped_orders=grouped_orders,
             menu=db_menu
         )
+#hard delete
+def hard_delete():
+    from app import app  # Import Flask app
+
+    with app.app_context():  # สร้าง application context
+        print("Executing hard delete...")  # Debugging log
+        THAILAND_TZ = timezone(timedelta(hours=7))  # Thailand time zone
+        current_time = datetime.now(THAILAND_TZ)
+        threshold_date = current_time - timedelta(days=2)
         
+        # ลบ Order_table
+        deleted_records = Order_table.query.filter(
+            Order_table.is_deleted == True,
+            Order_table.deleted_at < threshold_date
+        ).all()
+        for record in deleted_records:
+            db.session.delete(record)
+        db.session.commit()
+
+        # ลบ Order
+        deleted_records = Order.query.filter(
+            Order.is_deleted == True,
+            Order.deleted_at < threshold_date
+        ).all()
+        for record in deleted_records:
+            db.session.delete(record)
+        db.session.commit()
+
+        print("-------hard delete completed-------")
+
+#auto call hard delete function every day.
+scheduler.add_job(id='delete', func=hard_delete, trigger='interval', days=1)
+
 #soft delete
 # @app.route("/restore-order/<int:order_id>", methods=["POST"])
 @app.route("/restore-order/<int:order_id>", methods=["POST"])
@@ -440,33 +497,23 @@ def soft_delete_order_list(order_id):
 @app.route("/record", methods=["GET","POST"])
 @login_required
 def save_data():
-    # import gspread
-    # from oauth2client.service_account import ServiceAccountCredentials
-    # import pandas as pd
     
-
-    # # ตั้งค่า Google Sheets API
-    # scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    # creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
-    # client = gspread.authorize(creds)
-
-    # # เปิด Google Sheet (ใช้ชื่อที่คุณตั้งใน Google Sheets)
-    # spreadsheet = client.open("Your Google Sheet Name")
-    # worksheet = spreadsheet.get_worksheet(0)  # เลือก Sheet แรก
-
+    data_list = []
     # ดึงข้อมูลจากฐานข้อมูล
     if request.method == "POST":
         order = Order.active()
         order_list = Order_table.active()
         menu = Menu.query.all()
         for i in order_list:
+            
             soft_delete_order_list(i.id)
             # print(i)
         for i in order:
             # print(i)    
             soft_delete_order(i.id)
         print('---------------done soft delete')
-        return "done"    
+        return "done soft delete"
+        # return "done"    
         # print(data_list
     else:
         data_list = []
@@ -479,17 +526,9 @@ def save_data():
             else:
                 buy = "eat in"
             data = {"ID": i.id, "menu": menu[i.menu_id-1].nameFood, "options": i.option,"note":i.note,"quantity":i.quantity,
-                    "price":i.totalPrice,"buy":buy}
+                    "price":i.totalPrice,"buy":buy,"time":order[i.order_id-1].order_time}
             
             data_list.append(data)
-    # แปลงข้อมูลเป็น Pandas DataFrame
-    # df = pd.DataFrame(data_list)
-
-    # # ส่งข้อมูลไปยัง Google Sheets
-    # worksheet.clear()
-    # worksheet.update([df.columns.values.tolist()] + df.values.tolist())
-
-    # print("Data has been successfully exported to Google Sheets!")
         return render_template("record.html",data_list=data_list)
 
 @app.route("/restore",methods=["POST"])

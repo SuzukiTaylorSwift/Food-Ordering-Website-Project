@@ -1,8 +1,9 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
 from .table import Table
-from datetime import datetime
+from datetime import datetime, timedelta
 
+THAILAND_OFFSET = timedelta(hours=7)
 class Order(db.Model,SerializerMixin):
     __tablename__ = "orders"
     id = db.Column(db.Integer,primary_key=True)
@@ -37,7 +38,7 @@ class Order(db.Model,SerializerMixin):
         
     def delete(self):
         self.is_deleted = True
-        self.deleted_at = datetime.utcnow()  # กำหนดเวลาเมื่อข้อมูลถูกลบ
+        self.deleted_at = datetime.utcnow() + THAILAND_OFFSET # กำหนดเวลาเมื่อข้อมูลถูกลบ
         db.session.commit()
 
     # ฟังก์ชันที่ใช้ในการกู้คืนข้อมูล

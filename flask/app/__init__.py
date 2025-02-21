@@ -3,6 +3,8 @@ from flask import Flask,request,redirect
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_apscheduler import APScheduler
+
 
 
 
@@ -36,6 +38,10 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.login_view = 'admin_login'
 login_manager.init_app(app)
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
 
 @app.before_request
 def remove_trailing_slash():
