@@ -272,6 +272,7 @@ def all_data_takehome():
         "order_list": [o.to_dict() for o in order_list],  
         "menu": [m.to_dict() for m in menu]  
     })
+    
 
 @app.route("/admin/cashier", methods=['GET', 'POST'])
 def Cashier():

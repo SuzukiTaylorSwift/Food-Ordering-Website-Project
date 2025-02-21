@@ -6,9 +6,56 @@
       rel="stylesheet"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/takeAway.css') }}"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body class="bg-green-300">
-    <h1 class="text-center my-5 text-xl font-bold">Welcome na ja takeAway</h1>
+  <body>
+    <div class="table-title">
+      <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
+      <h2>COUNTER</h2>
+      <a href="/admin/login" class="logout-button">Logout</a>
+    </div>
+    <div class="flex flex-row items-center justify-start ml-50">
+      <div class="container-left">
+        <div class="text">MAIN</div>
+        <div class="text">MAIN</div>
+        <div class="text">MAIN</div>
+
+      </div>
+      <div class="container-main">
+        <div class="text-main">MAIN</div>
+        <div id="confirm"></div>
+        <div class="layout">
+          {% for i in menus %}
+          <div class="container-food" id="id{{i.id}}">
+              <div class="img">
+                <img
+                  src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
+                  alt="Picture"
+                  class="w-32 h-32 object-cover rounded-md"
+                />
+              </div>
+    
+              <div class="mt-4 text-center">
+                <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
+                <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
+                <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
+              </div>
+
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+
+    <!-- <h1 class="text-center my-5 text-xl font-bold">Welcome na ja takeAway</h1>
     <div id="confirm"></div>
     <div class="grid grid-cols-2 gap-4">
       {% for i in menus %}
@@ -36,7 +83,7 @@
       >
         <h1>take home</h1>
       </div>
-    </div>
+    </div> -->
 
     <script>
       // Example: Set table_id dynamically
