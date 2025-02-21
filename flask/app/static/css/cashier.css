@@ -341,7 +341,7 @@ h6{
 .logout-button {
   background-color: transparent; 
   color: #f5f5f5; 
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
   padding: 5px 10px;
@@ -349,8 +349,7 @@ h6{
   text-decoration: none;
   position: absolute;
   right: 30px;
-  top: 3px;
-  transition: font-size 0.2s ease-in-out;
+
 }
 
 

@@ -6,6 +6,14 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>Admin Navigation</title>
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/lobby.css') }}"
+    />
+    <link
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+   />
   </head>
   <body class="bg-white flex flex-col items-center min-h-screen">
     <!-- Navbar -->
@@ -17,49 +25,52 @@
       {% endfor %}
     </ul>
     {% endif %} {% endwith %}
-    <div class="bg-green-700 w-full h-16 flex items-center px-4">
-      <div class="w-6 h-6 bg-white rounded-full"></div>
+    <div class="table-title">
+      <a href="/admin/lobby"><i class="bx bx-chevrons-left bx-md"></i> </a>
+      <h3>LOBBY</h3>
+      <a href="/admin/login" class="logout-button">Logout</a>
+      <a href="/admin/signup" class="logout-button-s">Signup</a>
     </div>
 
     <!-- Button Grid -->
-    <div class="grid grid-cols-2 gap-6 mt-12">
+    <div class="padding grid grid-cols-2 gap-10 mt-12">
       <button
-        class="w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
+        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
         id="cashier"
         type="button"
       >
         ORDER
       </button>
       <button
-        class="w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
+        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
         id="server"
         type="button"
       >
         TABLE
       </button>
       <button
-        class="w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
+        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
         id="cook"
         type="button"
       >
         COUNTER
       </button>
       <button
-        class="w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
+        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
         id="add"
         type="button"
       >
-        MENU
+        ADD MENU
       </button>
       <button
-        class="w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
+        class="container w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
         id="save"
         type="button"
       >
         SAVE
       </button>
       <button
-        class="w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
+        class="container w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
         id="restore"
         type="button"
       >
