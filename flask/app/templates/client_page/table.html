@@ -2,12 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- <meta name="screen-orientation" content="portrait">
-    <meta name="orientation" content="portrait">
-     -->
     <title>KHOW-BAN-CHAN:Table-{{ table_number }}</title>
 
     <!-- Favicon -->
@@ -16,13 +12,14 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap" rel="stylesheet">
 
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
@@ -38,164 +35,260 @@
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
   </head>
 
   <body>
 
-    <header class="header1">
-      <div class="container-fluid bg-white py-2 fixed top-0 w-full z-50">
-        <h1 class="text-xl font-bold">KHOW BAN CHAN : TABLE {{ table_number }}</h1>
-      </div>
-    </header>
-    
-    <!-- <header class="header1">
-      <div class="container-fluid bg-blue-600 text-white py-3 fixed top-0 w-full z-50">
-        <h1 class="text-xl font-bold ml-4">Khow Ban Chan : Table {{ table_number }}</h1>
-      </div>
-    </header>-->
-     
-
-    <header>
-      <div class="container-fluid bg-white fixed top-12 w-full z-40" style="padding: 0px 15px;">
-        <div class="container-xxl position-relative p-0 w-100">
-          <nav class="navbar navbar-expand-lg d-flex justify-content-between w-100" style="padding: 0px 0px;">
-            <div class="d-flex flex-nowrap overflow-auto w-100" >
-              <button id="searchToggle" class="btn">
-                <i class="fa fa-search"></i>
-              </button>
-              <a href="#special" class="nav-link tab-link active">Special</a>
-              <a href="#main" class="nav-link tab-link">Main</a>
-              <a href="#drinks" class="nav-link tab-link">Drinks</a>
-              <a href="#appetizer" class="nav-link tab-link">Appetizer</a>
-            </div>
-          </nav>
+    <div class="menu page" id="menu-page">
+      <header class="header1">
+        <div class="container-fluid bg-white py-2 fixed top-0 w-full z-50">
+          <h1 class="text-xl font-bold">KHOW BAN CHAN : TABLE {{ table_number }}</h1>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <div class="hidden" id="tableNum">{{table_number}}</div>
-    <div id="confirm"></div>
-
-    <!-- <div class="grid grid-cols-2 gap-4">
-      {% for i in menus %}
-      <div class="w-full mt-10" id="id{{i.id}}">
-        <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
-          <div class="flex justify-center">
-            <img
-              src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
-              alt="Picture"
-              class="w-32 h-32 object-cover rounded-md"
-            />
-          </div>
-
-          <div class="mt-4 text-center">
-            <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
-            <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
-            <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div> -->
-    
-    
-    <div class="container-fluid bg-white py-2 top-16 w-full z-40">
-
-      <div class="special" id="special">
-        <!-- <h2 class="text-left text-xl mb-4">Special Menu</h2> -->
-        <div class="menu-container flex flex-col gap-2">
-          <div class="menu-item-spc">
-            <img src="/static/img/scpfood_1.png" class="spcfood" alt="Special Food 1">
-          </div>
-          <div class="menu-item-spc">
-            <img src="/static/img/scpfood_2.png" class="spcfood" alt="Special Food 2">
-          </div>
-          <div class="menu-item-spc">
-            <img src="/static/img/scpfood_3.png" class="spcfood" alt="Special Food 3">
-          </div>
-        </div>
-      </div>
-
-
-      <div class="food" id="main">
-        <h2 class="text-left text-xl mm">
-          Main
-        </h2>
-
-        <div class="menu-container">
-          {% for item in menus %}
-            {% if item.type == 'food' %}
-            <div class="menu-item" id="id{{item.id}}">
-              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
-              <div class="menu-info">
-                <p class="menu-title">{{ item.nameFood }}</p>
-                <p class="menu-description">{{ item.description }}</p>
-                <p class="menu-price">฿{{ item.price }}</p>
-                <!-- <button class="add-to-cart-btn" data-id="{{ item.id }}" data-name="{{ item.nameFood }}" data-price="{{ item.price }}" data-type="{{ item.type }}">เพิ่มลงตะกร้า</button> -->
+      <header>
+        <div class="container-fluid bg-white fixed top-12 w-full z-40" style="padding: 0px 15px;">
+          <div class="container-xxl position-relative p-0 w-100">
+            <nav class="navbar navbar-expand-lg d-flex justify-content-between w-100" style="padding: 0px 0px;">
+              <div class="d-flex flex-nowrap overflow-auto w-100" >
+                <a href="#main" class="nav-link font-bold tab-link active">MAIN</a>
+                <a href="#drinks" class="nav-link font-bold tab-link ">DRINKS</a>
+                <a href="#appetizer" class="nav-link font-bold tab-link">APPETIZER</a>
               </div>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <div class="hidden" id="tableNum">{{table_number}}</div>
+      <div id="confirm"></div>
+
+      <div class="spc-new main-menu container-fluid bg-white py-2 top-16 w-full z-40">
+
+        <div class="special" id="special">
+          <div class="menu-container-spc flex flex-col gap-1">
+            <div class="menu-item-spc">
+              <img src="/static/img/scpfood_1.png" class="spcfood" alt="Special Food 1">
             </div>
-            {% endif %}
-          {% endfor %}
+            <div class="menu-item-spc">
+              <img src="/static/img/scpfood_4.png" class="spcfood" alt="Special Food 2">
+            </div>
+            <div class="menu-item-spc">
+              <img src="/static/img/scpfood_3.png" class="spcfood" alt="Special Food 3">
+            </div>
+          </div>
         </div>
       </div>
-    
 
-      <div class="drink" id="drinks">
-        <h2 class="text-left text-xl mm">
-          Drinks
-        </h2>
+      <div class="main-menu container-fluid bg-white py-2 top-16 w-full z-40">
+        <div class="food" id="main">
+          <h2 class="text-left text-xl font-bold mm">
+            MAIN
+          </h2>
 
-        <div class="menu-container">
-          {% for item in menus %}
-            {% if item.type == 'drink' %}
-            <div class="menu-item" id="id{{item.id}}">
-              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
-              <div class="menu-info">
-                <p class="menu-title">{{ item.nameFood }}</p>
-                <p class="menu-description">{{ item.description }}</p>
-                <p class="menu-price">฿{{ item.price }}</p>
-                <!-- <button class="add-to-cart-btn" data-id="{{ item.id }}" data-name="{{ item.nameFood }}" data-price="{{ item.price }}" data-type="{{ item.type }}">เพิ่มลงตะกร้า</button> -->
+          <div class="menu-container">
+            {% for item in menus %}
+              {% if item.type == 'food' %}
+              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}')">
+                <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+                <div class="menu-info">
+                  <p class="menu-title">{{ item.nameFood }}</p>
+                  <p class="menu-description">{{ item.description }}</p>
+                  <p class="menu-price">฿{{ item.price }}</p>
+                </div>
               </div>
-            </div>
-            {% endif %}
-          {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
       </div>
+      
+      <div class="main-menu container-fluid bg-white py-2 top-16 w-full z-40">
+        <div class="drink" id="drinks">
+          <h2 class="text-left text-xl font-bold mm">
+            DRINKS
+          </h2>
 
-      <div class="appetizer" id="appetizer">
-        <h2 class="text-left text-xl mm">
-          Appetizer
-        </h2>
-
-        <div class="menu-container">
-          {% for item in menus %}
-            {% if item.type == 'appetizer' %}
-            <div class="menu-item" id="id{{item.id}}">
-              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
-              <div class="menu-info">
-                <p class="menu-title">{{ item.nameFood }}</p>
-                <p class="menu-description">{{ item.description }}</p>
-                <p class="menu-price">฿{{ item.price }}</p>
-                <!-- <button class="add-to-cart-btn" data-id="{{ item.id }}" data-name="{{ item.nameFood }}" data-price="{{ item.price }}" data-type="{{ item.type }}">เพิ่มลงตะกร้า</button> -->
+          <div class="menu-container">
+            {% for item in menus %}
+              {% if item.type == 'drink' %}
+              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}')">
+                <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+                <div class="menu-info">
+                  <p class="menu-title">{{ item.nameFood }}</p>
+                  <p class="menu-description">{{ item.description }}</p>
+                  <p class="menu-price">฿{{ item.price }}</p>
+                </div>
               </div>
-            </div>
-            {% endif %}
-          {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
       </div>
+      
+      <div class="main-menu container-fluid bg-white py-2 top-16 w-full z-40">
+        <div class="appetizer" id="appetizer">
+          <h2 class="text-left text-xl font-bold mm">
+            APPETIZER
+          </h2>
+
+          <div class="menu-container">
+            {% for item in menus %}
+              {% if item.type == 'appetizer' %}
+              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}')">
+                <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+                <div class="menu-info">
+                  <p class="menu-title">{{ item.nameFood }}</p>
+                  <p class="menu-description">{{ item.description }}</p>
+                  <p class="menu-price">฿{{ item.price }}</p>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div id="cart-bar" class="cart-bar fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-100">
+        <div class="container-bar">
+          <!-- <h3 class="text-lg mb-2">My Basket</h3> -->
+          <ul id="cart-items" class="mb-2"></ul>
+          <button id="checkout" class="bg-blue-500 text-white px-4 py-2 rounded w-full">ยืนยันการสั่งซื้อ</button>
+        </div>
+      </div>
+
     </div>
 
 
+    <div class="option page" id="options-page">
+      <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+        <header class="fixed top-0 left-0 w-full bg-white z-50 py-2">
+          <button onclick="goBack()" class="back-btn ml-2">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+        </header>
+    
+        <!-- บล็อกรูปภาพ -->
+        <div class="menu-img-wrapper">
+          <div class="menu-img-bar" id="menu-img">
+          </div>
+        </div>
+      </div>
+    
+      <!-- บล็อกตัวเลือก -->
+      <div class="options-container container-fluid py-2 top-16 w-full z-40">
+        <div class="otp container-bar">
+          <ul id="food-name" class="name-f-o mb-2 mt-2 font-bold"></ul>
+        </div>
+  
+        <div class="mb-2">
+          <label class="block mt-1 font-bold">Ingredient</label>
+          <div class="otp flex flex-col">
+            <label class="flex justify-between">
+              <span><input type="radio" name="ingredient" value="หมู" class="option-radio" data-price="0"> Pork</span> <span>฿0</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="ingredient" value="เนื้อ" class="option-radio" data-price="10"> Beef</span> <span>฿10</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="ingredient" value="หมูกรอบ" class="option-radio" data-price="10"> Crispy Pork</span> <span>฿10</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="ingredient" value="กุ้ง" class="option-radio" data-price="10"> Shrimp</span> <span>฿10</span>
+            </label>
+          </div>
+        
+          <label class="block mt-1 font-bold">Size</label>
+          <div class="otp flex flex-col">
+            <label class="flex justify-between">
+              <span><input type="radio" name="size" value="ธรรมดา" class="option-radio" data-price="0"> S</span> <span>฿0</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="size" value="พิเศษ" class="option-radio" data-price="10"> M</span> <span>฿10</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="size" value="พิเศษมาก" class="option-radio" data-price="20"> L</span> <span>฿20</span>
+            </label>
+          </div>
+        
+          <label class="block mt-1 font-bold">Spicy</label>
+          <div class="otp flex flex-col">
+            <label class="flex justify-between">
+              <span><input type="radio" name="spiciness" value="ไม่เผ็ด" class="option-radio" data-price="0"> Not Spicy</span> <span>฿0</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="spiciness" value="เผ็ดน้อย" class="option-radio" data-price="0"> Less Spicy</span> <span>฿0</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="spiciness" value="เผ็ด" class="option-radio" data-price="0"> Spicy</span> <span>฿0</span>
+            </label>
+            <label class="flex justify-between">
+              <span><input type="radio" name="spiciness" value="เผ็ดมาก" class="option-radio" data-price="0"> Super Spicy</span> <span>฿0</span>
+            </label>
+          </div>
 
-    <!-- Bootstrap 5 -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+          <!-- เพิ่มช่องพิมพ์ข้อความเพิ่มเติม -->
+          <label class="block mt-1 font-bold">Additional Request</label>
+          <textarea name="additional-notes" class="w-full p-2 border border-gray-300 rounded-md" style="height: 50px;" placeholder="E.g. No veggies"></textarea>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
+        <!-- <div class="total-price text-xl font-bold py-2">
+          ราคา: ฿<span id="total-price">0</span>
+        </div> -->
+
+        <!-- ปุ่มลด-เพิ่มจำนวน -->
+        <div class="flex items-center space-x-4">
+          <button onclick="decreaseQuantity()" class="bg-gray-400 font-bold text-white w-12 h-12 rounded-full text-3xl flex items-center justify-center" style="outline: none;">
+            -
+          </button>
+          
+          <span id="quantity" class="text-xl font-bold">1</span>
+          
+          <button onclick="increaseQuantity()" class="bg-gray-400 font-bold text-white w-12 h-12 rounded-full text-3xl flex items-center justify-center" style="outline: none;">
+            +
+          </button>
+        </div>        
+      
+        <!-- ปุ่มใส่ตะกร้า -->
+        <button onclick="addToCart()" id="add-to-cart-btn" class="bag text-white w-full py-3 text-center font-bold rounded-lg con" disabled>
+          ADD : ฿<span id="total-price">0</span>
+        </button>
+      </div>
+      
+    </div>
+    
+    <!-- <div id="cart-bar" class="cart-bar fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-100">
+      <div class="container-bar">
+        <h3 class="text-lg mb-2">My Basket</h3>
+        <ul id="cart-items" class="mb-2"></ul>
+        <button id="checkout" class="bg-blue-500 text-white px-4 py-2 rounded w-full">ยืนยันการสั่งซื้อ</button>
+      </div>
+    </div> -->
+
+    <!-- <div class="confirm page" id="confrim-page">
+      <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+        <header>
+          <button onclick="goBack()" class="back-btn">&#8592;</button>
+        </header>
+      </div>
+    </div> -->
+
+
+
+
+    <!-- ล่างนี่คือ จาว่า ---------------------------------------------------------------------------------------------- -->
+
+
+
 
     <script>
 
+<<<<<<< HEAD
       
       // Example: Set table_id dynamically
       // var addCart = [];
@@ -366,24 +459,172 @@
       });
 
 
+=======
+>>>>>>> 29d99e1 (table)
       document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', function (event) {
           event.preventDefault();
-          // ลบ active จากทุกลิงก์
 
-          const targetId = this.getAttribute('href').substring(1); // ดึง id ของส่วนที่ต้องการไป
-          const targetElement = document.getElementById(targetId); // หาตำแหน่งของส่วนนี้ในหน้า
-          targetElement.scrollIntoView({
-            behavior: 'smooth', // เลื่อนอย่างนุ่มนวล
-            block: 'start' // ให้เลื่อนไปที่ตำแหน่งด้านบนสุดของ element
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+
+          const offset = 100; // ระยะห่างจากด้านบน
+          const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
           });
 
           document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
-          // เพิ่ม active ให้ลิงก์ที่ถูกคลิก
           this.classList.add('active');
-
-          
         });
+      });
+
+      // ตัวแปรเพื่อเก็บรายการอาหารที่เพิ่มลงในตะกร้า
+      let cart = [];
+      let basePrice = 0; // กำหนดให้ราคาอาหารมาจากเมนู
+      let quantity = 1; // จำนวนเริ่มต้น
+
+      function showOptions(id, name, price, image_path) {
+        document.getElementById('menu-page').style.display = 'none';
+        document.getElementById('options-page').style.display = 'block';
+        document.getElementById('cart-bar').style.display = 'none';
+
+        document.getElementById('food-name').innerHTML = `<li>${name}</li>`;
+
+        // กำหนดราคาพื้นฐานของอาหาร
+        basePrice = parseInt(price) || 0;
+
+        // อัปเดตการแสดงผลราคาเริ่มต้น
+        document.getElementById("total-price").textContent = basePrice;
+
+        const imgElement = document.createElement('img');
+        imgElement.src = image_path;
+        imgElement.alt = name;
+        imgElement.classList.add('menu-image');
+
+        const menuImgContainer = document.getElementById('menu-img');
+        menuImgContainer.innerHTML = '';
+        menuImgContainer.appendChild(imgElement);
+
+        // รีเซ็ตค่าของ radio button
+        document.querySelectorAll('input[name="ingredient"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="size"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="spiciness"]').forEach(el => el.checked = false);
+
+        // รีเซ็ตจำนวนให้เป็น 1
+        quantity = 1;
+        document.getElementById("quantity").textContent = quantity;
+        calculateTotalPrice();
+      }
+
+      function goBack() {
+        document.getElementById('options-page').style.display = 'none';  
+        document.getElementById('menu-page').style.display = 'block';
+        document.getElementById('cart-bar').style.display = 'block';
+        updateCartDisplay();
+      }
+
+      function addToCart() {
+        const name = document.getElementById('food-name').innerText;  
+        const ingredient = document.querySelector('input[name="ingredient"]:checked')?.value || "ปกติ"; 
+        const size = document.querySelector('input[name="size"]:checked')?.value || "ปกติ";  
+        const spiciness = document.querySelector('input[name="spiciness"]:checked')?.value || "ปกติ";  
+
+        cart.push({ name, ingredient, size, spiciness, quantity, total: calculateTotalPrice(true) });
+
+        showCartBar();
+        updateCartDisplay();
+        goBack();
+      }
+
+      function updateCartDisplay() {
+        const cartContainer = document.getElementById('cart-items');
+        cartContainer.innerHTML = '';  
+
+        if (cart.length > 0) {
+            cart.forEach(item => {
+                const cartItem = document.createElement('li');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `${item.name} (${item.ingredient}, ${item.size}, ${item.spiciness}) x${item.quantity} = ฿${item.total}`;
+                cartContainer.appendChild(cartItem);
+            });
+
+            document.getElementById('cart-bar').style.display = 'block';
+        } else {
+            document.getElementById('cart-bar').style.display = 'none';
+        }
+      }
+
+      function showCartBar() {
+        document.getElementById('cart-bar').style.display = 'block';  
+      }
+
+      // ฟังก์ชันคำนวณราคาอาหารรวม
+      // ฟังก์ชันคำนวณราคาอาหารรวมและตรวจสอบว่ามีการเลือกตัวเลือกหรือไม่
+      // ฟังก์ชันคำนวณราคาอาหารรวมและตรวจสอบว่ามีการเลือกตัวเลือกหรือไม่
+      function calculateTotalPrice(returnValue = false) {
+        let extraPrice = 0;
+        let isValid = true;
+
+        // เช็คว่าได้เลือก ingredient, size, spiciness หรือไม่
+        const ingredient = document.querySelector('input[name="ingredient"]:checked');
+        const size = document.querySelector('input[name="size"]:checked');
+        const spiciness = document.querySelector('input[name="spiciness"]:checked');
+
+        if (!ingredient || !size || !spiciness) {
+          isValid = false;
+        }
+
+        // ถ้าไม่ได้เลือกตัวเลือกใดๆ ก็จะทำให้ปุ่ม "ADD" ไม่สามารถกดได้
+        const addButton = document.getElementById("add-to-cart-btn");
+        addButton.disabled = !isValid;
+
+        // คำนวณราคา
+        document.querySelectorAll(".option-radio:checked").forEach(option => {
+          extraPrice += parseInt(option.getAttribute("data-price")) || 0;
+        });
+
+        let total = (basePrice + extraPrice) * quantity;
+        document.getElementById("total-price").textContent = total;
+
+        return returnValue ? total : null;
+      }
+
+
+      // เรียกใช้ `calculateTotalPrice()` เมื่อมีการเลือก option ใหม่
+      document.querySelectorAll(".option-radio").forEach(input => {
+        input.addEventListener("change", function () {
+            calculateTotalPrice();
+        });
+      });
+
+
+      // ฟังก์ชันเพิ่มจำนวน
+      function increaseQuantity() {
+        quantity++;
+        document.getElementById("quantity").textContent = quantity;
+        calculateTotalPrice();
+      }
+
+      // ฟังก์ชันลดจำนวน
+      function decreaseQuantity() {
+        if (quantity > 1) {  
+          quantity--;
+          document.getElementById("quantity").textContent = quantity;
+          calculateTotalPrice();
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".option-radio").forEach(input => {
+            input.addEventListener("change", calculateTotalPrice);
+        });
+
+        document.querySelector(".plus").addEventListener("click", increaseQuantity);
+        document.querySelector(".minus").addEventListener("click", decreaseQuantity);
       });
 
     </script>

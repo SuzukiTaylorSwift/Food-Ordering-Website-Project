@@ -1,9 +1,9 @@
 body {
   background-color: #FEFFFF;
-  font-family: 'Lilita One', cursive;
-  padding-top: 90px; /* เพิ่ม padding เพื่อไม่ให้ header ทับ */
-  /* max-width: 480px; กำหนดความกว้างสูงสุดเป็นขนาดมือถือ */
-  /* margin: 0 auto;  */
+  /* font-family: 'Lilita One', cursive; */
+  font-family: 'Prompt', sans-serif;
+  /* padding-top: 90px;  */
+
 }
 
 .header1 {
@@ -14,42 +14,8 @@ body {
 .mm {
   /* height: 53px; */
   color: #E88810;
+  margin-top: 15px;
 } 
-
-/* .header2 {
-  height: 54px;
-} */
-
-/* .food, .drink, .appetizer {
-  padding-top: 80px;
-} */
-
-/* header {
-  min-height: 90px;
-  background: #ff4d4f;
-  padding: 15px 0;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 998;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-} */
-
-/* header .container-fluid {
-  width: 100%;
-  float: left;
-  padding: 20px 0 0;
-} */
-
-/* #sildbarCollapse {
-  background: transparent;
-}
-.slider_section {
-  background: #E88810;
-  min-height: 100vh;
-  padding-top: 93px;
-} */
 
 h1 {
   margin-left: 2%;
@@ -64,6 +30,14 @@ h2 {
 .btn {
   color: #E88810;
 }
+
+.spc-new {
+  margin-top: 85px;
+}
+
+/* .apt-menu {
+  margin-bottom: 50px;
+} */
 
 
 
@@ -95,7 +69,7 @@ h2 {
 
 /* สีไฮไลต์เมื่อ active */
 .tab-link.active {
-  color: orange;
+  color: #E88810;
   font-weight: bold;
 }
 
@@ -107,68 +81,209 @@ h2 {
   left: 15%;
   width: 70%;
   height: 4px;
-  background: orange;
+  background: #E88810;
   border-radius: 2px;
 }
 
 
 
-.menu-item-spc {
-  display: flex;
-  align-items: center;
-}
+/* .main-menu { */
+  /* padding-top: 90px; */
+  /* margin-top: 90px; */
+/* } */
 
-.menu-container {
+.menu-container-spc {
   width: 100%;
-  max-width: 600px;
+}
+.menu-item-spc {
+  width: 100%;
+}
+.spcfood {
+  width: 100%;
+  height: auto; /* คงอัตราส่วนของรูป */
+  object-fit: cover; /* ให้รูปขยายและครอบเต็มพื้นที่ */
+}
+ 
+.menu-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 คอลัมน์ */
+  gap: 16px; /* ระยะห่างระหว่างกล่อง */
 }
 
 .menu-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd; /* เส้นคั่นบางๆ */
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .menu-image {
-  width: 100px; /* รูปสี่เหลี่ยมจัตุรัส */
-  height: 100px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
   border-radius: 8px;
-  /* margin-left: 16px; */
-}
-
-.menu-info {
-  margin-left: 10px;
-  flex: 1;
-  text-align: left;
-  padding-right: 16px;
 }
 
 .menu-title {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  margin: 8px 0;
 }
 
 .menu-description {
   font-size: 14px;
-  color: #777;
-  margin: 4px 0;
+  color: #555;
 }
 
 .menu-price {
-  font-size: 16px;
-  color: #333;
+  font-size: 14px;
+  color: #E88810;
   font-weight: bold;
 }
 
-.popular-badge {
-  font-size: 12px;
+
+
+.option {
+  margin-top: 10px;
+  margin-bottom: 80px;
+}
+
+.otp  {
+  border-bottom: 1px solid #ddd; 
+}
+
+
+
+#options-page {
+  display: none; /* ซ่อน options-page ตั้งแต่เริ่มต้น */
+}
+
+
+#cart-bar {
+  display: none; /* ซ่อนบาร์โดยเริ่มต้น */
+  max-height: 300px;
+  min-height: 100px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 10px;
+}
+
+#cart-items {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cart-item {
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+
+
+
+.menu-img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* margin-bottom: 1rem; */
+}
+
+.menu-img-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+}
+
+.name-f-o {
+  font-size: 20px;
+  color: #E88810;
+}
+
+/* .options-container {
+  margin-top: 20px;
+  background-color: #E88810;
+} */
+
+/* ปรับปุ่มย้อนกลับให้เป็นปุ่มวงกลมที่มุมซ้ายบน */
+/* ปรับปุ่มย้อนกลับให้มีสไตล์ */
+.back-btn {
+  position: absolute;
+  top: 16px; /* กำหนดระยะห่างจากด้านบน */
+  left: 16px; /* กำหนดระยะห่างจากด้านซ้าย */
+  background-color: #E88810;
   color: white;
-  background-color: #ff4d4f;
-  padding: 4px 8px;
-  border-radius: 12px;
-  margin-left: 8px;
-  font-weight: bold;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  z-index: 10; /* ให้ปุ่มอยู่เหนือรูป */
+}
+
+/* เปลี่ยนสีเมื่อเมาส์ชี้ */
+.back-btn:hover {
+  background-color: #97590d;
+}
+
+.plus {
+  font-size: 25px;
+}
+
+.con {
+  margin-left: 10px ;
+}
+
+.bag {
+  background-color: #E88810;
+}
+
+.bag:disabled {
+  background-color: #e8a95c; /* สีอ่อนสำหรับปุ่ม disabled */
+  cursor: not-allowed; /* เปลี่ยน cursor เมื่อปุ่มถูกปิดใช้งาน */
+}
+
+
+/* .bag:hover {
+  background-color: #97590d;
+} */
+
+.option-radio {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.option-radio:checked {
+  border-color: orange;
+}
+
+.option-radio:checked::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: orange;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
