@@ -91,9 +91,15 @@ def upload_image():
             name_food = form.nameFood.data
             type_food = form.type.data  # สามารถใช้ข้อมูลประเภทได้ตามต้องการ
             price = form.price.data
+            options = form.options.data
+            option = ''
+            for i in options:
+                option += i+" "
+                
+            print(option)
             # print(option)
             # สร้างวัตถุใหม่ในฐานข้อมูล
-            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food)  # บันทึกข้อมูลในฐานข้อมูล
+            new_image = Menu(nameFood=name_food, price=price,image_path=f"static/img/{filename}", type=type_food,option=option)  # บันทึกข้อมูลในฐานข้อมูล
             db.session.add(new_image)
             db.session.commit()
 
@@ -146,7 +152,11 @@ def edit_menu(menu_id):
         menu_item.nameFood = form.nameFood.data
         menu_item.type = form.type.data
         menu_item.price = form.price.data
-
+        options = form.options.data
+        option = ""
+        for i in options:
+            option += i +" "
+        menu_item.option = option
         # ตรวจสอบว่ามีการอัปโหลดไฟล์ใหม่หรือไม่
         if form.image.data:
             file = form.image.data

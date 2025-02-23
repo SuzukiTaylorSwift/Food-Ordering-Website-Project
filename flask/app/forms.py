@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, FileField, SubmitField,RadioField,SelectField
+from wtforms import StringField, IntegerField, FileField, SubmitField,RadioField,SelectField,SelectMultipleField
 from wtforms.validators import DataRequired
+from wtforms.widgets import ListWidget, CheckboxInput
 
 class MenuForm(FlaskForm):
     #... = ...(label,)
@@ -14,7 +15,19 @@ class MenuForm(FlaskForm):
     
     image = FileField('เลือกรูปภาพ')
     # option_size = SelectField('Size', choices=[('Regular', 'Regular'), ('Large', 'Large')], validators=[DataRequired()])
-    # Spice_Levels = SelectField('Spice', choices=[('Not Spicy', 'Not Spicy'), ('Mild', 'Mild'),('Medium','Medium'),('Spicy','Spicy')], validators=[DataRequired()])
+    options = SelectMultipleField(
+        'Spice Level',
+        choices=[
+            ('not_spicy', 'Not Spicy – ไม่เผ็ด'),
+            ('mild', 'Mild – เผ็ดน้อย'),
+            ('medium', 'Medium – เผ็ดกลาง'),
+            ('spicy', 'Spicy / Hot – เผ็ด'),
+            ('extra_spicy', 'Extra Spicy / Very Hot – เผ็ดมาก'),
+            ('super_spicy', 'Super Spicy / Extreme – เผ็ดสุด ๆ 🔥🔥')
+        ],
+        option_widget=CheckboxInput(),
+        widget=ListWidget(prefix_label=False)
+    )
     submit = SubmitField('บันทึก')
 # Not Spicy – ไม่เผ็ด
 # Mild – เผ็ดน้อย
