@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"/>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/cashier.css') }}"
@@ -29,21 +32,20 @@
       <div id="check" class="table-bill"><h3>check bill</h3></div>
     </div>
 
-    <div class="flex flex-row items-center justify-start " id="content-container">
+    <div
+      class="flex flex-row items-center justify-start"
+      id="content-container"
+    >
       <div class="layout" id="table-container">
-        {% for i in table %} 
-          {% if i.status == "Available" %}
-            <div id="id{{ i.id }}" class="container"><h1>T{{ i.id }}</h1></div>
-          {% elif i.status == "Taken" %}
-            <div id="id{{ i.id }}" class="container-or"><h1>T{{ i.id }}</h1></div>
-          {% endif %}
-        {% endfor %}
+        {% for i in table %} {% if i.status == "Available" %}
+        <div id="id{{ i.id }}" class="container"><h1>T{{ i.id }}</h1></div>
+        {% elif i.status == "Taken" %}
+        <div id="id{{ i.id }}" class="container-or"><h1>T{{ i.id }}</h1></div>
+        {% endif %} {% endfor %}
       </div>
-      <br/>
+      <br />
       <div id="bill"></div>
     </div>
-    
-   
 
     <script>
       let table_id = 0;
@@ -63,6 +65,9 @@
         let orderSummary = {};
 
         data["order_list"].forEach((item) => {
+          if (table_id == 0) {
+            table_id == "Takeaway";
+          }
           let menu_item = data["menu"].find((menu) => menu.id === item.menu_id);
           if (menu_item) {
             if (!orderSummary[menu_item.nameFood]) {
@@ -160,9 +165,8 @@
         });
       }
 
-  $(document).ready(function () {
-    setInterval(updateTableStatus, 3000);
-
+      $(document).ready(function () {
+        setInterval(updateTableStatus, 3000);
 
         $(".layout").on("click", "[id^=id]", function () {
           let tableElement = $(this);
@@ -174,16 +178,16 @@
             return;
           }
 
-      $.getJSON("/admin/all_data/" + table_id, function (data) {
-        if (data.order_list.length > 0) { 
-          $("#bill").show(); 
-          bill(data);
-        } else {
-          $("#bill").hide(); 
-        }
+          $.getJSON("/admin/all_data/" + table_id, function (data) {
+            if (data.order_list.length > 0) {
+              $("#bill").show();
+              bill(data);
+            } else {
+              $("#bill").hide();
+            }
+          });
+        });
       });
-    });
-  });
     </script>
   </body>
 </html>
