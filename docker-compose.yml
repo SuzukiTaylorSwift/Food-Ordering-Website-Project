@@ -1,5 +1,4 @@
-name: "project"
-
+name: "project-1"
 services:
   flask:
     build: flask

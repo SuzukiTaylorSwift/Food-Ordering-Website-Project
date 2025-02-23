@@ -31,6 +31,10 @@ h2 {
   color: #E88810;
 }
 
+.dd {
+  color: #E88810;
+}
+
 .spc-new {
   margin-top: 85px;
 }
@@ -86,7 +90,9 @@ h2 {
 }
 
 
-
+/* .menu {
+  margin-bottom: 100px;
+} */
 /* .main-menu { */
   /* padding-top: 90px; */
   /* margin-top: 90px; */
@@ -287,3 +293,20 @@ h2 {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.fixed-bottom-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.total-price {
+  margin-bottom: 10px; /* ช่องว่างระหว่างราคาและปุ่ม */
+}
+
+#confirm-order {
+  width: 100%;
+}
+

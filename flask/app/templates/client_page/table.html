@@ -151,15 +151,25 @@
         </div>
       </div>
 
-      <div id="cart-bar" class="cart-bar fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-100">
-        <div class="container-bar">
-          <!-- <h3 class="text-lg mb-2">My Basket</h3> -->
-          <ul id="cart-items" class="mb-2"></ul>
-          <button id="checkout" class="bg-blue-500 text-white px-4 py-2 rounded w-full">ยืนยันการสั่งซื้อ</button>
-        </div>
+      <div id="cart-bar" class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
+        
+        <!-- ปุ่ม checkout -->
+        <button id="checkout" class="bag text-white w-full px-3 py-3 text-center font-bold rounded-lg flex items-center justify-between">
+          <!-- จำนวนสินค้าในกล่องเล็กๆ ทางซ้ายสุด -->
+          <div class="item-count bg-white text-black border w-8 h-8 flex items-center justify-center rounded-sm">
+            <span id="item-count" class="btn font-bold">0</span>
+          </div>
+        
+          <!-- ราคาอยู่ขวาสุด และไม่มีช่องว่างระหว่าง ฿ กับราคา -->
+          <div class="ml-2">
+            ฿<span id="total-price">0</span>
+          </div>
+        </button>
+        
       </div>
-
+  
     </div>
+
 
 
     <div class="option page" id="options-page">
@@ -237,9 +247,6 @@
       </div>
       
       <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
-        <!-- <div class="total-price text-xl font-bold py-2">
-          ราคา: ฿<span id="total-price">0</span>
-        </div> -->
 
         <!-- ปุ่มลด-เพิ่มจำนวน -->
         <div class="flex items-center space-x-4">
@@ -261,22 +268,34 @@
       </div>
       
     </div>
-    
-    <!-- <div id="cart-bar" class="cart-bar fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 z-100">
-      <div class="container-bar">
-        <h3 class="text-lg mb-2">My Basket</h3>
-        <ul id="cart-items" class="mb-2"></ul>
-        <button id="checkout" class="bg-blue-500 text-white px-4 py-2 rounded w-full">ยืนยันการสั่งซื้อ</button>
-      </div>
-    </div> -->
 
-    <!-- <div class="confirm page" id="confrim-page">
+    <div id="confirm-page" class="confirm page" style="display: none;">
       <div class="container-fluid bg-white py-2 top-16 w-full z-40">
-        <header>
-          <button onclick="goBack()" class="back-btn">&#8592;</button>
+        <header class="fixed top-0 left-0 w-full bg-white z-50 py-2">
+          <button onclick="goBack()" class="back-btn ml-2">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+
+          <h3 class="dd text-xl font-bold text-center mt-3">KHOW BAN CHAN</h3>
+          
         </header>
+    
+        <div id="order-summary" class="order-summary mt-16">
+          <!-- รายการสั่งซื้อจะถูกแสดงที่นี่ -->
+        </div>
+    
+        <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
+          <div class="fixed-bottom-container">
+            <div class="total-price">
+              <p><strong>รวมทั้งหมด: ฿<span id="total-order-price">0.00</span></strong></p>
+            </div>
+        
+            <button id="confirm-order" class="bag text-white py-3 text-center font-bold rounded-lg">ยืนยันคำสั่งซื้อ</button>
+          </div>
+        </div>
+
       </div>
-    </div> -->
+    </div>
 
 
 
@@ -288,187 +307,14 @@
 
     <script>
 
-<<<<<<< HEAD
-      
-      // Example: Set table_id dynamically
-      // var addCart = [];
-      // var nameFood = "";
-      // var count = 0;
-      // var price = 0;
-      // var table_number = 0;
-
-      // function getData(data) {
-      //   addCart = data[0];
-      //   //console.log(addCart);
-      // }
-
-      // $(document).ready(function () {
-      //   $.getJSON("table/data", getData);
-
-      //   //console.log($("#tableNum").text());
-      //   table_number = $("#tableNum").text();
-      //   //console.log(table_number);
-      //   $(document).on("click", "#id1", function () {
-      //     shop();
-      //   });
-      // });
-
-      // $(document).ready(function () {
-      //   $.getJSON("table/data", getData);
-      // });
-
-
-      $(document).ready(function () {
-        $.getJSON("table/data", getData);
-      });
-
-      // $(document).on("click", "#hereEYE", function () {
-      //   let menu_ids = 0; // เทส
-      //   let orderData = {
-      //     table_id: 0,
-      //     menu_id: [],
-      //     quantity: [],
-      //     total_price: [],
-      //     option: [],
-      //   };
-      //   menu_ids++; // ตั้งเล่นๆเทสระบบ
-      //   orderData.table_id = table_number;
-      //   orderData.menu_id.push(menu_ids);
-      //   orderData.quantity.push(menu_ids);
-      //   orderData.total_price.push(2000);
-      //   orderData.option.push("อายข้าวผัดแหนม พิเศษ");
-      //   console.log(orderData);
-      //   $.post({
-      //     url: "/table" + table_number,
-      //     data: JSON.stringify(orderData),
-      //     contentType: "application/json",
-      //     success: function (response) {
-      //       console.log("Response:", response);
-      //     },
-      //   });
-      // });
-
-      // function showOrderPopup(item) {
-      //   const name = item.querySelector('.menu-title').textContent;
-      //   const price = item.querySelector('.menu-price').textContent;
-      //   const description = item.querySelector('.menu-description').textContent;
-
-      //   const popupHtml = `
-      //     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="orderPopup">
-      //       <div class="bg-white p-6 rounded-lg shadow-xl w-80">
-      //         <h2 class="text-xl font-bold mb-4">สั่งอาหาร</h2>
-      //         <p class="text-lg font-semibold">${name}</p>
-      //         <p class="text-sm text-gray-500">${description}</p>
-      //         <p class="text-md font-medium mt-2">ราคา: ${price}</p>
-      //         <label class="block mt-4">จำนวน:</label>
-      //         <input type="number" id="quantityInput" class="w-full border p-2 rounded" min="1" value="1">
-      //         <div class="flex justify-between mt-4">
-      //           <button onclick="confirmOrder('${name}', ${price.replace('฿', '')})" class="bg-blue-500 text-white px-4 py-2 rounded">ยืนยัน</button>
-      //           <button onclick="closeOrderPopup()" class="bg-gray-300 px-4 py-2 rounded">ยกเลิก</button>
-      //         </div>
-      //       </div>
-      //     </div>`;
-
-      //   document.body.insertAdjacentHTML('beforeend', popupHtml);
-
-      //   // $("#confirm").after(html);
-      // }
-
-      // // ฟังก์ชันยืนยันการสั่ง
-      // function confirmOrder(name, price) {
-      //   const quantity = parseInt(document.getElementById('quantityInput').value);
-      //   if (quantity <= 0 || isNaN(quantity)) {
-      //     alert('กรุณาระบุจำนวนที่ถูกต้อง');
-      //     return;
-      //   }
-      //   const total = price * quantity;
-      //   alert(`คุณสั่ง ${name} จำนวน ${quantity} ราคา ฿${total}`);
-      //   closeOrderPopup();
-
-      //   let menu_ids = 0; // เทส
-      //   let orderData = {
-      //     table_id: 0,
-      //     menu_id: [],
-      //     quantity: [],
-      //     total_price: [],
-      //     option: [],
-      //   };
-      //   menu_ids++; // ตั้งเล่นๆเทสระบบ
-      //   orderData.table_id = table_number;
-      //   orderData.menu_id.push(menu_ids);
-      //   orderData.quantity.push(menu_ids);
-      //   orderData.total_price.push(2000);
-      //   orderData.option.push("อายข้าวผัดแหนม พิเศษ");
-      //   console.log(orderData);
-      //   $.post({
-      //     url: "/table" + table_number,
-      //     data: JSON.stringify(orderData),
-      //     contentType: "application/json",
-      //     success: function (response) {
-      //       console.log("Response:", response);
-      //     },
-      //   });
-
-      // }
-
-      // // ฟังก์ชันปิด popup
-      // function closeOrderPopup() {
-      //   const popup = document.getElementById('orderPopup');
-      //   if (popup) popup.remove();
-      // }
-
-      // // เพิ่ม event listener ให้ menu-item
-      // document.querySelectorAll('.menu-item').forEach(item => {
-      //   item.addEventListener('click', () => showOrderPopup(item));
-      // });
-
-      $(document).on("click", "#hereEYE", function () {
-        let menu_ids = 0; // เทส
-        let orderData = {
-          time: "",
-          table_id: 0,
-          menu_id: [],
-          quantity: [],
-          total_price: [],
-          option: [],
-          note: [],
-        };
-        menu_ids++; // ตั้งเล่นๆเทสระบบ
-        orderData.time = new Date().toLocaleString();
-        orderData.table_id = table_number;
-        orderData.menu_id.push(menu_ids);
-        orderData.quantity.push(menu_ids);
-        orderData.total_price.push(2000);
-        orderData.option.push("อายข้าวผัดแหนม พิเศษ");
-        orderData.note.push("ขอแหนมเยอะๆ");
-        //
-        orderData.menu_id.push(2);
-        orderData.quantity.push(5);
-        orderData.total_price.push(5000);
-        orderData.option.push("พิเศษ");
-        orderData.note.push("ไม่เอาผัก");
-        console.log(orderData);
-        $.post({
-          url: "/table" + table_number,
-          data: JSON.stringify(orderData),
-          contentType: "application/json",
-          success: function (response) {
-            console.log("Response:", response);
-          },
-        });
-      });
-
-
-=======
->>>>>>> 29d99e1 (table)
       document.querySelectorAll('.tab-link').forEach(link => {
         link.addEventListener('click', function (event) {
           event.preventDefault();
-
+          
           const targetId = this.getAttribute('href').substring(1);
           const targetElement = document.getElementById(targetId);
 
-          const offset = 100; // ระยะห่างจากด้านบน
+          const offset = 100;
           const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
           const offsetPosition = elementPosition - offset;
 
@@ -482,10 +328,19 @@
         });
       });
 
-      // ตัวแปรเพื่อเก็บรายการอาหารที่เพิ่มลงในตะกร้า
       let cart = [];
-      let basePrice = 0; // กำหนดให้ราคาอาหารมาจากเมนู
-      let quantity = 1; // จำนวนเริ่มต้น
+      let basePrice = 0;
+      let quantity = 1;
+
+      let orderData = {
+        time: "",
+        table_id: 0,
+        menu_id: [],
+        quantity: [],
+        total_price: [],
+        option: [],
+        note: [],
+      };
 
       function showOptions(id, name, price, image_path) {
         document.getElementById('menu-page').style.display = 'none';
@@ -494,11 +349,11 @@
 
         document.getElementById('food-name').innerHTML = `<li>${name}</li>`;
 
-        // กำหนดราคาพื้นฐานของอาหาร
         basePrice = parseInt(price) || 0;
-
-        // อัปเดตการแสดงผลราคาเริ่มต้น
         document.getElementById("total-price").textContent = basePrice;
+
+        // เพิ่มการอัพเดตราคาของปุ่ม ADD
+        document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${basePrice}`;
 
         const imgElement = document.createElement('img');
         imgElement.src = image_path;
@@ -509,67 +364,55 @@
         menuImgContainer.innerHTML = '';
         menuImgContainer.appendChild(imgElement);
 
-        // รีเซ็ตค่าของ radio button
         document.querySelectorAll('input[name="ingredient"]').forEach(el => el.checked = false);
         document.querySelectorAll('input[name="size"]').forEach(el => el.checked = false);
         document.querySelectorAll('input[name="spiciness"]').forEach(el => el.checked = false);
 
-        // รีเซ็ตจำนวนให้เป็น 1
         quantity = 1;
         document.getElementById("quantity").textContent = quantity;
         calculateTotalPrice();
       }
 
-      function goBack() {
-        document.getElementById('options-page').style.display = 'none';  
-        document.getElementById('menu-page').style.display = 'block';
-        document.getElementById('cart-bar').style.display = 'block';
-        updateCartDisplay();
-      }
+      document.getElementById('checkout').addEventListener('click', function () {
+        document.getElementById('menu-page').style.display = 'none'; // ซ่อนหน้าเมนู
+        document.getElementById('confirm-page').style.display = 'block'; // แสดงหน้า confirm
+        updateCartSummary(); // อัปเดตสรุปตะกร้าเมื่อไปที่หน้า confirm
+        showConfirmPage();
+      });
 
       function addToCart() {
-        const name = document.getElementById('food-name').innerText;  
-        const ingredient = document.querySelector('input[name="ingredient"]:checked')?.value || "ปกติ"; 
-        const size = document.querySelector('input[name="size"]:checked')?.value || "ปกติ";  
-        const spiciness = document.querySelector('input[name="spiciness"]:checked')?.value || "ปกติ";  
+        const name = document.getElementById('food-name').innerText;
+        const ingredient = document.querySelector('input[name="ingredient"]:checked')?.value || "ปกติ";
+        const size = document.querySelector('input[name="size"]:checked')?.value || "ปกติ";
+        const spiciness = document.querySelector('input[name="spiciness"]:checked')?.value || "ปกติ";
 
-        cart.push({ name, ingredient, size, spiciness, quantity, total: calculateTotalPrice(true) });
+        cart.push({ quantity, total: calculateTotalPrice(true) });
+
+        // เพิ่มข้อมูลที่เลือกลงใน orderData
+        orderData.menu_id.push(name); // เก็บชื่อเมนู
+        orderData.option.push({ ingredient, size, spiciness }); // เก็บตัวเลือก
+        orderData.quantity.push(quantity); // เก็บจำนวน
+        orderData.total_price.push(calculateTotalPrice(true)); // เก็บราคา
 
         showCartBar();
-        updateCartDisplay();
         goBack();
       }
 
-      function updateCartDisplay() {
-        const cartContainer = document.getElementById('cart-items');
-        cartContainer.innerHTML = '';  
-
+      function showCartBar() {
         if (cart.length > 0) {
-            cart.forEach(item => {
-                const cartItem = document.createElement('li');
-                cartItem.classList.add('cart-item');
-                cartItem.innerHTML = `${item.name} (${item.ingredient}, ${item.size}, ${item.spiciness}) x${item.quantity} = ฿${item.total}`;
-                cartContainer.appendChild(cartItem);
-            });
-
-            document.getElementById('cart-bar').style.display = 'block';
+          document.getElementById('cart-bar').style.display = 'block';
+          updateCartSummary();
+          document.getElementById('menu-page').style.marginBottom = '100px'; // เพิ่ม margin-bottom เมื่อมีสินค้าในตะกร้า
         } else {
-            document.getElementById('cart-bar').style.display = 'none';
+          document.getElementById('cart-bar').style.display = 'none';
+          document.getElementById('menu-page').style.marginBottom = '0'; // คืนค่า margin-bottom เมื่อไม่มีสินค้า
         }
       }
 
-      function showCartBar() {
-        document.getElementById('cart-bar').style.display = 'block';  
-      }
-
-      // ฟังก์ชันคำนวณราคาอาหารรวม
-      // ฟังก์ชันคำนวณราคาอาหารรวมและตรวจสอบว่ามีการเลือกตัวเลือกหรือไม่
-      // ฟังก์ชันคำนวณราคาอาหารรวมและตรวจสอบว่ามีการเลือกตัวเลือกหรือไม่
       function calculateTotalPrice(returnValue = false) {
         let extraPrice = 0;
         let isValid = true;
 
-        // เช็คว่าได้เลือก ingredient, size, spiciness หรือไม่
         const ingredient = document.querySelector('input[name="ingredient"]:checked');
         const size = document.querySelector('input[name="size"]:checked');
         const spiciness = document.querySelector('input[name="spiciness"]:checked');
@@ -578,11 +421,9 @@
           isValid = false;
         }
 
-        // ถ้าไม่ได้เลือกตัวเลือกใดๆ ก็จะทำให้ปุ่ม "ADD" ไม่สามารถกดได้
         const addButton = document.getElementById("add-to-cart-btn");
         addButton.disabled = !isValid;
 
-        // คำนวณราคา
         document.querySelectorAll(".option-radio:checked").forEach(option => {
           extraPrice += parseInt(option.getAttribute("data-price")) || 0;
         });
@@ -590,41 +431,101 @@
         let total = (basePrice + extraPrice) * quantity;
         document.getElementById("total-price").textContent = total;
 
+        // อัพเดตราคาที่ปุ่ม ADD
+        document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${total}`;
+
         return returnValue ? total : null;
       }
 
 
-      // เรียกใช้ `calculateTotalPrice()` เมื่อมีการเลือก option ใหม่
+      function goBack() {
+        document.getElementById('options-page').style.display = 'none';
+        document.getElementById('menu-page').style.display = 'block';
+        document.getElementById('confirm-page').style.display = 'none'; // ซ่อนหน้า confirm
+        updateCartSummary(); // Update the cart summary when going back
+        showCartBar(); 
+      }
+
+      document.getElementById('checkout').addEventListener('click', function () {
+        document.getElementById('menu-page').style.display = 'none'; // ซ่อนหน้าเมนู
+        document.getElementById('confirm-page').style.display = 'block'; // แสดงหน้า confirm
+        updateCartSummary(); // อัปเดตสรุปตะกร้าเมื่อไปที่หน้า confirm
+      });
+
+      function updateCartSummary() {
+        const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+        const totalPrice = cart.reduce((acc, item) => acc + item.total, 0);
+
+        // อัปเดตจำนวนสินค้าในกล่องสีขาวเล็กๆ
+        const itemCountElement = document.getElementById('item-count');
+        itemCountElement.textContent = totalItems;
+
+        // อัปเดตราคาในปุ่ม checkout
+        const totalPriceElement = document.getElementById('total-price');
+        totalPriceElement.textContent = totalPrice.toFixed(2);
+      }
+
       document.querySelectorAll(".option-radio").forEach(input => {
         input.addEventListener("change", function () {
-            calculateTotalPrice();
+          calculateTotalPrice();
         });
       });
 
-
-      // ฟังก์ชันเพิ่มจำนวน
       function increaseQuantity() {
         quantity++;
         document.getElementById("quantity").textContent = quantity;
         calculateTotalPrice();
       }
 
-      // ฟังก์ชันลดจำนวน
       function decreaseQuantity() {
-        if (quantity > 1) {  
+        if (quantity > 1) {
           quantity--;
           document.getElementById("quantity").textContent = quantity;
           calculateTotalPrice();
         }
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".option-radio").forEach(input => {
-            input.addEventListener("change", calculateTotalPrice);
+      function showConfirmPage() {
+        console.log(orderData);  // ตรวจสอบข้อมูลใน orderData
+
+        const orderSummary = document.getElementById('order-summary');
+        orderSummary.innerHTML = '';  // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
+
+        let totalOrderPrice = 0;
+
+        // แสดงรายการอาหารที่สั่งจาก orderData
+        orderData.menu_id.forEach((menuName, index) => {
+          const quantity = orderData.quantity[index];
+          const totalPrice = orderData.total_price[index];
+          const options = orderData.option[index];
+
+          const ingredient = options.ingredient;
+          const size = options.size;
+          const spiciness = options.spiciness;
+
+          const itemElement = document.createElement('div');
+          itemElement.classList.add('order-item');
+
+          itemElement.innerHTML = `
+              <div>
+                  <p><strong>${menuName}</strong></p>
+                  <p>ตัวเลือก: ${ingredient}, ${size}, ${spiciness}</p>
+                  <p>จำนวน: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
+              </div>
+          `;
+
+          orderSummary.appendChild(itemElement);
+
+          totalOrderPrice += totalPrice;
         });
 
-        document.querySelector(".plus").addEventListener("click", increaseQuantity);
-        document.querySelector(".minus").addEventListener("click", decreaseQuantity);
+        // แสดงราคาทั้งหมด
+        document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
+      }
+
+      document.getElementById('confirm-order').addEventListener('click', function () {
+        alert('คำสั่งซื้อของคุณได้รับการยืนยัน!');
+        // เพิ่มฟังก์ชันการดำเนินการเพิ่มเติมที่นี่ เช่น ส่งข้อมูลไปที่เซิร์ฟเวอร์
       });
 
     </script>
