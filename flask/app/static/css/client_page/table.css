@@ -125,8 +125,9 @@ h2 {
 }
 
 .menu-image {
-  width: 100%;
-  height: auto;
+  width: 100%; /* หรือกำหนดค่าคงที่ เช่น 200px */
+  aspect-ratio: 1 / 1; /* ทำให้เป็นสี่เหลี่ยมจัตุรัส */
+  object-fit: cover; /* ปรับขนาดรูปให้พอดี */
   border-radius: 8px;
 }
 
@@ -147,7 +148,16 @@ h2 {
   font-weight: bold;
 }
 
+.dish {
+  color: #E88810;
+  /* padding: 8px 12px; */
+  /* background-color: #f1f1f1; */
+  border-radius: 8px;
+}
 
+.dish:focus {
+  outline: none;
+}
 
 .option {
   margin-top: 10px;

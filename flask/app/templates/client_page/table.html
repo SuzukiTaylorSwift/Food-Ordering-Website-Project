@@ -43,10 +43,14 @@
 
     <div class="menu page" id="menu-page">
       <header class="header1">
-        <div class="container-fluid bg-white py-2 fixed top-0 w-full z-50">
+        <div class="container-fluid bg-white py-2 fixed top-0 w-full z-50 flex items-center justify-between px-4">
           <h1 class="text-xl font-bold">KHOW BAN CHAN : TABLE {{ table_number }}</h1>
+          <button class="dish mt-1">
+            <i class='bx bxs-dish text-2xl'></i>
+          </button>
         </div>
       </header>
+      
 
       <header>
         <div class="container-fluid bg-white fixed top-12 w-full z-40" style="padding: 0px 15px;">
@@ -158,6 +162,10 @@
           <!-- จำนวนสินค้าในกล่องเล็กๆ ทางซ้ายสุด -->
           <div class="item-count bg-white text-black border w-8 h-8 flex items-center justify-center rounded-sm">
             <span id="item-count" class="btn font-bold">0</span>
+          </div>
+
+          <div>
+            <i class='bx bxs-basket'></i> MY BASKET
           </div>
         
           <!-- ราคาอยู่ขวาสุด และไม่มีช่องว่างระหว่าง ฿ กับราคา -->
@@ -287,10 +295,39 @@
         <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
           <div class="fixed-bottom-container">
             <div class="total-price">
-              <p><strong>รวมทั้งหมด: ฿<span id="total-order-price">0.00</span></strong></p>
+              <p><strong>TOTAL: ฿<span id="total-order-price">0.00</span></strong></p>
             </div>
         
-            <button id="confirm-order" class="bag text-white py-3 text-center font-bold rounded-lg">ยืนยันคำสั่งซื้อ</button>
+            <button id="confirm-order" class="bag text-white py-3 text-center font-bold rounded-lg">ORDER NOW!</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div id="list-menu-page" class="list-menu page" style="display: none;">
+      <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+        <header class="fixed top-0 left-0 w-full bg-white z-50 py-2">
+          <button onclick="goBack()" class="back-btn ml-2">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+
+          <h3 class="dd text-xl font-bold text-center mt-3">KHOW BAN CHAN</h3>
+          
+        </header>
+    
+        <div id="order-summary-list" class="order-summary mt-16">
+          <!-- รายการสั่งซื้อจะถูกแสดงที่นี่ -->
+        </div>
+    
+        <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
+          <div class="fixed-bottom-container">
+            <div class="total-price">
+              <p><strong>รวมทั้งหมด: ฿<span id="total-order-price-list">0.00</span></strong></p>
+            </div>
+        
+            <!-- <button id="confirm-order" class="bag text-white py-3 text-center font-bold rounded-lg">ยืนยันคำสั่งซื้อ</button> -->
           </div>
         </div>
 
@@ -342,6 +379,14 @@
         note: [],
       };
 
+      let orderData_show = {
+        menu_id: [],
+        quantity: [],
+        total_price: [],
+        option: [],
+        note: [],
+      };
+
       function showOptions(id, name, price, image_path) {
         document.getElementById('menu-page').style.display = 'none';
         document.getElementById('options-page').style.display = 'block';
@@ -379,6 +424,23 @@
         updateCartSummary(); // อัปเดตสรุปตะกร้าเมื่อไปที่หน้า confirm
         showConfirmPage();
       });
+
+      // กดปุ่ม "ORDER NOW!" เพื่อกลับไปที่หน้าหลักและปิดตะกร้าสินค้า
+      // document.getElementById('confirm-order').addEventListener('click', function () {
+      //   // ซ่อนหน้า confirm-page
+      //   document.getElementById('confirm-page').style.display = 'none';
+
+      //   // แสดงหน้า menu-page (หรือหน้าหลักของคุณ)
+      //   document.getElementById('menu-page').style.display = 'block';
+
+      //   // ซ่อนตะกร้าสินค้า
+      //   document.getElementById('cart-bar').style.display = 'none';
+
+      //   // อัปเดตสรุปตะกร้า
+      //   // updateCartSummary();
+      //   // showCartBar();
+      // });
+
 
       function addToCart() {
         const name = document.getElementById('food-name').innerText;
@@ -439,6 +501,7 @@
 
 
       function goBack() {
+        document.getElementById('list-menu-page').style.display = 'none'; // Hide list-menu-page
         document.getElementById('options-page').style.display = 'none';
         document.getElementById('menu-page').style.display = 'block';
         document.getElementById('confirm-page').style.display = 'none'; // ซ่อนหน้า confirm
@@ -509,8 +572,8 @@
           itemElement.innerHTML = `
               <div>
                   <p><strong>${menuName}</strong></p>
-                  <p>ตัวเลือก: ${ingredient}, ${size}, ${spiciness}</p>
-                  <p>จำนวน: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
+                  <p>options: ${ingredient}, ${size}, ${spiciness}</p>
+                  <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
               </div>
           `;
 
@@ -523,10 +586,104 @@
         document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
       }
 
+      // document.getElementById('confirm-order').addEventListener('click', function () {
+      //   
+      //   // เพิ่มฟังก์ชันการดำเนินการเพิ่มเติมที่นี่ เช่น ส่งข้อมูลไปที่เซิร์ฟเวอร์
+      // });
+
       document.getElementById('confirm-order').addEventListener('click', function () {
         alert('คำสั่งซื้อของคุณได้รับการยืนยัน!');
-        // เพิ่มฟังก์ชันการดำเนินการเพิ่มเติมที่นี่ เช่น ส่งข้อมูลไปที่เซิร์ฟเวอร์
+
+        // เพิ่มข้อมูลที่เลือกลงใน orderData_show โดยไม่ลบข้อมูลเก่า
+        orderData_show.menu_id.push(...orderData.menu_id); // เพิ่ม menu_id ใหม่เข้าไป
+        orderData_show.option.push(...orderData.option); // เพิ่ม option ใหม่เข้าไป
+        orderData_show.quantity.push(...orderData.quantity); // เพิ่ม quantity ใหม่เข้าไป
+        orderData_show.total_price.push(...orderData.total_price); // เพิ่ม total_price ใหม่เข้าไป
+
+        // ดูว่า orderData_show ถูกอัปเดตหรือไม่
+        console.log('orderData_show:', orderData_show);
+
+        // เคลียร์ตะกร้า
+        cart = [];
+        orderData = {
+          time: "",
+          table_id: 0,
+          menu_id: [],
+          quantity: [],
+          total_price: [],
+          option: [],
+          note: [],
+        };
+
+        // ซ่อนหน้า confirm-page
+        document.getElementById('confirm-page').style.display = 'none';
+
+        // แสดงหน้า menu-page
+        document.getElementById('menu-page').style.display = 'block';
+
+        // ซ่อนตะกร้าสินค้า
+        document.getElementById('cart-bar').style.display = 'none';
+        document.getElementById('menu-page').style.marginBottom = '0'; // คืนค่า margin-bottom เมื่อไม่มีสินค้า
+
+        // แสดงรายการอาหารที่สั่งในหน้า list-menu-page
+        showOrderSummaryInListMenuPage();
       });
+
+
+      document.querySelector('.dish').addEventListener('click', function () {
+        // Hide all other pages (optional if you want to hide other pages when showing this one)
+        document.getElementById('menu-page').style.display = 'none';
+        document.getElementById('options-page').style.display = 'none';
+
+        // Show the list menu page
+        document.getElementById('list-menu-page').style.display = 'block';
+      });
+
+      function showOrderSummaryInListMenuPage() {
+        const orderSummary = document.getElementById('order-summary-list'); // เปลี่ยนจาก order-summary เป็น order-summary-list
+        orderSummary.innerHTML = '';  // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
+
+        let totalOrderPrice = 0;
+
+        // ตรวจสอบว่า orderData_show มีข้อมูลหรือไม่
+        console.log('Showing order summary:', orderData_show);
+
+        // ตรวจสอบว่า orderData_show มีข้อมูลก่อนที่จะแสดง
+        if (orderData_show.menu_id.length === 0) {
+            orderSummary.innerHTML = '<p>ยังไม่มีรายการสั่งซื้อ</p>';
+            return;
+        }
+
+        // แสดงรายการอาหารที่สั่งจาก orderData_show
+        orderData_show.menu_id.forEach((menuName, index) => {
+          const quantity = orderData_show.quantity[index];
+          const totalPrice = orderData_show.total_price[index];
+          const options = orderData_show.option[index];
+
+          const ingredient = options.ingredient;
+          const size = options.size;
+          const spiciness = options.spiciness;
+
+          const itemElement = document.createElement('div');
+          itemElement.classList.add('order-item');
+
+          itemElement.innerHTML = `
+              <div>
+                  <p><strong>${menuName}</strong></p>
+                  <p>options: ${ingredient}, ${size}, ${spiciness}</p>
+                  <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
+              </div>
+          `;
+
+          orderSummary.appendChild(itemElement);
+
+          totalOrderPrice += totalPrice;
+        });
+
+        // แสดงราคาทั้งหมด
+        document.getElementById('total-order-price-list').textContent = totalOrderPrice.toFixed(2);
+      }
+
 
     </script>
   </body>
