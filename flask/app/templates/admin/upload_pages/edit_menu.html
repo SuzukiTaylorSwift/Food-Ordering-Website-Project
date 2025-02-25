@@ -1,19 +1,82 @@
-<form method="POST" enctype="multipart/form-data">
-  {{ form.hidden_tag() }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addmenu.css') }}" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="table-title">
+      <a href="/images"><i class="bx bx-chevrons-left bx-md"></i> </a>
+      <h2>EDIT MENU</h2>
+      <a href="/admin/login" class="logout-button">Logout</a>
+    </div>
 
-  <label for="nameFood">Menu Name:</label>
-  {{ form.nameFood() }}
+    <div class="flex flex-row items-center justify-start">
+      <form  method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="menu-container">
+          <div id="uploadButton" class="image-upload-container" onclick="document.getElementById('imageInput').click();">
+            <label for="imageInput" id="uploadTextContainer">
+              <div class="add-newtext">ADD</div>
+              <div class="add-newtext">NEW</div>
+              <div class="add-newtext">MENU</div>
+            </label>
+            {{ form.image(id="imageInput", style="display: none;", onchange="updateImagePreview()") }}
+            <img id="imagePreview" src="" alt="Image Preview" style="display: none; max-width: 100%; margin-top: 10px;" />
+          </div>
+    
+        <div class="right-form">
+          <!-- Food Name -->
+          <label for="name_food" class="font-semibold text-gray-700">Food Name: {{ form.nameFood(class="form-btn") }}</label>
 
-  <label for="type">Type:</label>
-  {{ form.type() }}
+          <!-- Price -->
+          <label for="price" class="font-semibold text-gray-700 cursor-pointer" >Price: {{ form.price(class="form-btn") }} </label>
+      
+          <!-- Food Type -->
+          <label for="type" class="font-semibold text-gray-700 cursor-pointer">Food Type:  {{ form.type() }}</label>
+      
+          <!-- Food Option -->
+          <p class="font-semibold text-gray-700 cursor-pointer">Food Option:</p>
+          {% for subfield in form.options %}
+          <div class="form-check ml-[-100px]">
+            {{ subfield() }} <!-- checkbox -->
+            <label class="form-check-label">{{ subfield.label.text }}</label> <!-- ข้อความ -->
+          </div>
+          {% endfor %}
 
-  <label for="price">Price:</label>
-  {{ form.price() }}
+          <!-- Upload Button -->
+          <button class="btn bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600 transition" type="submit">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
 
-  <label for="image">Upload New Image (Optional):</label>
-  {{ form.image() }}
+    <script>
+      function updateImagePreview() {
+        var inputFile = document.getElementById('imageInput');
+        var imagePreview = document.getElementById('imagePreview');
+        var uploadTextContainer = document.getElementById('uploadTextContainer');
 
-  <label for="image">Options:</label>
-  {{ form.options() }}
-  <button type="submit">Save Changes</button>
-</form>
+        uploadButton.style.backgroundColor = '#f5f5f5';
+
+        if (inputFile.files && inputFile.files.length > 0) {
+          var reader = new FileReader();
+
+          reader.onload = function(event) {
+            imagePreview.src = event.target.result;
+            imagePreview.style.display = "block";  // แสดงรูป
+            uploadTextContainer.style.display = "none";  // ซ่อนข้อความ
+          };
+
+          reader.readAsDataURL(inputFile.files[0]);  // อ่านไฟล์ภาพ
+        }
+      }
+    </script>
+  </body>
+</html>
+

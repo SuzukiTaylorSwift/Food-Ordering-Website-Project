@@ -1,36 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link
-      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <title>Image Gallery</title>
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+  />
+    <title>Menu Management</title>
   </head>
   <body>
-    <h1 class="m-8 font-blod">Uploaded Images</h1>
-    {% for item in images %}
-    <div class="menu-item m-4">
-      <img src="{{ item.image_path }}" alt="{{ item.nameFood }}" width="150" />
-      <p>{{ item.nameFood }} - ฿{{ item.price }}</p>
-      <p>Type: {{ item.type }}</p>
-      <p>Options {{item.option}}</p>
-
-      <br />
-      <!-- ปุ่มแก้ไข -->
-      <a href="{{ url_for('edit_menu', menu_id=item.id) }}">
-        <button>Edit</button>
-      </a>
-
-      <!-- ปุ่มลบ -->
-      <form
-        action="{{ url_for('delete_menu', menu_id=item.id) }}"
-        method="POST"
-        onsubmit="return confirm('Are you sure?');"
-      >
-        <button type="submit">Delete</button>
-      </form>
+    <div class="table-title">
+      <a href="/admin/lobby"><i class="bx bx-chevrons-left bx-md"></i></a>
+      <h2>MENU</h2>
+      <a href="/admin/login" class="logout-button">Logout</a>
     </div>
-    {% endfor %}
+
+    <div class="flex flex-row items-center justify-start">
+      <div class="container-left">
+        <a href="#main" class="text font-bold tab-link active" data-category="main">MAIN</a>
+        <a href="#drinks" class="text font-bold tab-link" data-category="drinks">DRINKS</a>
+        <a href="#appetizer" class="text font-bold tab-link" data-category="appetizer">APPETIZER</a>
+    </div>
+      
+
+    <div class="container-main" id="main">
+      <div class="text-main">MAIN</div>
+      <div class="layout">
+        {% for item in images %}
+          {% if item.type == 'food' %}
+            <div class="container-food" id="id{{item.id}}">
+              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" alt="Picture" class="img"/>
+              <p>{{ item.nameFood }}</p>
+              <div class="text-p">Price: ${{ item.price }}</div>
+              <div class="text-p">Type: {{ item.type }}</div>
+              <!-- ปุ่ม Edit -->
+              <a href="{{ url_for('edit_menu', menu_id=item.id) }}" class="edit"><i class='bx bxs-message-square-edit'></i></a>
+              <!-- ปุ่ม Delete -->
+              <form action="{{ url_for('delete_menu', menu_id=item.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="delete"><i class='bx bxs-message-square-minus'></i></button>
+              </form>
+            </div>
+          {% endif %}
+        {% endfor %}
+        <a href="{{ url_for('upload_image') }}" class="container-food-add">
+          <div class="add-newtext">ADD</div>
+          <div class="add-newtext">NEW</div>
+          <div class="add-newtext">MENU</div>
+        </a>
+      </div>
+    </div>
+    
+    <!-- สำหรับ DRINKS และ APPETIZER ก็เหมือนกัน -->
+    <div class="container-main hidden" id="drinks">
+      <div class="text-main">DRINKS</div>
+      <div class="layout">
+        {% for item in images %}
+          {% if item.type == 'drink' %}
+            <div class="container-food" id="id{{item.id}}">
+              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" alt="Picture" class="img"/>
+              <p>{{ item.nameFood }}</p>
+              <div class="text-p">Price: ${{ item.price }}</div>
+              <div class="text-p">Type: {{ item.type }}</div>
+              <a href="{{ url_for('edit_menu', menu_id=item.id) }}" class="edit"><i class='bx bxs-message-square-edit'></i></a>
+              <form action="{{ url_for('delete_menu', menu_id=item.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="delete"><i class='bx bxs-message-square-minus'></i></button>
+              </form>
+            </div>
+          {% endif %}
+        {% endfor %}
+        <a href="{{ url_for('upload_image') }}" class="container-food-add">
+          <div class="add-newtext">ADD</div>
+          <div class="add-newtext">NEW</div>
+          <div class="add-newtext">MENU</div>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container-main hidden" id="appetizer">
+      <div class="text-main">APPETIZER</div>
+      <div class="layout">
+        {% for item in images %}
+          {% if item.type == 'appetizer' %}
+            <div class="container-food" id="id{{item.id}}">
+              <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" alt="Picture" class="img"/>
+              <p>{{ item.nameFood }}</p>
+              <div class="text-p">Price: ${{ item.price }}</div>
+              <div class="text-p">Type: {{ item.type }}</div>
+              <a href="{{ url_for('edit_menu', menu_id=item.id) }}" class="edit"><i class='bx bxs-message-square-edit'></i></a>
+              <form action="{{ url_for('delete_menu', menu_id=item.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                <button type="submit" class="delete"><i class='bx bxs-message-square-minus'></i></button>
+              </form>
+            </div>
+          {% endif %}
+        {% endfor %}
+        <a href="{{ url_for('upload_image') }}" class="container-food-add">
+          <div class="add-newtext">ADD</div>
+          <div class="add-newtext">NEW</div>
+          <div class="add-newtext">MENU</div>
+        </a>
+      </div>
+    </div>
+    
+
+
+
+    </div>
+    <script>
+    $(document).ready(function () {
+        $(".container-main").hide(); // ซ่อนทุกหมวดก่อน
+        $("#main").show(); // แสดง "MAIN" เป็นค่าเริ่มต้น
+
+        $(".tab-link").click(function (e) {
+            e.preventDefault();
+
+            // ลบ active class ออกจากทุกปุ่ม
+            $(".tab-link").removeClass("active");
+            
+            // เพิ่ม active class ไปยังปุ่มที่คลิก
+            $(this).addClass("active");
+
+            let category = $(this).attr("data-category"); // ดึงค่าจาก data-category
+            console.log("Switching to category:", category); // Debugging
+
+            $(".container-main").hide(); // ซ่อนทุกหมวด
+            $("#" + category).show(); // แสดงหมวดที่เลือก
+        });
+    });
+
+    </script>
+    
   </body>
 </html>

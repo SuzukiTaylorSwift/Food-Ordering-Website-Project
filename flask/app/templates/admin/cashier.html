@@ -118,12 +118,12 @@
 
         check_bill += `</div>`;
 
-        check_bill += `<button id="hereEYE" class="pay-button">จ่ายแล้ว</button>`;
+        check_bill += `<button id="here" class="pay-button">จ่ายแล้ว</button>`;
 
         $("#bill").html(check_bill);
       }
 
-      $(document).on("click", "#hereEYE", function () {
+      $(document).on("click", "#here", function () {
         if (table_id == 0) {
           table_id = null;
         }
