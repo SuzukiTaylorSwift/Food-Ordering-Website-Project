@@ -669,4 +669,3 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 #end login
-
