@@ -10,8 +10,8 @@
     <link href="img/favicon.ico" rel="icon">
 
     <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap" rel="stylesheet">
 
 
@@ -68,6 +68,7 @@
 
       <div class="hidden" id="tableNum">{{table_number}}</div>
       <div id="confirm"></div>
+      <input type="hidden" id="menu-id">
 
       <div class="spc-new main-menu container-fluid bg-white py-2 top-16 w-full z-40">
 
@@ -95,7 +96,7 @@
           <div class="menu-container">
             {% for item in menus %}
               {% if item.type == 'food' %}
-              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}')">
+              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}', '{{ item.option }}')">
                 <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
                 <div class="menu-info">
                   <p class="menu-title">{{ item.nameFood }}</p>
@@ -118,7 +119,7 @@
           <div class="menu-container">
             {% for item in menus %}
               {% if item.type == 'drink' %}
-              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}')">
+              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}', '{{ item.option }}')">
                 <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
                 <div class="menu-info">
                   <p class="menu-title">{{ item.nameFood }}</p>
@@ -141,7 +142,7 @@
           <div class="menu-container">
             {% for item in menus %}
               {% if item.type == 'appetizer' %}
-              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}')">
+              <div class="menu-item" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}', '{{ item.option }}')">
                 <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
                 <div class="menu-info">
                   <p class="menu-title">{{ item.nameFood }}</p>
@@ -200,58 +201,59 @@
         <div class="otp container-bar">
           <ul id="food-name" class="name-f-o mb-2 mt-2 font-bold"></ul>
         </div>
-  
-        <div class="mb-2">
-          <label class="block mt-1 font-bold">Ingredient</label>
-          <div class="otp flex flex-col">
-            <label class="flex justify-between">
-              <span><input type="radio" name="ingredient" value="หมู" class="option-radio" data-price="0"> Pork</span> <span>฿0</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="ingredient" value="เนื้อ" class="option-radio" data-price="10"> Beef</span> <span>฿10</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="ingredient" value="หมูกรอบ" class="option-radio" data-price="10"> Crispy Pork</span> <span>฿10</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="ingredient" value="กุ้ง" class="option-radio" data-price="10"> Shrimp</span> <span>฿10</span>
-            </label>
-          </div>
-        
-          <label class="block mt-1 font-bold">Size</label>
-          <div class="otp flex flex-col">
-            <label class="flex justify-between">
-              <span><input type="radio" name="size" value="ธรรมดา" class="option-radio" data-price="0"> S</span> <span>฿0</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="size" value="พิเศษ" class="option-radio" data-price="10"> M</span> <span>฿10</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="size" value="พิเศษมาก" class="option-radio" data-price="20"> L</span> <span>฿20</span>
-            </label>
-          </div>
-        
-          <label class="block mt-1 font-bold">Spicy</label>
-          <div class="otp flex flex-col">
-            <label class="flex justify-between">
-              <span><input type="radio" name="spiciness" value="ไม่เผ็ด" class="option-radio" data-price="0"> Not Spicy</span> <span>฿0</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="spiciness" value="เผ็ดน้อย" class="option-radio" data-price="0"> Less Spicy</span> <span>฿0</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="spiciness" value="เผ็ด" class="option-radio" data-price="0"> Spicy</span> <span>฿0</span>
-            </label>
-            <label class="flex justify-between">
-              <span><input type="radio" name="spiciness" value="เผ็ดมาก" class="option-radio" data-price="0"> Super Spicy</span> <span>฿0</span>
-            </label>
-          </div>
 
-          <!-- เพิ่มช่องพิมพ์ข้อความเพิ่มเติม -->
-          <label class="block mt-1 font-bold">Additional Request</label>
-          <textarea name="additional-notes" class="w-full p-2 border border-gray-300 rounded-md" style="height: 50px;" placeholder="E.g. No veggies"></textarea>
+        <!-- บล็อกตัวเลือกอาหาร -->
+        <div id="dynamic-options" class="mb-2"></div>
 
+        <!-- <label class="block mt-1 font-bold">Ingredient</label>
+        <div class="otp flex flex-col">
+          <label class="flex justify-between">
+            <span><input type="radio" name="ingredient" value="หมู" class="option-radio" data-price="0"> Pork</span> <span>฿0</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="ingredient" value="เนื้อ" class="option-radio" data-price="10"> Beef</span> <span>฿10</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="ingredient" value="หมูกรอบ" class="option-radio" data-price="10"> Crispy Pork</span> <span>฿10</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="ingredient" value="กุ้ง" class="option-radio" data-price="10"> Shrimp</span> <span>฿10</span>
+          </label>
         </div>
+      
+        <label class="block mt-1 font-bold">Size</label>
+        <div class="otp flex flex-col">
+          <label class="flex justify-between">
+            <span><input type="radio" name="size" value="ธรรมดา" class="option-radio" data-price="0"> S</span> <span>฿0</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="size" value="พิเศษ" class="option-radio" data-price="10"> M</span> <span>฿10</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="size" value="พิเศษมาก" class="option-radio" data-price="20"> L</span> <span>฿20</span>
+          </label>
+        </div>
+      
+        <label class="block mt-1 font-bold">Spicy</label>
+        <div class="otp flex flex-col">
+          <label class="flex justify-between">
+            <span><input type="radio" name="spiciness" value="ไม่เผ็ด" class="option-radio" data-price="0"> Not Spicy</span> <span>฿0</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="spiciness" value="เผ็ดน้อย" class="option-radio" data-price="0"> Less Spicy</span> <span>฿0</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="spiciness" value="เผ็ด" class="option-radio" data-price="0"> Spicy</span> <span>฿0</span>
+          </label>
+          <label class="flex justify-between">
+            <span><input type="radio" name="spiciness" value="เผ็ดมาก" class="option-radio" data-price="0"> Super Spicy</span> <span>฿0</span>
+          </label>
+        </div> -->
+
+        <!-- ช่องพิมพ์ข้อความเพิ่มเติม -->
+        <label for="additional-request" class="block mt-1 font-bold">Additional Request</label>
+        <textarea id="additional-request" name="additional-notes" class="w-full p-2 border border-gray-300 rounded-md" 
+          style="height: 50px;" placeholder="E.g. No veggies"></textarea>
       </div>
       
       <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
@@ -369,9 +371,19 @@
       let basePrice = 0;
       let quantity = 1;
 
+      let orderData_show = {
+        menu_id: [],
+        name: [],
+        quantity: [],
+        total_price: [],
+        option: [],
+        note: [],
+      };
+
       let orderData = {
         time: "",
         table_id: 0,
+        name: [],
         menu_id: [],
         quantity: [],
         total_price: [],
@@ -379,15 +391,20 @@
         note: [],
       };
 
-      let orderData_show = {
-        menu_id: [],
-        quantity: [],
-        total_price: [],
-        option: [],
-        note: [],
-      };
+      var table_number = 0;
+      function getData(data) {
+        addCart = data[0];
+        //console.log(addCart);
+      }
+      $(document).ready(function () {
+        $.getJSON("table/data", getData);
 
-      function showOptions(id, name, price, image_path) {
+        //console.log($("#tableNum").text());
+        table_number = $("#tableNum").text();
+        // orderData.table_id.push(table_number);
+      });
+
+      function showOptions(id, name, price, image_path, options) {
         document.getElementById('menu-page').style.display = 'none';
         document.getElementById('options-page').style.display = 'block';
         document.getElementById('cart-bar').style.display = 'none';
@@ -396,8 +413,6 @@
 
         basePrice = parseInt(price) || 0;
         document.getElementById("total-price").textContent = basePrice;
-
-        // เพิ่มการอัพเดตราคาของปุ่ม ADD
         document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${basePrice}`;
 
         const imgElement = document.createElement('img');
@@ -409,13 +424,81 @@
         menuImgContainer.innerHTML = '';
         menuImgContainer.appendChild(imgElement);
 
-        document.querySelectorAll('input[name="ingredient"]').forEach(el => el.checked = false);
-        document.querySelectorAll('input[name="size"]').forEach(el => el.checked = false);
-        document.querySelectorAll('input[name="spiciness"]').forEach(el => el.checked = false);
+        document.getElementById('menu-id').value = id;
+
+        generateOptions(options);
 
         quantity = 1;
         document.getElementById("quantity").textContent = quantity;
         calculateTotalPrice();
+      }
+
+      function generateOptions(optionString) {
+        const optionsContainer = document.getElementById("dynamic-options");
+        optionsContainer.innerHTML = ""; // เคลียร์ตัวเลือกเก่า
+
+        const optionData = {
+          "ingredient": [
+            { value: "หมู", text: "Pork", price: 0 },
+            { value: "เนื้อ", text: "Beef", price: 10 },
+            { value: "หมูกรอบ", text: "Crispy Pork", price: 10 },
+            { value: "กุ้ง", text: "Shrimp", price: 10 }
+          ],
+          "size": [
+            { value: "ธรรมดา", text: "S", price: 0 },
+            { value: "พิเศษ", text: "M", price: 10 },
+            { value: "พิเศษมาก", text: "L", price: 20 }
+          ],
+          "spiciness": [
+            { value: "ไม่เผ็ด", text: "Not Spicy", price: 0 },
+            { value: "เผ็ดน้อย", text: "Less Spicy", price: 0 },
+            { value: "เผ็ด", text: "Spicy", price: 0 },
+            { value: "เผ็ดมาก", text: "Super Spicy", price: 0 }
+          ],
+          "topping": [
+            { value: "ไขดาว1ฟอง", text: "ไขดาว 1 ฟอง", price: 10 },
+            { value: "ไขดาว2ฟอง", text: "ไขดาว 2 ฟอง", price: 20 }
+          ],
+          "topping_sweet": [
+            { value: "วิปครีม", text: "วิปครีม", price: 10 },
+            { value: "วิปครีม2", text: "วิปครีม 2 ปั้ม", price: 20 }
+          ]
+        };
+
+        const selectedOptions = optionString.trim().split(" ").filter(option => option !== "");
+        
+        selectedOptions.forEach(option => {
+          if (optionData[option]) {
+            const optionBlock = document.createElement("div");
+            optionBlock.classList.add("mb-2");
+
+            const label = document.createElement("label");
+            label.classList.add("block", "mt-1", "font-bold");
+            label.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+            optionBlock.appendChild(label);
+
+            const container = document.createElement("div");
+            container.classList.add("otp", "flex", "flex-col");
+
+            optionData[option].forEach(item => {
+              const optionLabel = document.createElement("label");
+              optionLabel.classList.add("flex", "justify-between");
+
+              const span = document.createElement("span");
+              span.innerHTML = `<input type="radio" name="${option}" value="${item.value}" class="option-radio" data-price="${item.price}" onchange="calculateTotalPrice()"> ${item.text}`;
+              
+              const priceSpan = document.createElement("span");
+              priceSpan.textContent = `฿${item.price}`;
+
+              optionLabel.appendChild(span);
+              optionLabel.appendChild(priceSpan);
+              container.appendChild(optionLabel);
+            });
+
+            optionBlock.appendChild(container);
+            optionsContainer.appendChild(optionBlock);
+          }
+        });
       }
 
       document.getElementById('checkout').addEventListener('click', function () {
@@ -425,36 +508,26 @@
         showConfirmPage();
       });
 
-      // กดปุ่ม "ORDER NOW!" เพื่อกลับไปที่หน้าหลักและปิดตะกร้าสินค้า
-      // document.getElementById('confirm-order').addEventListener('click', function () {
-      //   // ซ่อนหน้า confirm-page
-      //   document.getElementById('confirm-page').style.display = 'none';
-
-      //   // แสดงหน้า menu-page (หรือหน้าหลักของคุณ)
-      //   document.getElementById('menu-page').style.display = 'block';
-
-      //   // ซ่อนตะกร้าสินค้า
-      //   document.getElementById('cart-bar').style.display = 'none';
-
-      //   // อัปเดตสรุปตะกร้า
-      //   // updateCartSummary();
-      //   // showCartBar();
-      // });
-
-
       function addToCart() {
         const name = document.getElementById('food-name').innerText;
-        const ingredient = document.querySelector('input[name="ingredient"]:checked')?.value || "ปกติ";
-        const size = document.querySelector('input[name="size"]:checked')?.value || "ปกติ";
-        const spiciness = document.querySelector('input[name="spiciness"]:checked')?.value || "ปกติ";
+        const menuId = parseInt(document.getElementById('menu-id').value);
+        const additionalRequest = document.getElementById('additional-request').value.trim() || "ไม่มี";
+
+        const selectedOptions = {};
+        document.querySelectorAll(".option-radio:checked").forEach(el => {
+            selectedOptions[el.name] = el.value;
+        });
+
+        const optionString = Object.entries(selectedOptions).map(([key, value]) => `${value}`).join(", ");
 
         cart.push({ quantity, total: calculateTotalPrice(true) });
 
-        // เพิ่มข้อมูลที่เลือกลงใน orderData
-        orderData.menu_id.push(name); // เก็บชื่อเมนู
-        orderData.option.push({ ingredient, size, spiciness }); // เก็บตัวเลือก
-        orderData.quantity.push(quantity); // เก็บจำนวน
-        orderData.total_price.push(calculateTotalPrice(true)); // เก็บราคา
+        orderData.name.push(name);
+        orderData.menu_id.push(menuId);
+        orderData.option.push(optionString);
+        orderData.quantity.push(quantity);
+        orderData.total_price.push(calculateTotalPrice(true));
+        orderData.note.push(additionalRequest);
 
         showCartBar();
         goBack();
@@ -475,28 +548,31 @@
         let extraPrice = 0;
         let isValid = true;
 
-        const ingredient = document.querySelector('input[name="ingredient"]:checked');
-        const size = document.querySelector('input[name="size"]:checked');
-        const spiciness = document.querySelector('input[name="spiciness"]:checked');
+        // ตรวจสอบว่ามีตัวเลือกที่จำเป็นถูกเลือกครบหรือยัง
+        document.querySelectorAll(".otp input[type='radio']").forEach(option => {
+            const name = option.getAttribute("name");
+            if (!document.querySelector(`input[name="${name}"]:checked`)) {
+                isValid = false;
+            }
+        });
 
-        if (!ingredient || !size || !spiciness) {
-          isValid = false;
-        }
-
+        // ปิดปุ่ม ADD ถ้ายังเลือกตัวเลือกไม่ครบ
         const addButton = document.getElementById("add-to-cart-btn");
         addButton.disabled = !isValid;
 
+        // คำนวณราคาจากตัวเลือกที่ถูกเลือก
         document.querySelectorAll(".option-radio:checked").forEach(option => {
-          extraPrice += parseInt(option.getAttribute("data-price")) || 0;
+            extraPrice += parseInt(option.getAttribute("data-price")) || 0;
         });
 
         let total = (basePrice + extraPrice) * quantity;
-        document.getElementById("total-price").textContent = total;
 
-        // อัพเดตราคาที่ปุ่ม ADD
-        document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${total}`;
+        if (!returnValue) {
+            document.getElementById("total-price").textContent = total;
+            document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${total}`;
+        }
 
-        return returnValue ? total : null;
+        return total;
       }
 
 
@@ -508,12 +584,6 @@
         updateCartSummary(); // Update the cart summary when going back
         showCartBar(); 
       }
-
-      document.getElementById('checkout').addEventListener('click', function () {
-        document.getElementById('menu-page').style.display = 'none'; // ซ่อนหน้าเมนู
-        document.getElementById('confirm-page').style.display = 'block'; // แสดงหน้า confirm
-        updateCartSummary(); // อัปเดตสรุปตะกร้าเมื่อไปที่หน้า confirm
-      });
 
       function updateCartSummary() {
         const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -557,14 +627,15 @@
         let totalOrderPrice = 0;
 
         // แสดงรายการอาหารที่สั่งจาก orderData
-        orderData.menu_id.forEach((menuName, index) => {
+        orderData.name.forEach((menuName, index) => {
           const quantity = orderData.quantity[index];
           const totalPrice = orderData.total_price[index];
           const options = orderData.option[index];
 
-          const ingredient = options.ingredient;
-          const size = options.size;
-          const spiciness = options.spiciness;
+          // const ingredient = options.ingredient;
+          // const size = options.size;
+          // const spiciness = options.spiciness;
+          const additionalRequest = orderData.note[index] || "ไม่มี"; // ดึง note ที่บันทึกไว้
 
           const itemElement = document.createElement('div');
           itemElement.classList.add('order-item');
@@ -572,7 +643,8 @@
           itemElement.innerHTML = `
               <div>
                   <p><strong>${menuName}</strong></p>
-                  <p>options: ${ingredient}, ${size}, ${spiciness}</p>
+                  <p>options: ${options}</p>
+                  <p>additional: ${additionalRequest}</p> 
                   <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
               </div>
           `;
@@ -586,19 +658,30 @@
         document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
       }
 
-      // document.getElementById('confirm-order').addEventListener('click', function () {
-      //   
-      //   // เพิ่มฟังก์ชันการดำเนินการเพิ่มเติมที่นี่ เช่น ส่งข้อมูลไปที่เซิร์ฟเวอร์
-      // });
 
       document.getElementById('confirm-order').addEventListener('click', function () {
         alert('คำสั่งซื้อของคุณได้รับการยืนยัน!');
 
         // เพิ่มข้อมูลที่เลือกลงใน orderData_show โดยไม่ลบข้อมูลเก่า
-        orderData_show.menu_id.push(...orderData.menu_id); // เพิ่ม menu_id ใหม่เข้าไป
+        orderData_show.name.push(...orderData.name); // เพิ่ม menu_id ใหม่เข้าไป
         orderData_show.option.push(...orderData.option); // เพิ่ม option ใหม่เข้าไป
         orderData_show.quantity.push(...orderData.quantity); // เพิ่ม quantity ใหม่เข้าไป
         orderData_show.total_price.push(...orderData.total_price); // เพิ่ม total_price ใหม่เข้าไป
+        orderData_show.note.push(...orderData.note);
+
+        delete orderData.name;
+        orderData.table_id = table_number;
+        orderData.time = new Date().toLocaleString();
+        console.log('orderData:', orderData);
+
+        $.post({
+          url: "/table" + table_number,
+          data: JSON.stringify(orderData),
+          contentType: "application/json",
+          success: function (response) {
+            console.log("Response:", response);
+          },
+        });
 
         // ดูว่า orderData_show ถูกอัปเดตหรือไม่
         console.log('orderData_show:', orderData_show);
@@ -608,6 +691,7 @@
         orderData = {
           time: "",
           table_id: 0,
+          name: [],
           menu_id: [],
           quantity: [],
           total_price: [],
@@ -629,7 +713,6 @@
         showOrderSummaryInListMenuPage();
       });
 
-
       document.querySelector('.dish').addEventListener('click', function () {
         // Hide all other pages (optional if you want to hide other pages when showing this one)
         document.getElementById('menu-page').style.display = 'none';
@@ -649,20 +732,21 @@
         console.log('Showing order summary:', orderData_show);
 
         // ตรวจสอบว่า orderData_show มีข้อมูลก่อนที่จะแสดง
-        if (orderData_show.menu_id.length === 0) {
+        if (orderData_show.name.length === 0) {
             orderSummary.innerHTML = '<p>ยังไม่มีรายการสั่งซื้อ</p>';
             return;
         }
 
         // แสดงรายการอาหารที่สั่งจาก orderData_show
-        orderData_show.menu_id.forEach((menuName, index) => {
+        orderData_show.name.forEach((menuName, index) => {
           const quantity = orderData_show.quantity[index];
           const totalPrice = orderData_show.total_price[index];
           const options = orderData_show.option[index];
+          const additionalRequest = orderData_show.note[index] || "ไม่มี"; 
 
-          const ingredient = options.ingredient;
-          const size = options.size;
-          const spiciness = options.spiciness;
+          // const ingredient = options.ingredient;
+          // const size = options.size;
+          // const spiciness = options.spiciness;
 
           const itemElement = document.createElement('div');
           itemElement.classList.add('order-item');
@@ -670,7 +754,8 @@
           itemElement.innerHTML = `
               <div>
                   <p><strong>${menuName}</strong></p>
-                  <p>options: ${ingredient}, ${size}, ${spiciness}</p>
+                  <p>options: ${options}</p>
+                  <p>additional: ${additionalRequest}</p> 
                   <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
               </div>
           `;

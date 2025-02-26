@@ -16,19 +16,19 @@ class MenuForm(FlaskForm):
     image = FileField('เลือกรูปภาพ')
     # option_size = SelectField('Size', choices=[('Regular', 'Regular'), ('Large', 'Large')], validators=[DataRequired()])
     options = SelectMultipleField(
-        'Spice Level',
+        'optionals',
         choices=[
-            ('not_spicy', 'Not Spicy – ไม่เผ็ด'),
-            ('mild', 'Mild – เผ็ดน้อย'),
-            ('medium', 'Medium – เผ็ดกลาง'),
-            ('spicy', 'Spicy / Hot – เผ็ด'),
-            ('extra_spicy', 'Extra Spicy / Very Hot – เผ็ดมาก'),
-            ('super_spicy', 'Super Spicy / Extreme – เผ็ดสุด ๆ 🔥🔥')
+            ('size', 'Size'),
+            ('spiciness', 'Spiciness'),
+            ('ingredient', 'Ingredient'),
+            ('topping', 'Topping'),
+            ('topping_sweet', 'Topping Drink')
         ],
         option_widget=CheckboxInput(),
         widget=ListWidget(prefix_label=False)
     )
     submit = SubmitField('บันทึก')
+    
 # Not Spicy – ไม่เผ็ด
 # Mild – เผ็ดน้อย
 # Medium – เผ็ดกลาง
