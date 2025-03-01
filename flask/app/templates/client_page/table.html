@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>KHOW-BAN-CHAN:Table-{{ table_number }}</title>
+    <title>KHOW BAN CHAN:Table-{{ table_number }}</title>
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -100,7 +100,6 @@
                 <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
                 <div class="menu-info">
                   <p class="menu-title">{{ item.nameFood }}</p>
-                  <p class="menu-description">{{ item.description }}</p>
                   <p class="menu-price">฿{{ item.price }}</p>
                 </div>
               </div>
@@ -123,7 +122,6 @@
                 <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
                 <div class="menu-info">
                   <p class="menu-title">{{ item.nameFood }}</p>
-                  <p class="menu-description">{{ item.description }}</p>
                   <p class="menu-price">฿{{ item.price }}</p>
                 </div>
               </div>
@@ -146,7 +144,6 @@
                 <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
                 <div class="menu-info">
                   <p class="menu-title">{{ item.nameFood }}</p>
-                  <p class="menu-description">{{ item.description }}</p>
                   <p class="menu-price">฿{{ item.price }}</p>
                 </div>
               </div>
@@ -194,6 +191,7 @@
           <div class="menu-img-bar" id="menu-img">
           </div>
         </div>
+
       </div>
     
       <!-- บล็อกตัวเลือก -->
@@ -204,51 +202,6 @@
 
         <!-- บล็อกตัวเลือกอาหาร -->
         <div id="dynamic-options" class="mb-2"></div>
-
-        <!-- <label class="block mt-1 font-bold">Ingredient</label>
-        <div class="otp flex flex-col">
-          <label class="flex justify-between">
-            <span><input type="radio" name="ingredient" value="หมู" class="option-radio" data-price="0"> Pork</span> <span>฿0</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="ingredient" value="เนื้อ" class="option-radio" data-price="10"> Beef</span> <span>฿10</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="ingredient" value="หมูกรอบ" class="option-radio" data-price="10"> Crispy Pork</span> <span>฿10</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="ingredient" value="กุ้ง" class="option-radio" data-price="10"> Shrimp</span> <span>฿10</span>
-          </label>
-        </div>
-      
-        <label class="block mt-1 font-bold">Size</label>
-        <div class="otp flex flex-col">
-          <label class="flex justify-between">
-            <span><input type="radio" name="size" value="ธรรมดา" class="option-radio" data-price="0"> S</span> <span>฿0</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="size" value="พิเศษ" class="option-radio" data-price="10"> M</span> <span>฿10</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="size" value="พิเศษมาก" class="option-radio" data-price="20"> L</span> <span>฿20</span>
-          </label>
-        </div>
-      
-        <label class="block mt-1 font-bold">Spicy</label>
-        <div class="otp flex flex-col">
-          <label class="flex justify-between">
-            <span><input type="radio" name="spiciness" value="ไม่เผ็ด" class="option-radio" data-price="0"> Not Spicy</span> <span>฿0</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="spiciness" value="เผ็ดน้อย" class="option-radio" data-price="0"> Less Spicy</span> <span>฿0</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="spiciness" value="เผ็ด" class="option-radio" data-price="0"> Spicy</span> <span>฿0</span>
-          </label>
-          <label class="flex justify-between">
-            <span><input type="radio" name="spiciness" value="เผ็ดมาก" class="option-radio" data-price="0"> Super Spicy</span> <span>฿0</span>
-          </label>
-        </div> -->
 
         <!-- ช่องพิมพ์ข้อความเพิ่มเติม -->
         <label for="additional-request" class="block mt-1 font-bold">Additional Request</label>
@@ -440,14 +393,22 @@
         const optionData = {
           "ingredient": [
             { value: "หมู", text: "Pork", price: 0 },
+            { value: "ไก่", text: "Chicken", price: 0 },
+            { value: "ไก่กรอบ", text: "Crispy Chicken", price: 10 },
             { value: "เนื้อ", text: "Beef", price: 10 },
-            { value: "หมูกรอบ", text: "Crispy Pork", price: 10 },
-            { value: "กุ้ง", text: "Shrimp", price: 10 }
+            { value: "หมึก", text: "Squid", price: 10 },
+            { value: "หมูกรอบ", text: "Crispy Pork", price: 20 },
+            { value: "กุ้ง", text: "Shrimp", price: 20 }
           ],
           "size": [
             { value: "ธรรมดา", text: "S", price: 0 },
             { value: "พิเศษ", text: "M", price: 10 },
             { value: "พิเศษมาก", text: "L", price: 20 }
+          ],
+          "type": [
+            { value: "ร้อน", text: "Hot", price: 0 },
+            { value: "เย็น", text: "Ice", price: 5 },
+            { value: "ปั่น", text: "Frappe", price: 10 }
           ],
           "spiciness": [
             { value: "ไม่เผ็ด", text: "Not Spicy", price: 0 },
@@ -455,49 +416,66 @@
             { value: "เผ็ด", text: "Spicy", price: 0 },
             { value: "เผ็ดมาก", text: "Super Spicy", price: 0 }
           ],
-          "topping": [
-            { value: "ไขดาว1ฟอง", text: "ไขดาว 1 ฟอง", price: 10 },
-            { value: "ไขดาว2ฟอง", text: "ไขดาว 2 ฟอง", price: 20 }
+          "sweetness": [
+            { value: "หวาน0%", text: "No Sweet", price: 0 },
+            { value: "หวาน25%", text: "Sweet 25%", price: 0 },
+            { value: "หวาน50%", text: "Sweet 50%", price: 0 },
+            { value: "หวาน100%", text: "Sweet 100%", price: 0 },
+            { value: "หวาน125%", text: "Sweet 125%", price: 0 }
           ],
-          "topping_sweet": [
-            { value: "วิปครีม", text: "วิปครีม", price: 10 },
-            { value: "วิปครีม2", text: "วิปครีม 2 ปั้ม", price: 20 }
+          "add-on": [
+            { value: "ไข่ดาว1ฟอง", text: "1 Fried Egg", price: 10 },
+            { value: "ไข่ดาว2ฟอง", text: "2 Fried Egg", price: 20 },
+            { value: "ไข่เจียว1ฟอง", text: "1 Fried Omelette", price: 10 },
+            { value: "ไข่เจียว2ฟอง", text: "2 Fried Omelette", price: 20 },
+          ],
+          "topping": [
+            { value: "วิปครีม", text: "Whipped Cream", price: 10 },
+            { value: "เพิ่มช้อท", text: "Add Shot (Double Espresso)", price: 10 }
           ]
         };
 
         const selectedOptions = optionString.trim().split(" ").filter(option => option !== "");
         
         selectedOptions.forEach(option => {
-          if (optionData[option]) {
-            const optionBlock = document.createElement("div");
-            optionBlock.classList.add("mb-2");
+            if (optionData[option]) {
+                const optionBlock = document.createElement("div");
+                optionBlock.classList.add("mb-2");
 
-            const label = document.createElement("label");
-            label.classList.add("block", "mt-1", "font-bold");
-            label.textContent = option.charAt(0).toUpperCase() + option.slice(1);
-            optionBlock.appendChild(label);
+                const label = document.createElement("label");
+                label.classList.add("block", "mt-1", "font-bold");
+                label.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+                optionBlock.appendChild(label);
 
-            const container = document.createElement("div");
-            container.classList.add("otp", "flex", "flex-col");
+                const container = document.createElement("div");
+                container.classList.add("otp", "flex", "flex-col");
 
-            optionData[option].forEach(item => {
-              const optionLabel = document.createElement("label");
-              optionLabel.classList.add("flex", "justify-between");
+                optionData[option].forEach(item => {
+                    const optionLabel = document.createElement("label");
+                    optionLabel.classList.add("flex", "justify-between");
 
-              const span = document.createElement("span");
-              span.innerHTML = `<input type="radio" name="${option}" value="${item.value}" class="option-radio" data-price="${item.price}" onchange="calculateTotalPrice()"> ${item.text}`;
-              
-              const priceSpan = document.createElement("span");
-              priceSpan.textContent = `฿${item.price}`;
+                    const span = document.createElement("span");
+                    
+                    // เงื่อนไขในการเลือกชนิดของ input
+                    if (option === "topping" || option === "add-on") {
+                        // สำหรับ topping และ topping_drink ให้ใช้ checkbox
+                        span.innerHTML = `<input type="checkbox" name="${option}" value="${item.value}" class="option-checkbox" data-price="${item.price}" onchange="calculateTotalPrice()"> ${item.text}`;
+                    } else {
+                        // สำหรับประเภทอื่น ๆ ใช้ radio button
+                        span.innerHTML = `<input type="radio" name="${option}" value="${item.value}" class="option-radio" data-price="${item.price}" onchange="calculateTotalPrice()"> ${item.text}`;
+                    }
+                    
+                    const priceSpan = document.createElement("span");
+                    priceSpan.textContent = `฿${item.price}`;
 
-              optionLabel.appendChild(span);
-              optionLabel.appendChild(priceSpan);
-              container.appendChild(optionLabel);
-            });
+                    optionLabel.appendChild(span);
+                    optionLabel.appendChild(priceSpan);
+                    container.appendChild(optionLabel);
+                });
 
-            optionBlock.appendChild(container);
-            optionsContainer.appendChild(optionBlock);
-          }
+                optionBlock.appendChild(container);
+                optionsContainer.appendChild(optionBlock);
+            }
         });
       }
 
@@ -514,17 +492,30 @@
         const additionalRequest = document.getElementById('additional-request').value.trim() || "ไม่มี";
 
         const selectedOptions = {};
+        // จับค่า radio button ที่ถูกเลือก
         document.querySelectorAll(".option-radio:checked").forEach(el => {
             selectedOptions[el.name] = el.value;
         });
 
-        const optionString = Object.entries(selectedOptions).map(([key, value]) => `${value}`).join(", ");
+        // จับค่า checkbox ที่ถูกเลือก
+        document.querySelectorAll(".option-checkbox:checked").forEach(el => {
+            if (!selectedOptions[el.name]) selectedOptions[el.name] = [];
+            selectedOptions[el.name].push(el.value);
+        });
+
+        const optionString = Object.entries(selectedOptions).map(([key, value]) => {
+            if (Array.isArray(value)) {
+                return value.join(", ");
+            } else {
+                return value;
+            }
+        }).join(", ");
 
         cart.push({ quantity, total: calculateTotalPrice(true) });
 
         orderData.name.push(name);
         orderData.menu_id.push(menuId);
-        orderData.option.push(optionString);
+        orderData.option.push(optionString);  // เพิ่มตัวเลือกที่เลือกลงใน orderData
         orderData.quantity.push(quantity);
         orderData.total_price.push(calculateTotalPrice(true));
         orderData.note.push(additionalRequest);
@@ -560,13 +551,19 @@
         const addButton = document.getElementById("add-to-cart-btn");
         addButton.disabled = !isValid;
 
-        // คำนวณราคาจากตัวเลือกที่ถูกเลือก
+        // คำนวณราคาจากตัวเลือกที่ถูกเลือก (radio buttons)
         document.querySelectorAll(".option-radio:checked").forEach(option => {
+            extraPrice += parseInt(option.getAttribute("data-price")) || 0;
+        });
+
+        // คำนวณราคาจาก checkbox
+        document.querySelectorAll(".option-checkbox:checked").forEach(option => {
             extraPrice += parseInt(option.getAttribute("data-price")) || 0;
         });
 
         let total = (basePrice + extraPrice) * quantity;
 
+        // หาก returnValue = false จะอัปเดตแสดงผลที่หน้าเว็บ
         if (!returnValue) {
             document.getElementById("total-price").textContent = total;
             document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${total}`;
@@ -574,7 +571,6 @@
 
         return total;
       }
-
 
       function goBack() {
         document.getElementById('list-menu-page').style.display = 'none'; // Hide list-menu-page
@@ -610,53 +606,69 @@
         calculateTotalPrice();
       }
 
-      function decreaseQuantity() {
-        if (quantity > 1) {
-          quantity--;
-          document.getElementById("quantity").textContent = quantity;
-          calculateTotalPrice();
-        }
-      }
-
       function showConfirmPage() {
-        console.log(orderData);  // ตรวจสอบข้อมูลใน orderData
+          console.log(orderData); // ตรวจสอบข้อมูลใน orderData
 
-        const orderSummary = document.getElementById('order-summary');
-        orderSummary.innerHTML = '';  // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
+          const orderSummary = document.getElementById('order-summary');
+          orderSummary.innerHTML = ''; // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
 
-        let totalOrderPrice = 0;
+          let totalOrderPrice = 0;
 
-        // แสดงรายการอาหารที่สั่งจาก orderData
-        orderData.name.forEach((menuName, index) => {
-          const quantity = orderData.quantity[index];
-          const totalPrice = orderData.total_price[index];
-          const options = orderData.option[index];
+          orderData.name.forEach((menuName, index) => {
+              const quantity = orderData.quantity[index];
+              const totalPrice = orderData.total_price[index];
+              const options = orderData.option[index];
+              const additionalRequest = orderData.note[index] || "ไม่มี"; 
 
-          // const ingredient = options.ingredient;
-          // const size = options.size;
-          // const spiciness = options.spiciness;
-          const additionalRequest = orderData.note[index] || "ไม่มี"; // ดึง note ที่บันทึกไว้
+              const itemElement = document.createElement('div');
+              itemElement.classList.add('order-item', 'border-b', 'py-2');
 
-          const itemElement = document.createElement('div');
-          itemElement.classList.add('order-item');
+              itemElement.innerHTML = `
+                  <div class="flex justify-between items-center">
+                      <div>
+                          <p><strong>${menuName}</strong></p>
+                          <p>options: ${options}</p>
+                          <p>additional: ${additionalRequest}</p> 
+                      </div>
+                      <div class="flex flex-col items-center">
+                          <div class="flex items-center mb-2">
+                              <button class="px-2 py-1 bg-gray-200 rounded-md text-lg" onclick="updateQuantity(${index}, -1)">-</button>
+                              <span class="mx-3 font-bold">${quantity}</span>
+                              <button class="px-2 py-1 bg-gray-200 rounded-md text-lg" onclick="updateQuantity(${index}, 1)">+</button>
+                          </div>
+                          <p class="font-bold">฿${totalPrice.toFixed(2)}</p>
+                      </div>
+                  </div>
+              `;
 
-          itemElement.innerHTML = `
-              <div>
-                  <p><strong>${menuName}</strong></p>
-                  <p>options: ${options}</p>
-                  <p>additional: ${additionalRequest}</p> 
-                  <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
-              </div>
-          `;
+              orderSummary.appendChild(itemElement);
+              totalOrderPrice += totalPrice;
+          });
 
-          orderSummary.appendChild(itemElement);
-
-          totalOrderPrice += totalPrice;
-        });
-
-        // แสดงราคาทั้งหมด
-        document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
+          document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
       }
+
+
+      // ฟังก์ชันเพิ่มลดจำนวน
+      function updateQuantity(index, change) {
+          orderData.quantity[index] += change;
+
+          if (orderData.quantity[index] <= 0) {
+              // ลบเมนูออกจาก orderData
+              orderData.name.splice(index, 1);
+              orderData.quantity.splice(index, 1);
+              orderData.total_price.splice(index, 1);
+              orderData.option.splice(index, 1);
+              orderData.note.splice(index, 1);
+          } else {
+              // คำนวณราคารวมใหม่
+              const basePrice = orderData.total_price[index] / (orderData.quantity[index] - change);
+              orderData.total_price[index] = basePrice * orderData.quantity[index];
+          }
+
+          showConfirmPage(); // อัปเดตหน้าจอ
+      }
+
 
 
       document.getElementById('confirm-order').addEventListener('click', function () {
@@ -723,51 +735,45 @@
       });
 
       function showOrderSummaryInListMenuPage() {
-        const orderSummary = document.getElementById('order-summary-list'); // เปลี่ยนจาก order-summary เป็น order-summary-list
-        orderSummary.innerHTML = '';  // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
+          const orderSummary = document.getElementById('order-summary-list'); 
+          orderSummary.innerHTML = ''; // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
 
-        let totalOrderPrice = 0;
+          let totalOrderPrice = 0;
 
-        // ตรวจสอบว่า orderData_show มีข้อมูลหรือไม่
-        console.log('Showing order summary:', orderData_show);
+          console.log('Showing order summary:', orderData_show);
 
-        // ตรวจสอบว่า orderData_show มีข้อมูลก่อนที่จะแสดง
-        if (orderData_show.name.length === 0) {
-            orderSummary.innerHTML = '<p>ยังไม่มีรายการสั่งซื้อ</p>';
-            return;
-        }
+          if (orderData_show.name.length === 0) {
+              orderSummary.innerHTML = '<p>ยังไม่มีรายการสั่งซื้อ</p>';
+              return;
+          }
 
-        // แสดงรายการอาหารที่สั่งจาก orderData_show
-        orderData_show.name.forEach((menuName, index) => {
-          const quantity = orderData_show.quantity[index];
-          const totalPrice = orderData_show.total_price[index];
-          const options = orderData_show.option[index];
-          const additionalRequest = orderData_show.note[index] || "ไม่มี"; 
+          orderData_show.name.forEach((menuName, index) => {
+              const quantity = orderData_show.quantity[index];
+              const totalPrice = orderData_show.total_price[index];
+              const options = orderData_show.option[index];
+              const additionalRequest = orderData_show.note[index] || "ไม่มี"; 
 
-          // const ingredient = options.ingredient;
-          // const size = options.size;
-          // const spiciness = options.spiciness;
+              const itemElement = document.createElement('div');
+              itemElement.classList.add('order-item', 'border-b', 'border-gray-300', 'py-2');
 
-          const itemElement = document.createElement('div');
-          itemElement.classList.add('order-item');
+              itemElement.innerHTML = `
+                  <div class="flex justify-between items-center">
+                      <div>
+                          <p><strong>${menuName}</strong></p>
+                          <p>options: ${options}</p>
+                          <p>additional: ${additionalRequest}</p> 
+                          <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
+                      </div>
+                  </div>
+              `;
 
-          itemElement.innerHTML = `
-              <div>
-                  <p><strong>${menuName}</strong></p>
-                  <p>options: ${options}</p>
-                  <p>additional: ${additionalRequest}</p> 
-                  <p>quantity: ${quantity} x ฿${totalPrice.toFixed(2)}</p>
-              </div>
-          `;
+              orderSummary.appendChild(itemElement);
+              totalOrderPrice += totalPrice;
+          });
 
-          orderSummary.appendChild(itemElement);
-
-          totalOrderPrice += totalPrice;
-        });
-
-        // แสดงราคาทั้งหมด
-        document.getElementById('total-order-price-list').textContent = totalOrderPrice.toFixed(2);
+          document.getElementById('total-order-price-list').textContent = totalOrderPrice.toFixed(2);
       }
+
 
 
     </script>

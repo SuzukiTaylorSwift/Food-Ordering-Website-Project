@@ -19,16 +19,18 @@ class MenuForm(FlaskForm):
         'optionals',
         choices=[
             ('size', 'Size'),
-            ('spiciness', 'Spiciness'),
+            ('type', 'Type'),
             ('ingredient', 'Ingredient'),
-            ('topping', 'Topping'),
-            ('topping_sweet', 'Topping Drink')
+            ('spiciness', 'Spiciness'),
+            ('sweetness', 'Sweetness'),
+            ('add-on', 'Add On'),
+            ('topping', 'Topping')
         ],
         option_widget=CheckboxInput(),
         widget=ListWidget(prefix_label=False)
     )
     submit = SubmitField('บันทึก')
-    
+
 # Not Spicy – ไม่เผ็ด
 # Mild – เผ็ดน้อย
 # Medium – เผ็ดกลาง

@@ -295,14 +295,14 @@ h2 {
 }
 
 .option-radio:checked {
-  border-color: orange;
+  border-color: #E88810;
 }
 
 .option-radio:checked::before {
   content: "";
   width: 10px;
   height: 10px;
-  background-color: orange;
+  background-color: #E88810;
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -326,3 +326,14 @@ h2 {
   width: 100%;
 }
 
+/* กำหนดสีพื้นฐานของ checkbox */
+input[type="checkbox"] {
+  accent-color: #E88810; /* เปลี่ยนสีของ checkbox เมื่อถูกเลือกเป็นสีส้ม */
+}
+
+/* เปลี่ยนสีพื้นหลังเมื่อ checkbox ถูกเลือก */
+input[type="checkbox"]:checked {
+  background-color: #E88810; /* สีพื้นหลังเมื่อถูกเลือก */
+  border-color: #E88810; /* กำหนดขอบของ checkbox เป็นสีส้ม */
+  color: white;
+}

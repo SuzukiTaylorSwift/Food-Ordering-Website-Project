@@ -1,153 +1,608 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link
-      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Take Away Home</title>
+
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/takeAway.css') }}"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <!-- <link rel="stylesheet" href="/static/css/client_page/table.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/takeAway.css') }}"/>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
   </head>
   <body>
-    <div class="table-title">
-      <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
-      <h2>COUNTER</h2>
-      <a href="/admin/login" class="logout-button">Logout</a>
-    </div>
-    <div class="flex flex-row items-center justify-start ml-50">
-      <div class="container-left">
-        <div class="text">MAIN</div>
-        <div class="text">MAIN</div>
-        <div class="text">MAIN</div>
 
+    <div class="menu page" id="menu-page">
+      <div class="table-title">
+        <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
+        <h2>COUNTER</h2>
+        <a href="/admin/login" class="logout-button">Logout</a>
       </div>
-      <div class="container-main">
-        <div class="text-main">MAIN</div>
-        <div id="confirm"></div>
-        <div class="layout">
-          {% for i in menus %}
-          <div class="container-food" id="id{{i.id}}">
-              <div class="img">
-                <img
-                  src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
-                  alt="Picture"
-                  class="w-32 h-32 object-cover rounded-md"
-                />
-              </div>
+
+      <div id="confirm"></div>
+      <input type="hidden" id="menu-id">
     
-              <div class="mt-4 text-center">
-                <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
-                <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
-                <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
+      <div class="flex flex-row items-center justify-start">
+        <div class="container-left">
+          <a href="#main" class="text font-bold tab-link active" data-category="main">MAIN</a>
+          <a href="#drinks" class="text font-bold tab-link" data-category="drinks">DRINKS</a>
+          <a href="#appetizer" class="text font-bold tab-link" data-category="appetizer">APPETIZER</a>
+        </div>
+
+        <div class="container-main" id="main">
+          <div class="text-main">MAIN</div>
+          <div class="layout">
+            {% for item in menus %}
+              {% if item.type == 'food' %}
+              <div class="container-food" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}', '{{ item.option }}')">
+                <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+                <div class="menu-info">
+                  <p class="menu-title font-bold ">{{ item.nameFood }}</p>
+                  <p class="menu-price font-bold ">฿{{ item.price }}</p>
+                </div>
               </div>
-
+              {% endif %}
+            {% endfor %}
           </div>
-          {% endfor %}
+        </div>
+        
+        <div class="container-main" id="drinks">
+          <div class="text-main">DRINKS</div>
+          <div class="layout">
+            {% for item in menus %}
+              {% if item.type == 'drink' %}
+              <div class="container-food" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}', '{{ item.option }}')">
+                <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+                <div class="menu-info">
+                  <p class="menu-title">{{ item.nameFood }}</p>
+                  <p class="menu-price">฿{{ item.price }}</p>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        
+        <div class="container-main" id="appetizer">
+          <div class="text-main">APPETIZER</div>
+          <div class="layout">
+            {% for item in menus %}
+              {% if item.type == 'appetizer' %}
+              <div class="container-food" id="id{{item.id}}" onclick="showOptions('{{ item.id }}', '{{ item.nameFood }}', '{{ item.price }}', '{{ item.image_path }}', '{{ item.option }}')">
+                <img src="{{ url_for('static', filename=item.image_path.split('static/')[-1]) }}" class="menu-image" alt="Food Image">
+                <div class="menu-info">
+                  <p class="menu-title">{{ item.nameFood }}</p>
+                  <p class="menu-price">฿{{ item.price }}</p>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        
+      </div>
 
+      <div id="cart-bar" class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
+        
+        <!-- ปุ่ม checkout -->
+        <button id="checkout" class="bag text-white w-full px-3 py-3 text-center font-bold rounded-lg flex items-center justify-between">
+          <!-- จำนวนสินค้าในกล่องเล็กๆ ทางซ้ายสุด -->
+          <div class="item-count bg-white text-black border w-8 h-8 flex items-center justify-center rounded-sm">
+            <span id="item-count" class="dd btn font-bold">0</span>
+          </div>
+
+          <div>
+            <i class='bx bxs-basket'></i> MY BASKET
+          </div>
+        
+          <!-- ราคาอยู่ขวาสุด และไม่มีช่องว่างระหว่าง ฿ กับราคา -->
+          <div class="ml-2">
+            ฿<span id="total-price">0</span>
+          </div>
+        </button>
+        
+      </div> 
+    </div>
+
+
+    <div class="option page" id="options-page">
+      <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+        <header class="fixed top-0 left-0 w-full bg-white z-50 py-2">
+          <button onclick="goBack()" class="back-btn ml-2">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+        </header>
+      </div>
+    
+      <!-- รูปภาพอยู่ทางซ้าย -->
+      <div class="image-upload-container">
+        <div class="menu-img-bar" id="menu-img"></div>
+      </div>
+    
+      <div class="right-form">
+        <!-- บล็อกตัวเลือก -->
+        <div class="options-container container-fluid py-2 top-16 w-full z-40">
+          <div class="otp container-bar">
+            <ul id="food-name" class="name-f-o mb-2 mt-2 font-bold"></ul>
+          </div>
+    
+          <!-- บล็อกตัวเลือกอาหาร -->
+          <div id="dynamic-options" class="mb-2"></div>
+        </div>
+        
+        <!-- ปุ่มควบคุมด้านล่าง -->
+        <div class="fixed-bottom-bar">
+          <!-- ปุ่มลด-เพิ่มจำนวน -->
+          <div class="flex items-center space-x-4">
+            <button onclick="decreaseQuantity()" class="bg-gray-400 font-bold text-white w-12 h-12 rounded-full text-3xl flex items-center justify-center">
+              -
+            </button>
+            <span id="quantity" class="text-xl font-bold">1</span>
+            <button onclick="increaseQuantity()" class="bg-gray-400 font-bold text-white w-12 h-12 rounded-full text-3xl flex items-center justify-center">
+              +
+            </button>
+          </div>        
+    
+          <!-- ปุ่มใส่ตะกร้า -->
+          <button onclick="addToCart()" id="add-to-cart-btn" class="bag text-white w-full py-3 text-center font-bold rounded-lg con" disabled>
+            ADD : ฿<span id="total-price">0</span>
+          </button>
         </div>
       </div>
     </div>
+    
 
-    <!-- <h1 class="text-center my-5 text-xl font-bold">Welcome na ja takeAway</h1>
-    <div id="confirm"></div>
-    <div class="grid grid-cols-2 gap-4">
-      {% for i in menus %}
-      <div class="w-full mt-10" id="id{{i.id}}">
-        <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
-          <div class="flex justify-center">
-            <img
-              src="{{ url_for('static', filename=i.image_path.split('static/')[-1]) }}"
-              alt="Picture"
-              class="w-32 h-32 object-cover rounded-md"
-            />
-          </div>
+    <div id="confirm-page" class="confirm page" style="display: none;">
+      <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+        <header class="fixed top-0 left-0 w-full bg-white z-50 py-2">
+          <button onclick="goBack()" class="back-btn ml-2">
+            <i class="bx bx-chevron-left"></i>
+          </button>
 
-          <div class="mt-4 text-center">
-            <h2 class="text-xl font-semibold text-gray-800">{{i.nameFood}}</h2>
-            <p class="text-lg text-gray-500 mt-2">Price: ${{i.price}}</p>
-            <p class="text-sm text-gray-400 mt-1">Type: {{i.type}}</p>
+          <h3 class="dd text-xl font-bold text-center mt-3">KHOW BAN CHAN</h3>
+          
+        </header>
+    
+        <div id="order-summary" class="order-summary mt-16">
+          <!-- รายการสั่งซื้อจะถูกแสดงที่นี่ -->
+        </div>
+    
+        <div class="flex items-center justify-between py-3 bg-white border-t px-4 fixed bottom-0 left-0 w-full z-40">
+          <div class="fixed-bottom-container">
+            <div class="total-price">
+              <p><strong>TOTAL: ฿<span id="total-order-price">0.00</span></strong></p>
+            </div>
+        
+            <button id="confirm-order" class="bag text-white py-3 text-center font-bold rounded-lg">ORDER NOW!</button>
           </div>
         </div>
+
       </div>
-      {% endfor %}
-      <div
-        id="takeAway"
-        class="w-40 h-40 bg-blue-200 text-white flex justify-center items-center rounded-lg cursor-pointer hover:bg-blue-700 transition-all"
-      >
-        <h1>take home</h1>
-      </div>
-    </div> -->
+    </div>
+
+
+
+    <!-- ล่างนี่คือ จาว่า ---------------------------------------------------------------------------------------------- -->
+
+
+
+
 
     <script>
-      // Example: Set table_id dynamically
-      var addCart = [];
-      var nameFood = "";
-      var count = 0;
-      var price = 0;
-      var table_number = null;
-      function getData(data) {
-        addCart = data[0];
-        //console.log(addCart);
-      }
+
       $(document).ready(function () {
-        $.getJSON("table/data", getData);
+        $(".container-main").hide(); // ซ่อนทุกหมวดก่อน
+        $("#main").show(); // แสดง "MAIN" เป็นค่าเริ่มต้น
 
-        //console.log($("#tableNum").text());
+        $(".tab-link").click(function (e) {
+          e.preventDefault();
 
-        //console.log(table_number);
-        $("#id1").click(function () {
-          shop();
+          // ลบ active class ออกจากทุกปุ่ม
+          $(".tab-link").removeClass("active");
+          
+          // เพิ่ม active class ไปยังปุ่มที่คลิก
+          $(this).addClass("active");
 
-          //cart.push([])
+          let category = $(this).attr("data-category"); // ดึงค่าจาก data-category
+          console.log("Switching to category:", category); // Debugging
+
+          $(".container-main").hide(); // ซ่อนทุกหมวด
+          $("#" + category).show(); // แสดงหมวดที่เลือก
         });
       });
 
-      function shop() {
-        nameFood = addCart.nameFood;
-        price = addCart.price;
-        type = addCart.type;
-        html = `<div class="bg-white shadow-lg rounded-lg p-6 w-72 text-center">
-          <h2 class="text-xl font-semibold text-gray-800">${addCart.nameFood}</h2>
-          <p class="text-lg text-gray-500 mt-2">price: ${addCart.price} บาท</p>
-          <p class="text-sm text-gray-400 mt-1">type: ${addCart.type}</p>
-          <button id="hereEYE"class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-              เพิ่มลงตะกร้า
-          </button>
-      </div>`;
-        $("#confirm").after(html);
+      let cart = [];
+      let basePrice = 0;
+      let quantity = 1;
+
+      let orderData_show = {
+        menu_id: [],
+        name: [],
+        quantity: [],
+        total_price: [],
+        option: [],
+        note: [],
+      };
+
+      let orderData = {
+        time: "",
+        table_id: null,
+        name: [],
+        menu_id: [],
+        quantity: [],
+        total_price: [],
+        option: [],
+        note: [],
+      };
+
+      // var table_number = 0;
+      // function getData(data) {
+      //   addCart = data[0];
+      //   //console.log(addCart);
+      // }
+      // $(document).ready(function () {
+      //   $.getJSON("table/data", getData);
+
+      //   //console.log($("#tableNum").text());
+      //   table_number = $("#tableNum").text();
+      //   // orderData.table_id.push(table_number);
+      // });
+
+      function showOptions(id, name, price, image_path, options) {
+        document.getElementById('menu-page').style.display = 'none';
+        document.getElementById('options-page').style.display = 'block';
+        document.getElementById('cart-bar').style.display = 'none';
+
+        document.getElementById('food-name').innerHTML = `<li>${name}</li>`;
+
+        basePrice = parseInt(price) || 0;
+        document.getElementById("total-price").textContent = basePrice;
+        document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${basePrice}`;
+
+        const imgElement = document.createElement('img');
+        imgElement.src = image_path;
+        imgElement.alt = name;
+        imgElement.classList.add('menu-image');
+
+        const menuImgContainer = document.getElementById('menu-img');
+        menuImgContainer.innerHTML = '';
+        menuImgContainer.appendChild(imgElement);
+
+        document.getElementById('menu-id').value = id;
+
+        generateOptions(options);
+
+        quantity = 1;
+        document.getElementById("quantity").textContent = quantity;
+        calculateTotalPrice();
       }
 
-      $(document).on("click", "#hereEYE", function () {
-        let menu_ids = 0; // เทส
-        let orderData = {
-          time:"",
-          table_id: null,
-          menu_id: [],
-          quantity: [],
-          total_price: [],
-          option: [],
-          note: [],
+      function generateOptions(optionString) {
+        const optionsContainer = document.getElementById("dynamic-options");
+        optionsContainer.innerHTML = ""; // เคลียร์ตัวเลือกเก่า
+
+        const optionData = {
+          "ingredient": [
+            { value: "หมู", text: "Pork", price: 0 },
+            { value: "ไก่", text: "Chicken", price: 0 },
+            { value: "ไก่กรอบ", text: "Crispy Chicken", price: 10 },
+            { value: "เนื้อ", text: "Beef", price: 10 },
+            { value: "หมึก", text: "Squid", price: 10 },
+            { value: "หมูกรอบ", text: "Crispy Pork", price: 20 },
+            { value: "กุ้ง", text: "Shrimp", price: 20 }
+          ],
+          "size": [
+            { value: "ธรรมดา", text: "S", price: 0 },
+            { value: "พิเศษ", text: "M", price: 10 },
+            { value: "พิเศษมาก", text: "L", price: 20 }
+          ],
+          "type": [
+            { value: "ร้อน", text: "Hot", price: 0 },
+            { value: "เย็น", text: "Ice", price: 5 },
+            { value: "ปั่น", text: "Frappe", price: 10 }
+          ],
+          "spiciness": [
+            { value: "ไม่เผ็ด", text: "Not Spicy", price: 0 },
+            { value: "เผ็ดน้อย", text: "Less Spicy", price: 0 },
+            { value: "เผ็ด", text: "Spicy", price: 0 },
+            { value: "เผ็ดมาก", text: "Super Spicy", price: 0 }
+          ],
+          "sweetness": [
+            { value: "หวาน0%", text: "No Sweet", price: 0 },
+            { value: "หวาน25%", text: "Sweet 25%", price: 0 },
+            { value: "หวาน50%", text: "Sweet 50%", price: 0 },
+            { value: "หวาน100%", text: "Sweet 100%", price: 0 },
+            { value: "หวาน125%", text: "Sweet 125%", price: 0 }
+          ],
+          "add-on": [
+            { value: "ไข่ดาว1ฟอง", text: "1 Fried Egg", price: 10 },
+            { value: "ไข่ดาว2ฟอง", text: "2 Fried Egg", price: 20 },
+            { value: "ไข่เจียว1ฟอง", text: "1 Fried Omelette", price: 10 },
+            { value: "ไข่เจียว2ฟอง", text: "2 Fried Omelette", price: 20 },
+          ],
+          "topping": [
+            { value: "วิปครีม", text: "Whipped Cream", price: 10 },
+            { value: "เพิ่มช้อท", text: "Add Shot (Double Espresso)", price: 10 }
+          ]
         };
-        menu_ids++; // ตั้งเล่นๆเทสระบบ
+
+        const selectedOptions = optionString.trim().split(" ").filter(option => option !== "");
+        
+        selectedOptions.forEach(option => {
+            if (optionData[option]) {
+                const optionBlock = document.createElement("div");
+                optionBlock.classList.add("mb-2");
+
+                const label = document.createElement("label");
+                label.classList.add("block", "mt-1", "font-bold");
+                label.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+                optionBlock.appendChild(label);
+
+                const container = document.createElement("div");
+                container.classList.add("otp", "flex", "flex-col");
+
+                optionData[option].forEach(item => {
+                    const optionLabel = document.createElement("label");
+                    optionLabel.classList.add("flex", "justify-between");
+
+                    const span = document.createElement("span");
+                    
+                    // เงื่อนไขในการเลือกชนิดของ input
+                    if (option === "topping" || option === "add-on") {
+                        // สำหรับ topping และ topping_drink ให้ใช้ checkbox
+                        span.innerHTML = `<input type="checkbox" name="${option}" value="${item.value}" class="option-checkbox" data-price="${item.price}" onchange="calculateTotalPrice()"> ${item.text}`;
+                    } else {
+                        // สำหรับประเภทอื่น ๆ ใช้ radio button
+                        span.innerHTML = `<input type="radio" name="${option}" value="${item.value}" class="option-radio" data-price="${item.price}" onchange="calculateTotalPrice()"> ${item.text}`;
+                    }
+                    
+                    const priceSpan = document.createElement("span");
+                    priceSpan.textContent = `฿${item.price}`;
+
+                    optionLabel.appendChild(span);
+                    optionLabel.appendChild(priceSpan);
+                    container.appendChild(optionLabel);
+                });
+
+                optionBlock.appendChild(container);
+                optionsContainer.appendChild(optionBlock);
+            }
+        });
+      }
+
+      document.getElementById('checkout').addEventListener('click', function () {
+        document.getElementById('menu-page').style.display = 'none'; // ซ่อนหน้าเมนู
+        document.getElementById('confirm-page').style.display = 'block'; // แสดงหน้า confirm
+        updateCartSummary(); // อัปเดตสรุปตะกร้าเมื่อไปที่หน้า confirm
+        showConfirmPage();
+      });
+
+      function addToCart() {
+        const name = document.getElementById('food-name').innerText;
+        const menuId = parseInt(document.getElementById('menu-id').value);
+        // const additionalRequest = document.getElementById('additional-request').value.trim() || "ไม่มี";
+
+        const selectedOptions = {};
+        // จับค่า radio button ที่ถูกเลือก
+        document.querySelectorAll(".option-radio:checked").forEach(el => {
+            selectedOptions[el.name] = el.value;
+        });
+
+        // จับค่า checkbox ที่ถูกเลือก
+        document.querySelectorAll(".option-checkbox:checked").forEach(el => {
+            if (!selectedOptions[el.name]) selectedOptions[el.name] = [];
+            selectedOptions[el.name].push(el.value);
+        });
+
+        const optionString = Object.entries(selectedOptions).map(([key, value]) => {
+            if (Array.isArray(value)) {
+                return value.join(", ");
+            } else {
+                return value;
+            }
+        }).join(", ");
+
+        cart.push({ quantity, total: calculateTotalPrice(true) });
+
+        orderData.name.push(name);
+        orderData.menu_id.push(menuId);
+        orderData.option.push(optionString);  // เพิ่มตัวเลือกที่เลือกลงใน orderData
+        orderData.quantity.push(quantity);
+        orderData.total_price.push(calculateTotalPrice(true));
+        // orderData.note.push(additionalRequest);
+
+        showCartBar();
+        goBack();
+      }
+
+      function showCartBar() {
+        if (cart.length > 0) {
+          document.getElementById('cart-bar').style.display = 'block';
+          updateCartSummary();
+          document.getElementById('menu-page').style.marginBottom = '100px'; // เพิ่ม margin-bottom เมื่อมีสินค้าในตะกร้า
+        } else {
+          document.getElementById('cart-bar').style.display = 'none';
+          document.getElementById('menu-page').style.marginBottom = '0'; // คืนค่า margin-bottom เมื่อไม่มีสินค้า
+        }
+      }
+
+      function calculateTotalPrice(returnValue = false) {
+        let extraPrice = 0;
+        let isValid = true;
+
+        // ตรวจสอบว่ามีตัวเลือกที่จำเป็นถูกเลือกครบหรือยัง
+        document.querySelectorAll(".otp input[type='radio']").forEach(option => {
+            const name = option.getAttribute("name");
+            if (!document.querySelector(`input[name="${name}"]:checked`)) {
+                isValid = false;
+            }
+        });
+
+        // ปิดปุ่ม ADD ถ้ายังเลือกตัวเลือกไม่ครบ
+        const addButton = document.getElementById("add-to-cart-btn");
+        addButton.disabled = !isValid;
+
+        // คำนวณราคาจากตัวเลือกที่ถูกเลือก (radio buttons)
+        document.querySelectorAll(".option-radio:checked").forEach(option => {
+            extraPrice += parseInt(option.getAttribute("data-price")) || 0;
+        });
+
+        // คำนวณราคาจาก checkbox
+        document.querySelectorAll(".option-checkbox:checked").forEach(option => {
+            extraPrice += parseInt(option.getAttribute("data-price")) || 0;
+        });
+
+        let total = (basePrice + extraPrice) * quantity;
+
+        // หาก returnValue = false จะอัปเดตแสดงผลที่หน้าเว็บ
+        if (!returnValue) {
+            document.getElementById("total-price").textContent = total;
+            document.getElementById("add-to-cart-btn").innerHTML = `ADD : ฿${total}`;
+        }
+
+        return total;
+      }
+
+      function goBack() {
+        // document.getElementById('list-menu-page').style.display = 'none'; // Hide list-menu-page
+        document.getElementById('options-page').style.display = 'none';
+        document.getElementById('menu-page').style.display = 'block';
+        document.getElementById('confirm-page').style.display = 'none'; // ซ่อนหน้า confirm
+        updateCartSummary(); // Update the cart summary when going back
+        showCartBar(); 
+      }
+
+      function updateCartSummary() {
+        const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+        const totalPrice = cart.reduce((acc, item) => acc + item.total, 0);
+
+        // อัปเดตจำนวนสินค้าในกล่องสีขาวเล็กๆ
+        const itemCountElement = document.getElementById('item-count');
+        itemCountElement.textContent = totalItems;
+
+        // อัปเดตราคาในปุ่ม checkout
+        const totalPriceElement = document.getElementById('total-price');
+        totalPriceElement.textContent = totalPrice.toFixed(2);
+      }
+
+      document.querySelectorAll(".option-radio").forEach(input => {
+        input.addEventListener("change", function () {
+          calculateTotalPrice();
+        });
+      });
+
+      function increaseQuantity() {
+        quantity++;
+        document.getElementById("quantity").textContent = quantity;
+        calculateTotalPrice();
+      }
+
+      function showConfirmPage() {
+          console.log(orderData); // ตรวจสอบข้อมูลใน orderData
+
+          const orderSummary = document.getElementById('order-summary');
+          orderSummary.innerHTML = ''; // เคลียร์ก่อนเพื่อไม่ให้ข้อมูลซ้ำ
+
+          let totalOrderPrice = 0;
+
+          orderData.name.forEach((menuName, index) => {
+              const quantity = orderData.quantity[index];
+              const totalPrice = orderData.total_price[index];
+              const options = orderData.option[index];
+              const additionalRequest = orderData.note[index] || "ไม่มี"; 
+
+              const itemElement = document.createElement('div');
+              itemElement.classList.add('order-item', 'border-b', 'py-2');
+
+              itemElement.innerHTML = `
+                  <div class="flex justify-between items-center">
+                      <div>
+                          <p><strong>${menuName}</strong></p>
+                          <p>options: ${options}</p>
+                          <p>additional: ${additionalRequest}</p> 
+                      </div>
+                      <div class="flex flex-col items-center">
+                          <div class="flex items-center mb-2">
+                              <button class="px-2 py-1 bg-gray-200 rounded-md text-lg" onclick="updateQuantity(${index}, -1)">-</button>
+                              <span class="mx-3 font-bold">${quantity}</span>
+                              <button class="px-2 py-1 bg-gray-200 rounded-md text-lg" onclick="updateQuantity(${index}, 1)">+</button>
+                          </div>
+                          <p class="font-bold">฿${totalPrice.toFixed(2)}</p>
+                      </div>
+                  </div>
+              `;
+
+              orderSummary.appendChild(itemElement);
+              totalOrderPrice += totalPrice;
+          });
+
+          document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
+      }
+
+
+      // ฟังก์ชันเพิ่มลดจำนวน
+      function updateQuantity(index, change) {
+          orderData.quantity[index] += change;
+
+          if (orderData.quantity[index] <= 0) {
+              // ลบเมนูออกจาก orderData
+              orderData.name.splice(index, 1);
+              orderData.quantity.splice(index, 1);
+              orderData.total_price.splice(index, 1);
+              orderData.option.splice(index, 1);
+              orderData.note.splice(index, 1);
+          } else {
+              // คำนวณราคารวมใหม่
+              const basePrice = orderData.total_price[index] / (orderData.quantity[index] - change);
+              orderData.total_price[index] = basePrice * orderData.quantity[index];
+          }
+
+          showConfirmPage(); // อัปเดตหน้าจอ
+      }
+
+      document.getElementById('confirm-order').addEventListener('click', function () {
+        alert('คำสั่งซื้อของคุณได้รับการยืนยัน!');
+
+        // เพิ่มข้อมูลที่เลือกลงใน orderData_show โดยไม่ลบข้อมูลเก่า
+        orderData_show.name.push(...orderData.name); // เพิ่ม menu_id ใหม่เข้าไป
+        orderData_show.option.push(...orderData.option); // เพิ่ม option ใหม่เข้าไป
+        orderData_show.quantity.push(...orderData.quantity); // เพิ่ม quantity ใหม่เข้าไป
+        orderData_show.total_price.push(...orderData.total_price); // เพิ่ม total_price ใหม่เข้าไป
+        orderData_show.note.push(...orderData.note);
+
+        delete orderData.name;
+        // orderData.table_id = table_number;
         orderData.time = new Date().toLocaleString();
-        orderData.menu_id.push(menu_ids);
-        orderData.quantity.push(menu_ids);
-        orderData.total_price.push(2000);
-        orderData.option.push("อายข้าวผัดแหนม พิเศษ");
-        orderData.note.push("ขอแหนมแบบเบิ้มๆ");
-        orderData.menu_id.push(2);
-        orderData.quantity.push(5);
-        orderData.total_price.push(5000);
-        orderData.option.push("พิเศษ");
-        orderData.note.push("ไม่เอาผัก");
-        console.log(orderData);
+        console.log('orderData:', orderData);
+
         $.post({
           url: "/takeAway",
           data: JSON.stringify(orderData),
@@ -156,10 +611,37 @@
             console.log("Response:", response);
           },
         });
+
+        // ดูว่า orderData_show ถูกอัปเดตหรือไม่
+        console.log('orderData_show:', orderData_show);
+
+        // เคลียร์ตะกร้า
+        cart = [];
+        orderData = {
+          time: "",
+          table_id: 0,
+          name: [],
+          menu_id: [],
+          quantity: [],
+          total_price: [],
+          option: [],
+          note: [],
+        };
+
+        // ซ่อนหน้า confirm-page
+        document.getElementById('confirm-page').style.display = 'none';
+
+        // แสดงหน้า menu-page
+        document.getElementById('menu-page').style.display = 'block';
+
+        // ซ่อนตะกร้าสินค้า
+        document.getElementById('cart-bar').style.display = 'none';
+        document.getElementById('menu-page').style.marginBottom = '0'; // คืนค่า margin-bottom เมื่อไม่มีสินค้า
+
+        // แสดงรายการอาหารที่สั่งในหน้า list-menu-page
+        showOrderSummaryInListMenuPage();
       });
-      $("#takeAway").click(function () {
-        window.location.href = "/admin/cashier";
-      });
+
     </script>
   </body>
 </html>
