@@ -49,22 +49,23 @@
     
     <script>
       $(document).ready(function () {
-        // โหลดสถานะปุ่มจาก Local Storage
-        $(".send-order").each(function () {
-          var orderId = $(this).data("order-id");
-          if (localStorage.getItem("order_" + orderId) === "Sent") {
-            $(this).prop("disabled", true).text("Sent ✅").removeClass("bg-orange-500").addClass("bg-gray-400");
-          }
-        });
-    
-        // กดปุ่มแล้วเปลี่ยนสถานะ
+        // กดปุ่มแล้วลบออเดอร์ออกจากหน้าเว็บ
         $(".orders-container").on("click", ".send-order", function () {
           var orderId = $(this).data("order-id");
-          var button = $(this);
+          var orderItem = $(this).closest(".grid"); // หาตัวออเดอร์ที่ใกล้ที่สุด
+          var tableContainer = orderItem.closest(".mb-6"); // หาหมวดของโต๊ะ
     
-          // เปลี่ยนปุ่มและบันทึกสถานะใน Local Storage
-          button.prop("disabled", true).text("Sent ✅").removeClass("bg-orange-500").addClass("bg-gray-400");
-          localStorage.setItem("order_" + orderId, "Sent");
+          // ลบออเดอร์ออกจากหน้าเว็บ
+          tableContainer.fadeOut(300, function () {
+            $(this).remove(); // ลบออร์เดอร์ออก
+    
+            // ถ้าไม่มีออเดอร์เหลือในโต๊ะ ให้ลบหมวดโต๊ะออก
+            if (tableContainer.find(".grid").length === 0) {
+              tableContainer.fadeOut(300, function () {
+                $(this).remove();
+              });
+            }
+          });
         });
       });
     </script>          
