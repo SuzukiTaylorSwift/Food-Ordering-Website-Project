@@ -1,7 +1,8 @@
 body {
-    background-color: #f5f5f5;
-    padding-top: 40px;
-  }
+  background-color: #f5f5f5;
+  padding-top: 40px;
+  font-family: 'Prompt', sans-serif;
+}
 
 .container {
   background-color: #2D8E2D;
@@ -110,16 +111,16 @@ h1 {
   border-radius: 20px;
   margin-left: 50px;
   margin-top: 30px;
-  background-color:#63a5eb;
+  background-color:#df8516;
 
 }
 .table-home:hover {
-  background-color: #1e87f7;
+  background-color: #E88810;
   transform: scale(1.05);
 }
 
 .table-home:active {
-  background-color: #1e87f7;
+  background-color: #E88810;
   transform: scale(0.95);
 }
 
@@ -133,16 +134,16 @@ h1 {
   border-radius: 20px;
   margin-left: 30px;
   margin-top: 30px;
-  background-color:#e4ec4f;
+  background-color:#df8516;
   
 }
 .table-bill:hover {
-  background-color: #eaf605;
+  background-color: #E88810;
   transform: scale(1.05);
 }
 
 .table-bill:active {
-  background-color: #eaf605;
+  background-color: #E88810;
   transform: scale(0.95);
 }
 h3 {

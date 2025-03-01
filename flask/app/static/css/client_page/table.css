@@ -337,3 +337,11 @@ input[type="checkbox"]:checked {
   border-color: #E88810; /* กำหนดขอบของ checkbox เป็นสีส้ม */
   color: white;
 }
+
+.confirm {
+  padding-bottom: 120px;
+}
+
+.list-menu{
+  padding-bottom: 80px;
+}

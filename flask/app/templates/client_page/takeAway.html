@@ -501,16 +501,17 @@
       }
 
       function updateCartSummary() {
-        const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-        const totalPrice = cart.reduce((acc, item) => acc + item.total, 0);
+          const totalItems = orderData.quantity.reduce((acc, qty) => acc + qty, 0);
+          const totalPrice = orderData.total_price.reduce((acc, price) => acc + price, 0);
 
-        // อัปเดตจำนวนสินค้าในกล่องสีขาวเล็กๆ
-        const itemCountElement = document.getElementById('item-count');
-        itemCountElement.textContent = totalItems;
+          // อัปเดตจำนวนสินค้าในตะกร้า
+          document.getElementById('item-count').textContent = totalItems;
 
-        // อัปเดตราคาในปุ่ม checkout
-        const totalPriceElement = document.getElementById('total-price');
-        totalPriceElement.textContent = totalPrice.toFixed(2);
+          // อัปเดตราคาในปุ่ม checkout
+          document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+
+          // อัปเดตราคาใน confirm-page
+          document.getElementById('total-order-price').textContent = totalPrice.toFixed(2);
       }
 
       document.querySelectorAll(".option-radio").forEach(input => {
@@ -567,7 +568,6 @@
           document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
       }
 
-
       // ฟังก์ชันเพิ่มลดจำนวน
       function updateQuantity(index, change) {
           orderData.quantity[index] += change;
@@ -585,7 +585,8 @@
               orderData.total_price[index] = basePrice * orderData.quantity[index];
           }
 
-          showConfirmPage(); // อัปเดตหน้าจอ
+          showConfirmPage(); // อัปเดตหน้ารายการสั่งซื้อ
+          updateCartSummary(); // อัปเดตราคาและจำนวนสินค้าทั้งหมด
       }
 
       document.getElementById('confirm-order').addEventListener('click', function () {
