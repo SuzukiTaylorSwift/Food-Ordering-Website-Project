@@ -120,7 +120,7 @@ def display_images():
     return render_template('admin/upload_pages/gallery.html', images=images)
 
 @app.route('/delete_menu/<int:menu_id>', methods=['POST'])
-#@login_required
+@login_required
 def delete_menu(menu_id):
     if current_user.role != "admin":
             flash("You do not have permission.", 'error')
@@ -269,7 +269,7 @@ def all_menu():
 #end client
 #admin 
 @app.route('/admin/lobby')
-#login_required
+@login_required
 def admin():
     
     return render_template('admin/lobby.html')
@@ -277,7 +277,7 @@ def admin():
 
 #all data
 @app.route("/admin/all_data/<int:table_id>")
-#login_required
+@login_required
 def all_data(table_id):
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
     order = Order.query.filter(
@@ -302,7 +302,7 @@ def all_data(table_id):
 
 #take home
 @app.route("/admin/all_data")
-#login_required
+@login_required
 def all_data_takehome():
     # ฟิลเตอร์ข้อมูลจาก Order โดยเลือกเฉพาะ order ที่มี table_id ตรงกับที่เลือก
     order = Order.query.filter(
@@ -329,7 +329,7 @@ def all_data_takehome():
     
 
 @app.route("/admin/cashier", methods=['GET', 'POST'])
-#login_required
+@login_required
 def Cashier():
     if request.method == "POST":
         data = request.get_json()  
@@ -359,14 +359,14 @@ def Cashier():
     return render_template("admin/cashier.html",table=table)
 
 @app.route("/admin/table_status")
-#login_required
+@login_required
 def table_status():
     tables = Table.query.all()
     table_data = {table.id: table.status for table in tables}
     return jsonify(table_data)
 
 @app.route("/admin/serve", methods=['GET', 'POST'])
-#login_required
+@login_required
 def Server():
     if request.method == "POST":
         if request.method == "POST":
@@ -402,7 +402,7 @@ def Server():
     
 
 @app.route("/admin/kitchen", methods=['GET', 'POST'])
-#@login_required
+@login_required
 def Kitchen():
     if request.method == "POST":
         result = request.get_json()
@@ -468,7 +468,7 @@ scheduler.add_job(id='delete', func=hard_delete, trigger='interval', days=1)
 #soft delete
 # @app.route("/restore-order/<int:order_id>", methods=["POST"])
 @app.route("/restore-order/<int:order_id>", methods=["POST"])
-#@login_required
+@login_required
 def restore_order(order_id):
     order = Order.query.get(order_id)
     if order:
@@ -477,7 +477,7 @@ def restore_order(order_id):
     return {"error": "Order not found."}, 404
 
 @app.route("/delete-order/<int:order_id>", methods=["POST"])
-#@login_required
+@login_required
 def soft_delete_order(order_id):
     order = Order.query.get(order_id)
     if order:
