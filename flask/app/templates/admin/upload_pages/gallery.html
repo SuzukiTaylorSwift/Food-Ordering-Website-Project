@@ -38,6 +38,11 @@
               <p>{{ item.nameFood }}</p>
               <div class="text-p">Price: ${{ item.price }}</div>
               <div class="text-p">Type: {{ item.type }}</div>
+              {% if item.option %}
+                <div class="text-p">Options: {{ item.option }}</div>
+                {%else%}
+                <div class="text-p">Options: - </div>
+              {% endif %}
               <!-- ปุ่ม Edit -->
               <a href="{{ url_for('edit_menu', menu_id=item.id) }}" class="edit"><i class='bx bxs-message-square-edit'></i></a>
               <!-- ปุ่ม Delete -->
@@ -66,6 +71,11 @@
               <p>{{ item.nameFood }}</p>
               <div class="text-p">Price: ${{ item.price }}</div>
               <div class="text-p">Type: {{ item.type }}</div>
+              {% if item.option %}
+                <div class="text-p">Options: {{ item.option }}</div>
+                {%else%}
+                <div class="text-p">Options: - </div>
+              {% endif %}
               <a href="{{ url_for('edit_menu', menu_id=item.id) }}" class="edit"><i class='bx bxs-message-square-edit'></i></a>
               <form action="{{ url_for('delete_menu', menu_id=item.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                 <button type="submit" class="delete"><i class='bx bxs-message-square-minus'></i></button>
@@ -91,6 +101,11 @@
               <p>{{ item.nameFood }}</p>
               <div class="text-p">Price: ${{ item.price }}</div>
               <div class="text-p">Type: {{ item.type }}</div>
+              {% if item.option %}
+                <div class="text-p">Options: {{ item.option }}</div>
+                {%else%}
+                <div class="text-p">Options: - </div>
+              {% endif %}      
               <a href="{{ url_for('edit_menu', menu_id=item.id) }}" class="edit"><i class='bx bxs-message-square-edit'></i></a>
               <form action="{{ url_for('delete_menu', menu_id=item.id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                 <button type="submit" class="delete"><i class='bx bxs-message-square-minus'></i></button>
@@ -111,28 +126,48 @@
 
     </div>
     <script>
-    $(document).ready(function () {
-        $(".container-main").hide(); // ซ่อนทุกหมวดก่อน
-        $("#main").show(); // แสดง "MAIN" เป็นค่าเริ่มต้น
-
-        $(".tab-link").click(function (e) {
-            e.preventDefault();
-
-            // ลบ active class ออกจากทุกปุ่ม
-            $(".tab-link").removeClass("active");
-            
-            // เพิ่ม active class ไปยังปุ่มที่คลิก
-            $(this).addClass("active");
-
-            let category = $(this).attr("data-category"); // ดึงค่าจาก data-category
-            console.log("Switching to category:", category); // Debugging
-
-            $(".container-main").hide(); // ซ่อนทุกหมวด
-            $("#" + category).show(); // แสดงหมวดที่เลือก
-        });
-    });
-
+      $(document).ready(function () {
+          // ซ่อนทุกหมวดก่อน
+          $(".container-main").hide();
+          
+          // เช็คว่าเคยเลือกแท็บไว้หรือไม่
+          var selectedTab = localStorage.getItem("selectedTab");
+          
+          if (selectedTab) {
+              $("#" + selectedTab).show(); // ถ้ามีค่าให้แสดงแท็บที่เลือก
+              $(".tab-link").removeClass("active");
+              $("a[data-category='" + selectedTab + "']").addClass("active");
+          } else {
+              // ถ้าไม่มีค่าให้แสดงแท็บ MAIN
+              $("#main").show();
+              $(".tab-link").removeClass("active");
+              $("a[data-category='main']").addClass("active");
+          }
+    
+          // เมื่อคลิกแท็บ
+          $(".tab-link").click(function (e) {
+              e.preventDefault();
+              
+              // ลบ active class ออกจากทุกปุ่ม
+              $(".tab-link").removeClass("active");
+              
+              // เพิ่ม active class ไปยังปุ่มที่คลิก
+              $(this).addClass("active");
+    
+              let category = $(this).attr("data-category"); // ดึงค่าจาก data-category
+              console.log("Switching to category:", category); // Debugging
+    
+              // ซ่อนทุกหมวด
+              $(".container-main").hide();
+              // แสดงหมวดที่เลือก
+              $("#" + category).show();
+    
+              // บันทึกแท็บที่เลือก
+              localStorage.setItem("selectedTab", category);
+          });
+      });
     </script>
+    
     
   </body>
 </html>

@@ -148,7 +148,11 @@
       });
       $("#check").click(function () {
         $.getJSON("/admin/all_data", function (data) {
-          bill(data);
+          if (data["order_list"].length === 0) {
+            alert("ไม่มีออร์เดอร์ขณะนี้ ไม่สามารถดูบิลได้");
+          } else {
+            bill(data);
+          }
         });
       });
 
