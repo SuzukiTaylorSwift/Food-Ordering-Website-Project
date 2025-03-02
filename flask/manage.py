@@ -28,8 +28,6 @@ Aheye&background=83ee03&color=fff',role="admin"))
     # image_path = url_for('static', filename='img/aheye.png')
     new_menu = Menu(nameFood="kang_haerin_1",price=10000000,type="drink",option="Narukmakmak",image_path="static/img/kang_haerin_1.jpg")
     db.session.add(new_menu)
-    new_menu = Menu(nameFood="Nong Eye",price=5,type="naRuk",option="short samati",image_path="static/img/aheye.png")
-    db.session.add(new_menu)
     #ถ้ามีโต๊ะเพิ่มจะทำยังไงวะน้อง
     for i in range(9):
         print(i)

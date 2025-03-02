@@ -14,60 +14,85 @@
       <h1 class="text-xl font-bold">ORDER</h1>
     </div>
 
-    <div class="p-6 orders-container">
+    <div
+      class="p-6 orders-container grid grid-cols-3 gap-4 min-h-[calc(100vh-100px)]"
+    >
       {% for key, data in grouped_orders.items() %}
-      <div class="mb-6">
-        <p class="text-orange-500 font-bold text-lg mb-2">
-          Table : {{ data.table_id if data.table_id is not none else 'Takeaway' }}
+      <div
+        class="order-card bg-gray-200 p-4 rounded-lg shadow-lg flex flex-col {% if loop.index > 3 %}hidden{% endif %} {% if data.orders|length > 4 %} col-span-2 {% endif %}"
+      >
+        <p class="text-orange-500 font-bold text-lg">
+          Table : {{ data.table_id if data.table_id is not none else 'Takeaway'
+          }}
         </p>
-    
-        <!-- Table Header -->
-        <div class="grid grid-cols-4 gap-4 font-semibold text-gray-600 text-sm border-b pb-2">
-          <p>Order</p>
-          <p>Date</p>
-          <p>Status</p>
-          <p class="text-right">Send order</p>
-        </div>
-    
-        <!-- Order List -->
+
         {% for i in data.orders %}
-        <div class="grid grid-cols-4 gap-4 items-center bg-green-600 text-white p-3 rounded-lg mt-2">
-          <p>{{ menu[i.menu_id-1]["nameFood"] }}</p>
-          <p>{{ i.date }}</p>
-          <p>{{ i.status }}</p>
-          <button data-order-id="{{ key }}" class="send-order bg-orange-500 text-white px-4 py-2 rounded-lg text-sm">
-            Send Order
-          </button>
+        <div class="border-b pb-2 mt-2">
+          <p class="font-bold text-gray-700">
+            {{ menu[i.menu_id-1]["nameFood"] }}
+          </p>
+          <p>Quantity: {{ i.quantity }}</p>
+          <p>Option: {{ i.option }}</p>
+          <p>Note: {{ i.note }}</p>
         </div>
         {% endfor %}
-    
-        <!-- เส้นแบ่งระหว่างโต๊ะ -->
-        <hr class="mt-4 border-gray-300">
+
+        <button
+          data-order-id="{{ key }}"
+          class="send-order bg-orange-500 text-white px-4 py-2 rounded-lg text-sm mt-3 w-full"
+        >
+          Send Order
+        </button>
       </div>
       {% endfor %}
     </div>
-    
+
     <script>
       $(document).ready(function () {
-        // กดปุ่มแล้วลบออเดอร์ออกจากหน้าเว็บ
-        $(".orders-container").on("click", ".send-order", function () {
+        $(".send-order").click(function () {
           var orderId = $(this).data("order-id");
-          var orderItem = $(this).closest(".grid"); // หาตัวออเดอร์ที่ใกล้ที่สุด
-          var tableContainer = orderItem.closest(".mb-6"); // หาหมวดของโต๊ะ
-    
-          // ลบออเดอร์ออกจากหน้าเว็บ
-          tableContainer.fadeOut(300, function () {
-            $(this).remove(); // ลบออร์เดอร์ออก
-    
-            // ถ้าไม่มีออเดอร์เหลือในโต๊ะ ให้ลบหมวดโต๊ะออก
-            if (tableContainer.find(".grid").length === 0) {
-              tableContainer.fadeOut(300, function () {
-                $(this).remove();
-              });
-            }
+          console.log(orderId);
+          $.post({
+            url: "/admin/kitchen",
+            data: JSON.stringify({
+              id: orderId,
+            }),
+            contentType: "application/json",
+            success: function (response) {
+              console.log("✅ Order sent successfully:", response);
+              location.reload(); // รีเฟรชหน้าเว็บ
+            },
+            error: function (xhr, status, error) {
+              console.error("❌ Error sending order:", error);
+            },
           });
         });
+
+        // ฟังก์ชันสำหรับแสดง Toast notification
+        function showToast() {
+          $("#toast").removeClass("hidden").addClass("show");
+          setTimeout(function () {
+            $("#toast").removeClass("show").addClass("hidden");
+          }, 3000); // Toast จะหายไปหลังจาก 3 วินาที
+        }
+        function checkNewOrders() {
+          $.get({
+            url: "/admin/kitchen", // เช็คข้อมูลใหม่จากเซิร์ฟเวอร์
+            success: function (response) {
+              // คุณสามารถตรวจสอบได้ว่ามีคำสั่งใหม่หรือไม่
+              if (response.new_order) {
+                showToast(); // แสดง Toast ถ้ามีคำสั่งใหม่
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("❌ Error checking new orders:", error);
+            },
+          });
+        }
+
+        // รีเฟรชทุกๆ 5 วินาที
+        setInterval(checkNewOrders, 5000);
       });
-    </script>          
+    </script>
   </body>
 </html>

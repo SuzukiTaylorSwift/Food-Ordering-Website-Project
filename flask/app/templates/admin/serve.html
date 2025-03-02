@@ -5,35 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <title>Serving</title>
+    <title>Serve</title>
   </head>
-  <body class="bg-green-300">
-    <h1 class="text-center text-bold font-50">Serve</h1>
+  <body class="bg-white">
+    <!-- Header -->
+    <div class="bg-green-700 text-white py-4 px-6 flex items-center">
+      <div class="w-4 h-4 bg-white rounded-full mr-2"></div>
+      <h1 class="text-xl font-bold">ORDER</h1>
+    </div>
 
-    {% for key, data in grouped_orders.items() %}
-    <div class="border border-gray-300 rounded-lg shadow-lg p-4 bg-white">
-      {% if data.table_id is not none %}
-      <p class="text-lg font-bold text-center">Table {{ data.table_id }}</p>
-      {% else %}
-      <p class="text-lg font-bold text-center">Takeaway</p>
-      {% endif %}
-      <p class="text-sm text-gray-500 text-center">
-        Order Time: {{ data.order_time }}
-      </p>
-      <div class="m-4">
-        {%for i in data.orders%}
-        <p>{{menu[i.menu_id-1]["nameFood"]}}</p>
-        <p>{{i.quantity}} จาน - {{i.option}} -{{i.note}}</p>
-        {%endfor%}
+    <div
+      class="p-6 orders-container grid grid-cols-3 gap-4 min-h-[calc(100vh-100px)]"
+    >
+      {% for key, data in grouped_orders.items() %}
+      <div
+        class="order-card bg-gray-200 p-4 rounded-lg shadow-lg flex flex-col {% if loop.index > 3 %}hidden{% endif %} {% if data.orders|length > 4 %} col-span-2 {% endif %}"
+      >
+        <p class="text-orange-500 font-bold text-lg">
+          Table : {{ data.table_id if data.table_id is not none else 'Takeaway'
+          }}
+        </p>
+
+        {% for i in data.orders %}
+        <div class="border-b pb-2 mt-2">
+          <p class="font-bold text-gray-700">
+            {{ menu[i.menu_id-1]["nameFood"] }}
+          </p>
+          <p>Quantity: {{ i.quantity }}</p>
+          <p>Option: {{ i.option }}</p>
+          <p>Note: {{ i.note }}</p>
+        </div>
+        {% endfor %}
+
         <button
           data-order-id="{{ key }}"
-          class="btn send-order mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+          class="send-order bg-orange-500 text-white px-4 py-2 rounded-lg text-sm mt-3 w-full"
         >
           Send Order
         </button>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
 
     <script>
       $(document).ready(function () {
@@ -48,13 +60,24 @@
             contentType: "application/json",
             success: function (response) {
               console.log("✅ Order sent successfully:", response);
+              location.reload(); // รีเฟรชหน้าเว็บ
             },
             error: function (xhr, status, error) {
               console.error("❌ Error sending order:", error);
             },
           });
         });
+
+        // ฟังก์ชันสำหรับแสดง Toast notification
+        function showToast() {
+          $("#toast").removeClass("hidden").addClass("show");
+          setTimeout(function () {
+            $("#toast").removeClass("show").addClass("hidden");
+          }, 3000); // Toast จะหายไปหลังจาก 3 วินาที
+        }
       });
+
+      // รีเฟรชทุกๆ 5 วินาที
     </script>
   </body>
 </html>

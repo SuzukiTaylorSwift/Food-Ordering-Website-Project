@@ -42,9 +42,6 @@ def load_user(user_id):
     # user table, use it in the query for the user
     return AuthUser.query.get(int(user_id))
 
-@app.route('/')
-def home():
-    return "Flask says 'Hello world!'"
 
 @app.route('/crash')
 def crash():
@@ -106,6 +103,8 @@ def upload_image():
             return redirect(url_for('display_images'))  # เปลี่ยนไปที่หน้าที่แสดงภาพ
 
     return render_template('admin/upload_pages/upload.html', form=form)  # ส่งฟอร์มไปที่ template
+
+
 
 @app.route('/images')
 @login_required
@@ -209,6 +208,10 @@ def takeAway():
     return render_template("client_page/takeAway.html",menus = menus)
     
 
+
+
+    
+    
 @app.route('/table<int:table_number>', methods=['GET', 'POST'])
 def order_for_table(table_number):
     if(table_number <= 9 and table_number > 0):
@@ -238,6 +241,7 @@ def order_for_table(table_number):
                 db.session.add(Order_table(menu_id=data["menu_id"][i],order_id=newOrder.id,quantity=data["quantity"][i],totalPrice=data["total_price"][i],option=data["option"][i],note=data["note"][i] ))
                 # db.session.add(order_table(menu_id=2,order_id=newOrder.id,quantity=3,totalPrice=500))
                 db.session.commit()
+            # data_for_each_table(table_number,data)
             
         menus = Menu.query.all()
         return render_template("client_page/table.html",table_number = table_number,menus = menus)
@@ -245,15 +249,7 @@ def order_for_table(table_number):
         return "Table number not available", 404
     
     
-#all menu
-@app.route('/table/data')
-@login_required
-def all_menu():
-    data = []
-    db_contacts = Menu.query.all() 
-    data = list(map(lambda x: x.to_dict(), db_contacts))
-    app.logger.debug(f"DB Contacts: {data}")
-    return jsonify(data)
+
 
 
 
@@ -271,7 +267,6 @@ def all_menu():
 @app.route('/admin/lobby')
 @login_required
 def admin():
-    
     return render_template('admin/lobby.html')
 
 
@@ -432,6 +427,11 @@ def Kitchen():
             grouped_orders=grouped_orders,
             menu=db_menu
         )
+
+@app.route("/admin/tracking", methods=['GET', 'POST'])
+def tracking():
+    order = Order.active()
+    return render_template("admin/tracking.html",order=order)
 #hard delete
 def hard_delete():
     from app import app  # Import Flask app
@@ -539,7 +539,7 @@ def save_data():
                     "price":i.totalPrice,"buy":buy,"time":order[i.order_id-1].order_time}
             
             data_list.append(data)
-        return render_template("record.html",data_list=data_list)
+        return render_template("admin/record.html",data_list=data_list)
 
 @app.route("/restore",methods=["POST"])
 @login_required

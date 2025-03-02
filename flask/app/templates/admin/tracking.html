@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Tracking Record</title>
+  </head>
+  <body class="bg-gray-100 min-h-screen justify-center items-center">
+    <div class="container mx-auto p-6">
+      <!-- Header -->
+      <div
+        class="bg-green-700 text-white text-center py-4 rounded-lg shadow-lg"
+      >
+        <h1 class="text-2xl font-bold">Tracking Record</h1>
+      </div>
+
+      <!-- Table Container -->
+      <div class="bg-white shadow-lg rounded-lg mt-6 overflow-hidden">
+        <table class="w-full border-collapse">
+          <!-- Table Head -->
+          <thead>
+            <tr class="bg-green-700 text-white text-lg">
+              <th class="p-4 text-center">Table ID</th>
+              <th class="p-4 text-center">กินไหน</th>
+              <th class="p-4 text-center">Food Status</th>
+              <th class="p-4 text-center">Paid Status</th>
+              <th class="p-4 text-center">Total Price</th>
+              <th class="p-4 text-center">Time</th>
+            </tr>
+          </thead>
+
+          <!-- Table Body -->
+          <tbody>
+            {% for i in order %}
+            <tr class="border-b hover:bg-gray-100 transition-all">
+              {% if i.table_id != none%}
+              <td class="p-4 text-center">{{ i.table_id }}</td>
+              {%else%}
+              <td class="p-4 text-center">0</td>
+              {%endif%}
+              <td class="p-4 text-center">
+                {% if i.takeaway == false %}
+                <span
+                  class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  Eat in
+                </span>
+                {% else %}
+                <span
+                  class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  Take away
+                </span>
+                {% endif %}
+              </td>
+              <td class="p-4 text-center">
+                {%if i.food_status == "Complete"%}
+                <span
+                  class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  {{ i.food_status }}
+                </span>
+                {%else%} {{ i.food_status }} {%endif%}
+              </td>
+              <td class="p-4 text-center">{{ i.paid_status }}</td>
+              <td class="p-4 text-center text-green-600 font-bold">
+                {{ i.totalPrice }} ฿
+              </td>
+              <td class="p-4 text-center text-gray-600">{{ i.order_time }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

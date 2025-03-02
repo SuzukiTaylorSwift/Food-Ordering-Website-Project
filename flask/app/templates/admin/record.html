@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Order Record</title>
+  </head>
+  <body class="bg-gray-100 min-h-screen justify-center items-center">
+    <div class="container mx-auto p-6">
+      <!-- Header -->
+      <div
+        class="bg-green-700 text-white text-center py-4 rounded-lg shadow-lg"
+      >
+        <h1 class="text-2xl font-bold">Order Record</h1>
+      </div>
+
+      <!-- Table Container -->
+      <div class="bg-white shadow-lg rounded-lg mt-6 overflow-hidden">
+        <table class="w-full border-collapse">
+          <!-- Table Head -->
+          <thead>
+            <tr class="bg-green-700 text-white text-lg">
+              <th class="p-4 text-center">Menu</th>
+              <th class="p-4 text-center">Options</th>
+              <th class="p-4 text-center">กินไหน</th>
+              <th class="p-4 text-center">Price</th>
+              <th class="p-4 text-center">Quantity</th>
+              <th class="p-4 text-center">Time</th>
+            </tr>
+          </thead>
+
+          <!-- Table Body -->
+          <tbody>
+            {% for item in data_list %}
+            <tr class="border-b hover:bg-gray-100 transition-all">
+              <td class="p-4 text-center">{{ item.menu }}</td>
+              <td class="p-4 text-center">{{ item.options }}</td>
+              <td class="p-4 text-center">
+                {% if item.buy == 'Eat in' %}
+                <span
+                  class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  Eat in
+                </span>
+                {% else %}
+                <span
+                  class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  Take away
+                </span>
+                {% endif %}
+              </td>
+              <td class="p-4 text-center text-green-600 font-bold">
+                {{ item.price }} ฿
+              </td>
+              <td class="p-4 text-center">{{ item.quantity }}</td>
+              <td class="p-4 text-center text-gray-600">{{ item.time }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
