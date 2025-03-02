@@ -42,7 +42,6 @@ body {
   gap: 5px;
   background-color: #2D8E2D; 
   color: white; 
-  padding: 3px; 
   text-align: left; 
   font-size: 22px; 
   font-weight: bold; 
@@ -52,6 +51,7 @@ body {
   width: 100%; 
   z-index: 10; 
 }
+
 
 
 
@@ -100,7 +100,7 @@ h1 {
   text-align: center;
   color: #f5f5f5;
   margin:60px ;
-  }
+}
 
 .table-home {
   display: flex;
@@ -337,21 +337,86 @@ h6{
   margin-right: 20px;
 }
 
+.logout-button-s {
+  background-color: transparent; 
+  color: #f5f5f5; 
+  font-size: 23px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 10px;
+  text-decoration: none;
+  position: absolute;
+  right: 140px;
+  top: -3px;
+}
+
 
 
 .logout-button {
   background-color: transparent; 
   color: #f5f5f5; 
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   text-align: center;
   padding: 5px 10px;
-  border: none; 
   text-decoration: none;
   position: absolute;
   right: 30px;
+  top: -2=3px;
 
 }
+
+
+
+/* kitchen */
+.orders-container {
+  display: flex;
+  flex-wrap: nowrap; /* Prevents breaking into new lines */
+  overflow-x: auto; /* Allows horizontal scrolling if the content exceeds the container width */
+  overflow-y: hidden; /* Prevents vertical scrolling */
+  gap: 16px;
+  margin-top: 20px;
+  scrollbar-width: none; /* Hides scrollbar on Firefox */
+  -ms-overflow-style: none; /* Hides scrollbar on IE/Edge */
+}
+
+.orders-container::-webkit-scrollbar {
+  display: none;
+}
+
+.table-orders {
+  display: flex;
+  gap: 16px;
+}
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #efecec;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  height: 600px;
+  max-height: 600px; 
+  min-width: 450px;
+  overflow: hidden; 
+}
+
+.order-card .order-details {
+  flex-grow: 1; 
+  overflow-y: auto; 
+}
+
+.send-order {
+  margin-top: auto; 
+  align-self: flex-start; 
+}
+
+
+
+
+
+
 
 
 

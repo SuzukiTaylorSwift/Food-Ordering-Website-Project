@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cashier.css') }}"/>
 
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
 
@@ -39,14 +40,12 @@
 
   </head>
   <body>
-
-    <div class="menu page" id="menu-page">
-      <div class="table-title">
-        <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
-        <h2>COUNTER</h2>
-        <a href="/admin/login" class="logout-button">Logout</a>
-      </div>
-
+    <div class="table-title">
+      <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
+      <h2>COUNTER</h2>
+      <a href="/admin/login" class="logout-button">LOGOUT</a>
+    </div>
+    
       <div id="confirm"></div>
       <input type="hidden" id="menu-id">
     
