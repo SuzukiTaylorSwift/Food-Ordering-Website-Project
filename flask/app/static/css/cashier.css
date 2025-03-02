@@ -411,6 +411,15 @@ h6{
   margin-top: auto; 
   align-self: flex-start; 
 }
+.send-order:hover {
+  background-color: #fd9e2a;
+  transform: scale(1.05);
+}
+
+.send-order:active {
+  background-color: #fd9e2a;
+  transform: scale(0.95);
+}
 
 
 

@@ -55,12 +55,26 @@
     
 
     <script>
+      function updateTableStatus() {
+        $.getJSON("/admin/table_status", function (data) {
+          for (let tableId in data) {
+            let tableElement = $("#id" + tableId);
+            if (data[tableId] === "Taken") {
+              location.reload(); // รีเฟรชหน้าเว็บ
+            }
+          }
+        });
+      }
       $(document).ready(function () {
+        setInterval(updateTableStatus, 5000);
+      });
+      
+     $(document).ready(function () {
         $(".send-order").click(function () {
           var orderId = $(this).data("order-id");
           console.log(orderId);
           $.post({
-            url: "/admin/kitchen",
+            url: "/admin/serve",
             data: JSON.stringify({
               id: orderId,
             }),
@@ -82,24 +96,8 @@
             $("#toast").removeClass("show").addClass("hidden");
           }, 3000); // Toast จะหายไปหลังจาก 3 วินาที
         }
-        function checkNewOrders() {
-          $.get({
-            url: "/admin/kitchen", // เช็คข้อมูลใหม่จากเซิร์ฟเวอร์
-            success: function (response) {
-              // คุณสามารถตรวจสอบได้ว่ามีคำสั่งใหม่หรือไม่
-              if (response.new_order) {
-                showToast(); // แสดง Toast ถ้ามีคำสั่งใหม่
-              }
-            },
-            error: function (xhr, status, error) {
-              console.error("❌ Error checking new orders:", error);
-            },
-          });
-        }
-
-        // รีเฟรชทุกๆ 5 วินาที
-        setInterval(checkNewOrders, 5000);
       });
+
     </script>
   </body>
 </html>
