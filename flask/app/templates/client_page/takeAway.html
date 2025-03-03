@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cashier.css') }}"/>
 
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
 
@@ -40,12 +39,14 @@
 
   </head>
   <body>
-    <div class="table-title">
-      <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
-      <h2>COUNTER</h2>
-      <a href="/admin/login" class="logout-button">LOGOUT</a>
-    </div>
-    
+
+    <div class="menu page" id="menu-page">
+      <div class="table-title">
+        <a href="/admin/cashier"><i class="bx bx-chevrons-left bx-md"></i> </a>
+        <h2>COUNTER</h2>
+        <a href="/admin/login" class="logout-button">Logout</a>
+      </div>
+
       <div id="confirm"></div>
       <input type="hidden" id="menu-id">
     
@@ -155,6 +156,18 @@
     
           <!-- บล็อกตัวเลือกอาหาร -->
           <div id="dynamic-options" class="mb-2"></div>
+
+          <!-- ช่องพิมพ์ข้อความเพิ่มเติม -->
+          <label for="additional-request" class="block mt-1 font-bold"
+            >Additional Request</label
+          >
+          <textarea
+            id="additional-request"
+            name="additional-notes"
+            class="w-full p-2 border border-gray-300 rounded-md"
+            style="height: 50px"
+            placeholder="E.g. No veggies"
+          ></textarea>
         </div>
         
         <!-- ปุ่มควบคุมด้านล่าง -->
@@ -407,7 +420,7 @@
       function addToCart() {
         const name = document.getElementById('food-name').innerText;
         const menuId = parseInt(document.getElementById('menu-id').value);
-        // const additionalRequest = document.getElementById('additional-request').value.trim() || "ไม่มี";
+        const additionalRequest = document.getElementById('additional-request').value.trim() || "ไม่มี";
 
         const selectedOptions = {};
         // จับค่า radio button ที่ถูกเลือก
@@ -436,7 +449,7 @@
         orderData.option.push(optionString);  // เพิ่มตัวเลือกที่เลือกลงใน orderData
         orderData.quantity.push(quantity);
         orderData.total_price.push(calculateTotalPrice(true));
-        // orderData.note.push(additionalRequest);
+        orderData.note.push(additionalRequest);
 
         showCartBar();
         goBack();
@@ -500,17 +513,16 @@
       }
 
       function updateCartSummary() {
-          const totalItems = orderData.quantity.reduce((acc, qty) => acc + qty, 0);
-          const totalPrice = orderData.total_price.reduce((acc, price) => acc + price, 0);
+        const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+        const totalPrice = cart.reduce((acc, item) => acc + item.total, 0);
 
-          // อัปเดตจำนวนสินค้าในตะกร้า
-          document.getElementById('item-count').textContent = totalItems;
+        // อัปเดตจำนวนสินค้าในกล่องสีขาวเล็กๆ
+        const itemCountElement = document.getElementById('item-count');
+        itemCountElement.textContent = totalItems;
 
-          // อัปเดตราคาในปุ่ม checkout
-          document.getElementById('total-price').textContent = totalPrice.toFixed(2);
-
-          // อัปเดตราคาใน confirm-page
-          document.getElementById('total-order-price').textContent = totalPrice.toFixed(2);
+        // อัปเดตราคาในปุ่ม checkout
+        const totalPriceElement = document.getElementById('total-price');
+        totalPriceElement.textContent = totalPrice.toFixed(2);
       }
 
       document.querySelectorAll(".option-radio").forEach(input => {
@@ -567,6 +579,7 @@
           document.getElementById('total-order-price').textContent = totalOrderPrice.toFixed(2);
       }
 
+
       // ฟังก์ชันเพิ่มลดจำนวน
       function updateQuantity(index, change) {
           orderData.quantity[index] += change;
@@ -584,8 +597,7 @@
               orderData.total_price[index] = basePrice * orderData.quantity[index];
           }
 
-          showConfirmPage(); // อัปเดตหน้ารายการสั่งซื้อ
-          updateCartSummary(); // อัปเดตราคาและจำนวนสินค้าทั้งหมด
+          showConfirmPage(); // อัปเดตหน้าจอ
       }
 
       document.getElementById('confirm-order').addEventListener('click', function () {

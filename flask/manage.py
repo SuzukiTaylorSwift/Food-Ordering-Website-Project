@@ -26,7 +26,17 @@ def seed_db():
 Aheye&background=83ee03&color=fff',role="admin"))
     # print(img,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     # image_path = url_for('static', filename='img/aheye.png')
-    new_menu = Menu(nameFood="kang_haerin_1",price=10000000,type="drink",option="Narukmakmak",image_path="static/img/kang_haerin_1.jpg")
+    new_menu = Menu(nameFood="Tom Yam Noodle",price=59,type="food",option="size ingredient spiciness add-on",image_path="static/img/IMG_0314.PNG")
+    db.session.add(new_menu)
+    new_menu = Menu(nameFood="Keto salad",price=69,type="food",option="size ingredient add-on",image_path="static/img/IMG_0316.PNG")
+    db.session.add(new_menu)
+    new_menu = Menu(nameFood="Dubbing Soup",price=89,type="appetizer",option="size",image_path="static/img/IMG_0315.PNG")
+    db.session.add(new_menu)
+    new_menu = Menu(nameFood="Caprese Salad",price=89,type="appetizer",option="size",image_path="static/img/IMG_0317.PNG")
+    db.session.add(new_menu)
+    new_menu = Menu(nameFood="Matcha Corn Flakes",price=59,type="drink",option="size type sweetness topping",image_path="static/img/IMG_0289.PNG")
+    db.session.add(new_menu)
+    new_menu = Menu(nameFood="Matcha KitKat",price=59,type="drink",option="size type sweetness topping",image_path="static/img/IMG_0290.PNG")
     db.session.add(new_menu)
     #ถ้ามีโต๊ะเพิ่มจะทำยังไงวะน้อง
     for i in range(9):

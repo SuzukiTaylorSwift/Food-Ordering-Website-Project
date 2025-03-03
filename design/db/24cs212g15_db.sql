@@ -1,46 +1,52 @@
-CREATE TABLE "users" (
-  "id" int PRIMARY KEY,
-  "username" varchar,
+CREATE TABLE "auth_users" (
+  "id" integer PRIMARY KEY,
+  "email" varchar UNIQUE,
+  "name" varchar,
   "password" varchar,
-  "role" varchar,
-  "avatar" varchar
+  "avatar_url" varchar,
+  "role" varchar
 );
 
-CREATE TABLE "tables" (
-  "id" int PRIMARY KEY,
-  "status" varchar
-);
-
-CREATE TABLE "menu" (
-  "id" int PRIMARY KEY,
-  "name_food" varchar,
-  "price" int,
+CREATE TABLE "menus" (
+  "id" integer PRIMARY KEY,
+  "nameFood" varchar,
+  "price" integer,
   "image_path" varchar,
   "type" varchar,
   "option" varchar
 );
 
+CREATE TABLE "tables" (
+  "id" integer PRIMARY KEY,
+  "status" varchar
+);
+
 CREATE TABLE "orders" (
-  "id" int PRIMARY KEY,
-  "table_id" int,
+  "id" integer PRIMARY KEY,
+  "table_id" integer,
   "takeaway" boolean,
   "food_status" varchar,
   "paid_status" varchar,
-  "order_time" datetime,
-  "total_price" int
+  "totalPrice" integer,
+  "order_time" timestamp,
+  "is_deleted" boolean,
+  "deleted_at" timestamp
 );
 
-CREATE TABLE "order_list" (
-  "id" int PRIMARY KEY,
-  "order_id" int,
-  "menu_id" int,
-  "quantity" int,
-  "total_price" int,
-  "option" varchar
+CREATE TABLE "order_tables" (
+  "id" integer PRIMARY KEY,
+  "menu_id" integer,
+  "order_id" integer,
+  "totalPrice" integer,
+  "quantity" integer,
+  "option" varchar,
+  "note" varchar,
+  "is_deleted" boolean,
+  "deleted_at" timestamp
 );
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("table_id") REFERENCES "tables" ("id");
 
-ALTER TABLE "order_list" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id");
+ALTER TABLE "order_tables" ADD FOREIGN KEY ("menu_id") REFERENCES "menus" ("id");
 
-ALTER TABLE "order_list" ADD FOREIGN KEY ("menu_id") REFERENCES "menu" ("id");
+ALTER TABLE "order_tables" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id");
