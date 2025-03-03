@@ -65,6 +65,7 @@
   </head>
 
   <body>
+
     <div class="menu page" id="menu-page">
       <header class="header1">
         <div
@@ -90,6 +91,10 @@
               style="padding: 0px 0px"
             >
               <div class="d-flex flex-nowrap overflow-auto w-100">
+                <button onclick="toggleSearchBar()">
+                  <i class='bx dish bx-search font-bold text-2xl'></i>
+                </button>                
+                              
                 <a href="#main" class="nav-link font-bold tab-link active"
                   >MAIN</a
                 >
@@ -99,6 +104,15 @@
                 >
               </div>
             </nav>
+            <div id="search-bar" class="hidden w-full p-2">
+              <input
+                type="text"
+                id="search-input"
+                class="w-full border p-2 rounded-lg"
+                placeholder="What's on your mind ... ?"
+                oninput="filterMenu()"
+              />
+            </div>  
           </div>
         </div>
       </header>
@@ -238,6 +252,22 @@
         </button>
       </div>
     </div>
+
+    <!-- <div class="search page" id="search-page"></div> -->
+
+    <!-- <div id="search page" class="search-page" style="display: none">
+      <div class="container-fluid bg-white py-2 top-16 w-full z-40">
+        <header class="fixed top-0 left-0 w-full bg-white z-50 py-2">
+          <button onclick="goBack()" class="back-btn ml-2">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+
+          <h3 class="dd text-xl font-bold text-center mt-3">KHOW BAN CHAN</h3>
+        </header>
+
+        
+      </div>
+    </div> -->
 
     <div class="option page" id="options-page">
       <div class="container-fluid bg-white py-2 top-16 w-full z-40">
@@ -382,7 +412,15 @@
       </div>
     </div>
 
+
+
+
+
     <!-- ล่างนี่คือ จาว่า ---------------------------------------------------------------------------------------------- -->
+
+
+
+
 
     <script>
       document.querySelectorAll(".tab-link").forEach((link) => {
@@ -897,6 +935,27 @@
         document.getElementById("total-order-price-list").textContent =
           totalOrderPrice.toFixed(2);
       }
+
+      function toggleSearchBar() {
+          let searchBar = document.getElementById("search-bar");
+          searchBar.classList.toggle("hidden"); // สลับการแสดงผล
+          document.getElementById("search-input").focus(); // โฟกัสที่ช่องค้นหา
+      }
+
+      function filterMenu() {
+          let input = document.getElementById("search-input").value.toLowerCase();
+          let menuItems = document.querySelectorAll(".menu-item");
+
+          menuItems.forEach(item => {
+              let name = item.querySelector(".menu-title").textContent.toLowerCase();
+              if (name.includes(input)) {
+                  item.style.display = "block";
+              } else {
+                  item.style.display = "none";
+              }
+          });
+      }
+
     </script>
   </body>
 </html>

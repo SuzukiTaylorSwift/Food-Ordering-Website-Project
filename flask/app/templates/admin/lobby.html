@@ -8,12 +8,16 @@
     <title>Admin Navigation</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/cashier.css') }}"
+      href="{{ url_for('static', filename='css/lobby.css') }}"
     />
     <link
-    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-    rel="stylesheet"
-   />
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="bg-white flex flex-col items-center min-h-screen">
     <!-- Navbar -->
@@ -33,43 +37,48 @@
     </div>
 
     <!-- Button Grid -->
-    <div class="padding grid grid-cols-2 gap-10 mt-12">
+    <div class="padding grid grid-cols-4 gap-10 mt-12">
       <button
-        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
-        id="server"
-        type="button"
-      >
-        <!-- ORDERS -->
-        <!-- SERVE
-        waite -->
-        WAITE
-      </button>
-      <button
-        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
-        id="cashier"
-        type="button"
-      >
-        <!-- TABLE -->
-        <!-- COUNTER
-        Cashier -->
-        CASHIER
-      </button>
-      <button
-        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
+        class="container w-60 h-60 bg-green-700 text-white font-bold rounded-xl"
         id="cook"
         type="button"
       >
         KITCHEN
       </button>
       <button
-        class="container w-40 h-40 bg-green-700 text-white font-bold rounded-xl"
+        class="container w-60 h-60 bg-green-700 text-white font-bold rounded-xl"
+        id="server"
+        type="button"
+      >
+        
+        WAITE
+      </button>
+      
+      <button
+        class="container w-60 h-60 bg-green-700 text-white font-bold rounded-xl"
+        id="cashier"
+        type="button"
+      >
+      
+        CASHIER
+      </button>
+      <button
+        class="container w-60 h-60 bg-green-700 text-white font-bold rounded-xl"
         id="menu"
         type="button"
       >
         ALL MENU
       </button>
       <button
-        class="container w-40 h-40 bg-blue-700 text-white font-bold rounded-xl"
+        class="container w-60 h-60 bg-red-500 text-white font-bold rounded-xl"
+        id="tracking"
+        type="button"
+      >
+        TRACKING <br>
+        ORDER
+      </button>
+      <button
+        class="container w-60 h-60 bg-blue-700 text-white font-bold rounded-xl"
         id="save"
         type="button"
       >
@@ -82,6 +91,7 @@
       >
         RESTORE DAY
       </button>
+      
     </div>
 
     <script>
@@ -105,6 +115,9 @@
         $("#end").click(function () {
           alert(end);
         });
+        $("#tracking").click(function () {
+          window.location.href = "/admin/tracking"
+        });
         $("#save").click(function () {
           if (confirm("คุณต้องการบันทึกข้อมูลหรือไม่?")) {
             save_data();
@@ -115,7 +128,7 @@
           }
         });
         $("#restore").click(function () {
-          if (confirm("จะกู้คืนจริงบ่?")) {
+          if (confirm("จะกู้คืนรายการจริงมั้ย?")) {
             restore_data();
             alert("แต้!");
           } else {

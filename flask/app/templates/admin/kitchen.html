@@ -6,34 +6,38 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/cashier.css') }}"
-  />
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/cashier.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <title>Kitchen</title>
   </head>
-  <body class="bg-white">
+  <body>
     <!-- Header -->
     <div class="table-title">
       <a href="/admin/lobby"><i class="bx bx-chevrons-left bx-md"></i> </a>
-      <h2>ORDER</h2>
-      <a href="/admin/login" class="logout-button">Logout</a>
+      <h2>KITCHEN</h2>
+      <a href="/admin/login" class="logout-button">LOGOUT</a>
     </div>
 
     <div class="orders-container">
       {% for key, data in grouped_orders.items() %}
       <div class="order-card {% if loop.index > 3 %}hidden{% endif %} {% if data.orders|length > 4 %} col-span-2 {% endif %}">
         <p class="text-orange-500 font-bold text-lg">
-          Table: {{ data.table_id if data.table_id is not none else 'Takeaway' }}
+          TABLE: {{ data.table_id if data.table_id is not none else 'Takeaway' }}
         </p>
     
         <div class="order-details">
           {% for i in data.orders %}
           <div class="border-b pb-2 mt-2">
-            <p class="font-bold text-gray-700">
+            <p class=" font-bold  text-2xl">
               {{ menu[i.menu_id-1]["nameFood"] }}
             </p>
-            <p>Quantity: {{ i.quantity }}</p>
+            <p class=" ">Quantity: {{ i.quantity }}</p>
             <p>Option: {{ i.option }}</p>
             <p>Note: {{ i.note }}</p>
           </div>

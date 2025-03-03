@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tracking.css') }}"/>
     <title>Tracking Record</title>
   </head>
   <body class="bg-gray-100 min-h-screen justify-center items-center">
+    <div class="table-title">
+      <a href="/admin/lobby"><i class="bx bx-chevrons-left bx-md"></i></a>
+      <h2>TRACKING RECORD</h2>
+      <a href="/admin/login" class="logout-button">LOGOUT</a>
+    </div>
+
     <div class="container mx-auto p-6">
       <!-- Header -->
       <div
         class="bg-green-700 text-white text-center py-4 rounded-lg shadow-lg"
       >
-        <h1 class="text-2xl font-bold">Tracking Record</h1>
+        <h1 class="text-2xl font-bold">TRACKING RECORD</h1>
       </div>
 
       <!-- Table Container -->
@@ -23,7 +38,7 @@
           <thead>
             <tr class="bg-green-700 text-white text-lg">
               <th class="p-4 text-center">Table ID</th>
-              <th class="p-4 text-center">กินไหน</th>
+              <th class="p-4 text-center">In / Take</th>
               <th class="p-4 text-center">Food Status</th>
               <th class="p-4 text-center">Paid Status</th>
               <th class="p-4 text-center">Total Price</th>
@@ -62,9 +77,35 @@
                 >
                   {{ i.food_status }}
                 </span>
-                {%else%} {{ i.food_status }} {%endif%}
+                {%elif i.food_status == "Serving"%} 
+                <span
+                  class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  {{ i.food_status }}
+                </span>
+                {% else %} 
+                <span
+                  class="bg-yellow-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  {{ i.food_status }}
+                </span>
+                {%endif%}
               </td>
-              <td class="p-4 text-center">{{ i.paid_status }}</td>
+              <td class="p-4 text-center">
+                {%if i.paid_status == "Paided"%} 
+                <span
+                  class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  {{ i.paid_status  }}
+                </span>
+                {% else %} 
+                <span
+                  class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+                >
+                  {{ i.paid_status  }}
+                </span>
+                {%endif%}
+              </td>
               <td class="p-4 text-center text-green-600 font-bold">
                 {{ i.totalPrice }} ฿
               </td>

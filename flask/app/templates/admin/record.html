@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tracking.css') }}"/>
     <title>Order Record</title>
   </head>
   <body class="bg-gray-100 min-h-screen justify-center items-center">
+    <div class="table-title">
+      <a href="/admin/lobby"><i class="bx bx-chevrons-left bx-md"></i></a>
+      <h2>ORDER RECORD</h2>
+      <a href="/admin/login" class="logout-button">LOGOUT</a>
+    </div>
+
     <div class="container mx-auto p-6">
       <!-- Header -->
       <div
         class="bg-green-700 text-white text-center py-4 rounded-lg shadow-lg"
       >
-        <h1 class="text-2xl font-bold">Order Record</h1>
+        <h1 class="text-2xl font-bold">ORDER REDCORD</h1>
       </div>
 
       <!-- Table Container -->
@@ -24,7 +39,7 @@
             <tr class="bg-green-700 text-white text-lg">
               <th class="p-4 text-center">Menu</th>
               <th class="p-4 text-center">Options</th>
-              <th class="p-4 text-center">กินไหน</th>
+              <th class="p-4 text-center">In / Take</th>
               <th class="p-4 text-center">Price</th>
               <th class="p-4 text-center">Quantity</th>
               <th class="p-4 text-center">Time</th>
@@ -38,7 +53,8 @@
               <td class="p-4 text-center">{{ item.menu }}</td>
               <td class="p-4 text-center">{{ item.options }}</td>
               <td class="p-4 text-center">
-                {% if item.buy == 'Eat in' %}
+                <!-- <p>{{item.buy}}</p> -->
+                {% if item.buy == 'eat in' %}
                 <span
                   class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
                 >

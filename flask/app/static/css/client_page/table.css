@@ -112,6 +112,7 @@ h2 {
 }
 .spcfood {
   width: 100%;
+  padding-bottom: 10px;
   height: auto; /* คงอัตราส่วนของรูป */
   object-fit: cover; /* ให้รูปขยายและครอบเต็มพื้นที่ */
 }
@@ -147,6 +148,20 @@ h2 {
   font-size: 14px;
   color: #555;
 }
+
+/* #search-bar {
+  display: none;
+  background: white;
+  padding: 8px;
+}
+
+#search-bar input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+} */
+
 
 .menu-price {
   font-size: 14px;
