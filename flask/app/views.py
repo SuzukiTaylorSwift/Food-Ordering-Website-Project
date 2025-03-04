@@ -208,9 +208,7 @@ def takeAway():
     return render_template("client_page/takeAway.html",menus = menus)
     
 
-
-
-    
+#จบแล้วจ้า
     
 @app.route('/table<int:table_number>', methods=['GET', 'POST'])
 def order_for_table(table_number):
