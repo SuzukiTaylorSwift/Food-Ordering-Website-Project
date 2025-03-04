@@ -1,5 +1,6 @@
 # database volume
 postgres_data
+postgres_data_prod
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

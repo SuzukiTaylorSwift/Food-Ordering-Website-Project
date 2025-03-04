@@ -219,7 +219,7 @@ def order_for_table(table_number):
             data = request.get_json()  # รับ JSON request
             print(data)
             print(data['table_id'], 'aaaaaaaaaaaaaaaa')
-
+    
             # ตรวจสอบว่ามี "total_price" เป็น list หรือไม่
             total_price = sum(data["total_price"]) if isinstance(data["total_price"], list) else data["total_price"]
 
@@ -526,7 +526,6 @@ def save_data():
         # return "done"    
         # print(data_list
     else:
-        data_list = []
         order_list = Order_table.nonActive() 
         order = Order.nonActive()
         menu = Menu.query.all()
@@ -539,6 +538,7 @@ def save_data():
                     "price":i.totalPrice,"buy":buy,"time":order[i.order_id-1].order_time}
             
             data_list.append(data)
+        print(data_list,"--------------------log data_list na ja")
         return render_template("admin/record.html",data_list=data_list)
 
 @app.route("/restore",methods=["POST"])
