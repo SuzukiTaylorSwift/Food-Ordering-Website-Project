@@ -40,4 +40,29 @@
 
 ### Notes:
 
-- Note
+Open:
+
+http://localhost:56733/table1
+
+You can change the number at the end (table1 → table2 … table9) to access different tables:
+
+http://localhost:56733/table1
+
+http://localhost:56733/table2
+
+...
+
+http://localhost:56733/table9
+
+Admin Role
+
+Admin login page:
+
+http://localhost:56733/admin/login
+
+Default admin credentials:
+
+Email: aheye@gmail.com
+
+Password: 1234
+  
