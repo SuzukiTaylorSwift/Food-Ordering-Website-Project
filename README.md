@@ -39,7 +39,11 @@
 ---
 
 ### Notes:
-
+How to Run:
+  run all of this command
+  1. ./run_docker_compose.sh
+  2. docker compose exec flask python manage.py create_db
+  3. docker compose exec flask python manage.py seed_db
 Open:
 
 http://localhost:56733/table1
